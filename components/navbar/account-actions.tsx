@@ -3,10 +3,12 @@ import { serverClient } from "~/app/_trpc/server-client";
 
 interface Props {}
 
-export function AccountActions({}: Props) {
+export async function AccountActions({}: Props) {
+  const user = await serverClient.users.getAuthProfile();
+
   return (
     <div className="flex items-center gap-x-8 text-white">
-      <UserMenu />
+      <UserMenu user={user} />
       <div>Orders</div>
       <div>Cart</div>
     </div>
