@@ -25,7 +25,7 @@ export default async function RootLayout({
 
   return (
     <html lang="en">
-      <body className={cn("text-sm", inter.className)}>
+      <body className={cn("text-base", inter.className)}>
         <SessionProvider session={session}>
           <Providers>{children}</Providers>
         </SessionProvider>
