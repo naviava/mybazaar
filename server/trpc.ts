@@ -28,6 +28,7 @@ const isAuthenticated = middleware(async (opts) => {
         name: user.name,
         email: user.email,
         image: user.image,
+        role: user.role,
         disabled: user.disabled,
       },
     },
