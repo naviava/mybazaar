@@ -1,5 +1,20 @@
-interface Props {}
+import Image from "next/image";
 
-export function Logo({}: Props) {
-  return <div className="text-white">Logo</div>;
+interface Props {
+  height?: number;
+  width?: number;
+}
+
+export function Logo({ height = 100, width = 100 }: Props) {
+  return (
+    <div className="">
+      <Image
+        src="logo.svg"
+        alt="My Bazaar Logo"
+        height={height}
+        width={width}
+        className="mx-auto"
+      />
+    </div>
+  );
 }

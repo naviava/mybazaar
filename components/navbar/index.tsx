@@ -11,7 +11,7 @@ export async function Navbar({}: Props) {
 
   return (
     <nav className="flex h-14 items-center justify-between bg-slate-900 px-2 md:px-4 lg:px-6">
-      <Logo />
+      <Logo height={50} width={50} />
       <Search />
       <AccountActions />
     </nav>

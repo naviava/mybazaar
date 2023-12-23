@@ -12,8 +12,17 @@ import { cn } from "~/lib/utils";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "My Bazaar",
+  title: {
+    default: "My Bazaar",
+    template: "%s | My Bazaar",
+  },
   description: "Shop till you drop",
+  icons: [
+    {
+      url: "logo.svg",
+      href: "logo.svg",
+    },
+  ],
 };
 
 export default async function RootLayout({

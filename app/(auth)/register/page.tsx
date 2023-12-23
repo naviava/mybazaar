@@ -12,7 +12,7 @@ export default async function RegisterPage({}: Props) {
 
   return (
     <div className="w-full bg-white pb-10 pt-6">
-      <div className="mx-6 max-w-sm space-y-8 md:mx-auto">
+      <div className="mx-6 max-w-md space-y-8 md:mx-auto">
         <Logo />
         <RegisterWidget />
       </div>
