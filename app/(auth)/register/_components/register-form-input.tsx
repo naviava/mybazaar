@@ -1,3 +1,7 @@
+"use client";
+
+import { memo } from "react";
+
 import {
   FormControl,
   FormDescription,
@@ -15,10 +19,11 @@ interface Props {
   label?: string;
   placeholder?: string;
   description?: string;
-  type?: "text" | "email" | "password";
+  type?: "text" | "password";
 }
 
-export function RegisterFormInput({
+export const RegisterFormInput = memo(_RegisterFormInput);
+function _RegisterFormInput({
   form,
   fieldName,
   label,
@@ -40,7 +45,7 @@ export function RegisterFormInput({
               type={type}
               placeholder={placeholder ? placeholder : ""}
               {...field}
-              className="border-neutral-400"
+              className="border-neutral-400 text-base"
             />
           </FormControl>
           {description && <FormDescription>{description}</FormDescription>}

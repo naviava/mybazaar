@@ -21,7 +21,9 @@ const registerFormSchema = z
     password: z
       .string()
       .min(6, { message: "Password must be at least 6 characters" }),
-    confirmPassword: z.string(),
+    confirmPassword: z
+      .string()
+      .min(6, { message: "Both passwords must be the same" }),
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: "Passwords do not match",
