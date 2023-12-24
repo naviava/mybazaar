@@ -11,15 +11,12 @@ import {
 } from "~/components/ui/hover-card";
 import { ManageAccount } from "./manage-account";
 
-import { serverClient } from "~/app/_trpc/server-client";
-
-interface IProps {
-  user: Awaited<ReturnType<typeof serverClient.user.getAuthProfile>>;
-}
+import { trpc } from "~/app/_trpc/client";
 
 export const UserMenu = memo(_UserMenu);
-function _UserMenu({ user }: IProps) {
+function _UserMenu() {
   const router = useRouter();
+  const { data: user } = trpc.user.getAuthProfile.useQuery();
 
   const handleTriggerClick = useCallback(() => {
     if (!user) router.push("/login");

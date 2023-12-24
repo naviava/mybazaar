@@ -6,7 +6,7 @@ export async function AccountActions() {
 
   return (
     <div className="flex items-center gap-x-8 text-white">
-      <UserMenu user={user} />
+      <UserMenu />
       <div>Orders</div>
       <div>Cart</div>
     </div>
