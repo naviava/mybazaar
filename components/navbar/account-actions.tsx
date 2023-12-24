@@ -12,5 +12,3 @@ export async function AccountActions() {
     </div>
   );
 }
-
-console.log(typeof AccountActions);

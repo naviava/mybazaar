@@ -21,6 +21,7 @@ import { Input } from "~/components/ui/input";
 import { Button } from "~/components/ui/button";
 
 import { trpc } from "~/app/_trpc/client";
+import { LoaderSpinner } from "~/components/loader-spinner";
 
 const formSchema = z.object({
   otp: z
@@ -84,7 +85,7 @@ function _OTPFormInput({ tempUserId }: IProps) {
           disabled={isLoading}
           className="w-full"
         >
-          {isLoading && <Loader className="mr-2 h-4 w-4 animate-spin" />}
+          {isLoading && <LoaderSpinner />}
           Verify email and create account
         </Button>
       </form>

@@ -8,10 +8,10 @@ const ROUTES = [
   { label: "Your Shopping Cart", href: "#", id: uuid() },
 ];
 
-export function YourAccountPanel() {
+export function AccountHubPanel() {
   return (
     <ul className="space-y-1">
-      <h4 className="mt-3 text-lg font-bold">Your Account</h4>
+      <h4 className="mt-3 text-lg font-bold">Account Hub</h4>
       {ROUTES.map((route) => (
         <AccountOption key={route.id} label={route.label} href={route.href} />
       ))}

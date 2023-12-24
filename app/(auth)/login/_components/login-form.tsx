@@ -5,16 +5,17 @@ import { useRouter } from "next/navigation";
 
 import * as z from "zod";
 import { toast } from "sonner";
-import { Loader } from "lucide-react";
 import { signIn } from "next-auth/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { UseFormReturn, useForm } from "react-hook-form";
 
 import { Form } from "~/components/ui/form";
 import { Button } from "~/components/ui/button";
+import { LoaderSpinner } from "~/components/loader-spinner";
 import { LoginFormInput } from "./login-form-input";
 
 import { trpc } from "~/app/_trpc/client";
+import { loginFormFields } from "~/utils/form-inputs/auth/auth-form-fields";
 
 const loginFormSchema = z.object({
   email: z.string().email({ message: "Please enter a valid email" }),
@@ -63,21 +64,16 @@ export function LoginForm() {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-        <LoginFormInput
-          form={form}
-          fieldName="email"
-          label="Email address"
-          disabled={isLoading}
-        />
-        <LoginFormInput
-          form={form}
-          type="password"
-          fieldName="password"
-          label="Password"
-          disabled={isLoading}
-        />
+        {loginFormFields.map((field) => (
+          <LoginFormInput
+            key={field.fieldName}
+            form={form}
+            disabled={isLoading}
+            {...field}
+          />
+        ))}
         <Button variant="amazon" className="w-full">
-          {isLoading && <Loader className="mr-2 h-4 w-4 animate-spin" />}
+          {isLoading && <LoaderSpinner />}
           Sign in
         </Button>
       </form>
