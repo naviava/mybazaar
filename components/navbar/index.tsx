@@ -1,6 +1,6 @@
 import { Logo } from "~/components/logo";
-import { Search } from "./search";
 import { AccountActions } from "./account-actions";
+import { Search } from "./search";
 
 export async function Navbar() {
   return (
