@@ -8,12 +8,21 @@ const ROUTES = [
   { label: "Your Shopping Cart", href: "#", id: uuid() },
 ];
 
-export function AccountHubPanel() {
+interface IProps {
+  handleClose?: () => void;
+}
+
+export function AccountHubPanel({ handleClose }: IProps) {
   return (
     <ul className="space-y-1">
       <h4 className="mt-3 text-base font-bold md:text-lg">Account Hub</h4>
       {ROUTES.map((route) => (
-        <AccountOption key={route.id} label={route.label} href={route.href} />
+        <AccountOption
+          key={route.id}
+          label={route.label}
+          href={route.href}
+          handleClose={handleClose}
+        />
       ))}
     </ul>
   );
