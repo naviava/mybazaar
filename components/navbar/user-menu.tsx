@@ -1,6 +1,6 @@
 "use client";
 
-import { memo } from "react";
+import { memo, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { ChevronDown } from "lucide-react";
 
@@ -21,12 +21,14 @@ export const UserMenu = memo(_UserMenu);
 function _UserMenu({ user }: IProps) {
   const router = useRouter();
 
+  const handleTriggerClick = useCallback(() => {
+    if (!user) router.push("/login");
+    return null;
+  }, [router, user]);
+
   return (
-    <HoverCard openDelay={300}>
-      <HoverCardTrigger
-        onClick={() => router.push("/login")}
-        className="cursor-pointer"
-      >
+    <HoverCard openDelay={200}>
+      <HoverCardTrigger onClick={handleTriggerClick} className="cursor-pointer">
         <div className="text-sm">Hello, {user ? user.name : "sign in"}</div>
         <div className="flex items-center font-semibold">
           Manage Account
