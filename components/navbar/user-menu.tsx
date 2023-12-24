@@ -1,6 +1,6 @@
 "use client";
 
-import { memo, useCallback } from "react";
+import { useCallback } from "react";
 import { useRouter } from "next/navigation";
 
 import { useIsMounted } from "usehooks-ts";
