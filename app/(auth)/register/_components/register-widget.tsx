@@ -17,6 +17,7 @@ import { Separator } from "~/components/ui/separator";
 import { RegisterFormInput } from "./register-form-input";
 
 import { trpc } from "~/app/_trpc/client";
+import { GoToHomepage } from "~/components/go-to-homepage";
 
 const registerFormSchema = z.object({
   email: z.string().email(),
@@ -69,7 +70,7 @@ export function RegisterWidget() {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="space-y-6 rounded-md border border-neutral-300 p-4"
+        className="mt-4 space-y-6 rounded-md border border-neutral-300 p-4"
       >
         <h1 className="text-3xl font-semibold">Create Account</h1>
         <RegisterFormInput
@@ -117,6 +118,7 @@ export function RegisterWidget() {
             <ChevronRight className="h-3 w-3" />
           </Link>
         </div>
+        <GoToHomepage />
       </form>
     </Form>
   );

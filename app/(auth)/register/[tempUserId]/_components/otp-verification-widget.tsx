@@ -12,6 +12,7 @@ import {
 import { OTPFormInput } from "./otp-form-input";
 
 import { serverClient } from "~/app/_trpc/server-client";
+import { GoToHomepage } from "~/components/go-to-homepage";
 
 interface IProps {
   user: Awaited<ReturnType<typeof serverClient.user.getTempUser>>;
@@ -31,10 +32,7 @@ export function OTPVerificationWidget({ user }: IProps) {
         <OTPFormInput tempUserId={user.id} />
       </CardContent>
       <CardFooter>
-        <Link href="/" className="flex items-center text-sm text-blue-700">
-          <ChevronLeft className="mr-1 h-3 w-3" />
-          <span className="hover:underline">Go to homepage</span>
-        </Link>
+        <GoToHomepage />
       </CardFooter>
     </Card>
   );

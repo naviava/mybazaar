@@ -1,3 +1,4 @@
+import { GoToHomepage } from "~/components/go-to-homepage";
 import {
   Card,
   CardContent,
@@ -11,14 +12,13 @@ export function CredentialsLoginCard() {
   return (
     <Card className="mt-4">
       <CardHeader>
-        <CardTitle>Card Title</CardTitle>
-        <CardDescription>Card Description</CardDescription>
+        <CardTitle className="text-3xl">Sign in</CardTitle>
       </CardHeader>
       <CardContent>
         <p>Card Content</p>
       </CardContent>
       <CardFooter>
-        <p>Card Footer</p>
+        <GoToHomepage />
       </CardFooter>
     </Card>
   );
