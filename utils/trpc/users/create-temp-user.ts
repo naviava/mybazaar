@@ -32,6 +32,16 @@ export const createTempUser = publicProcedure
           "Email already exists. If you have not signed in previously, please check your email for a verification link.",
       });
     }
+    const existingUser = await db.user.findUnique({
+      where: { email },
+    });
+    if (!!existingUser) {
+      throw new TRPCError({
+        code: "BAD_REQUEST",
+        message:
+          "Email already exists. Please proceed to sign-in or reset your password if you have forgotten it.",
+      });
+    }
     if (password !== confirmPassword) {
       throw new TRPCError({
         code: "BAD_REQUEST",
