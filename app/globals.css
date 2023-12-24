@@ -80,3 +80,9 @@ body,
     @apply bg-background text-foreground;
   }
 }
+
+@layer components {
+  .link {
+    @apply cursor-pointer hover:text-[#ce7421] hover:underline;
+  }
+}
