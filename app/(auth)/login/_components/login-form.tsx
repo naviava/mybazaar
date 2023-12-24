@@ -7,7 +7,7 @@ import { useCallback } from "react";
 import { Form } from "~/components/ui/form";
 
 const loginFormSchema = z.object({
-  email: z.string().email(),
+  email: z.string().email({ message: "Please enter a valid email" }),
   password: z.string(),
 });
 export type LoginFormSchemaType = UseFormReturn<{
