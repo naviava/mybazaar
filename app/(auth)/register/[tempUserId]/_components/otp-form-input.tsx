@@ -1,7 +1,11 @@
 "use client";
 
 import { memo } from "react";
+import { useRouter } from "next/navigation";
+
 import * as z from "zod";
+import { toast } from "sonner";
+import { Loader } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -15,6 +19,7 @@ import {
 } from "~/components/ui/form";
 import { Input } from "~/components/ui/input";
 import { Button } from "~/components/ui/button";
+
 import { trpc } from "~/app/_trpc/client";
 
 const formSchema = z.object({
@@ -30,15 +35,26 @@ interface IProps {
 
 export const OTPFormInput = memo(_OTPFormInput);
 function _OTPFormInput({ tempUserId }: IProps) {
+  const router = useRouter();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: { otp: "" },
   });
 
-  //   const {} = trpc.user
+  const { mutate: handleVerifyTempUser, isLoading } =
+    trpc.user.verifyTempUser.useMutation({
+      onError: ({ message }) => toast.error(message),
+      onSuccess: () => {
+        toast.success(
+          "Account created successfully! Please proceed to sign-in page.",
+        );
+        router.push("/login");
+      },
+    });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log({ ...values, id: tempUserId });
+    handleVerifyTempUser({ id: tempUserId, ...values });
   }
 
   return (
@@ -50,7 +66,7 @@ function _OTPFormInput({ tempUserId }: IProps) {
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <Input {...field} />
+                <Input disabled={isLoading} {...field} />
               </FormControl>
               <FormDescription>
                 IMPORTANT: OTP is case-sensitive!
@@ -59,7 +75,13 @@ function _OTPFormInput({ tempUserId }: IProps) {
             </FormItem>
           )}
         />
-        <Button type="submit" variant="amazon" className="w-full">
+        <Button
+          type="submit"
+          variant="amazon"
+          disabled={isLoading}
+          className="w-full"
+        >
+          {isLoading && <Loader className="mr-2 h-4 w-4 animate-spin" />}
           Verify email and create account
         </Button>
       </form>

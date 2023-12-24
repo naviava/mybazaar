@@ -1,6 +1,5 @@
 import { redirect } from "next/navigation";
 import { OTPVerificationWidget } from "./_components/otp-verification-widget";
-import { db } from "~/lib/db";
 import { serverClient } from "~/app/_trpc/server-client";
 
 interface IProps {

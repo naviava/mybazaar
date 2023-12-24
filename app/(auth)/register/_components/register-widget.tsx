@@ -7,7 +7,7 @@ import Link from "next/link";
 import { z } from "zod";
 import { toast } from "sonner";
 import { useForm } from "react-hook-form";
-import { ChevronRight } from "lucide-react";
+import { ChevronRight, Loader } from "lucide-react";
 import { UseFormReturn } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -106,6 +106,7 @@ export function RegisterWidget() {
           disabled={isLoading}
           className="w-full"
         >
+          {isLoading && <Loader className="mr-2 h-4 w-4 animate-spin" />}
           Confirm details and Register
         </Button>
         <Separator className="my-4" />
