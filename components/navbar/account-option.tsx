@@ -7,7 +7,7 @@ interface IProps {
 
 export function AccountOption({ label, href }: IProps) {
   return (
-    <li className="link py-1">
+    <li className="link py-1 text-sm md:text-base">
       <Link href={href}>{label}</Link>
     </li>
   );

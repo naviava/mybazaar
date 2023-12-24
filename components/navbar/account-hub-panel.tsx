@@ -11,7 +11,7 @@ const ROUTES = [
 export function AccountHubPanel() {
   return (
     <ul className="space-y-1">
-      <h4 className="mt-3 text-lg font-bold">Account Hub</h4>
+      <h4 className="mt-3 text-base font-bold md:text-lg">Account Hub</h4>
       {ROUTES.map((route) => (
         <AccountOption key={route.id} label={route.label} href={route.href} />
       ))}

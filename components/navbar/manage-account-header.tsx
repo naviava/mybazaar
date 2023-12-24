@@ -36,11 +36,11 @@ export function ManageAccountHeader() {
           </p>
         </>
       ) : (
-        <div className="space-y-1 text-center">
-          <p className="text-xs font-medium">
+        <div className="text-center md:space-y-1">
+          <p className="text-[9px] font-medium md:text-xs">
             You&apos;ve been a member of My Bazaar since{" "}
           </p>
-          <p className="text-sm font-semibold">
+          <p className="-mt-1 text-[11px] font-semibold md:mt-0 md:text-sm">
             {format(new Date(user.createdAt), "MMMM do, yyyy")}
           </p>
         </div>

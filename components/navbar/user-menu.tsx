@@ -26,13 +26,15 @@ function _UserMenu() {
   return (
     <HoverCard openDelay={200}>
       <HoverCardTrigger onClick={handleTriggerClick} className="cursor-pointer">
-        <div className="text-sm">Hello, {user ? user.name : "sign in"}</div>
-        <div className="flex items-center font-semibold">
+        <div className="text-xs md:text-sm">
+          Hello, {user ? user.name : "sign in"}
+        </div>
+        <div className="flex items-center text-sm font-semibold">
           Manage Account
           <ChevronDown className="ml-1 h-4 w-4" />
         </div>
       </HoverCardTrigger>
-      <HoverCardContent className="rounded-sm">
+      <HoverCardContent className="rounded-sm py-1 md:py-2">
         <ManageAccount />
       </HoverCardContent>
     </HoverCard>
