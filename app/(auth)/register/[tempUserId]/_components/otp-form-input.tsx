@@ -1,6 +1,6 @@
 "use client";
 
-import { memo } from "react";
+import { memo, useCallback } from "react";
 import { useRouter } from "next/navigation";
 
 import * as z from "zod";
@@ -53,9 +53,12 @@ function _OTPFormInput({ tempUserId }: IProps) {
       },
     });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    handleVerifyTempUser({ id: tempUserId, ...values });
-  }
+  const onSubmit = useCallback(
+    (values: z.infer<typeof formSchema>) => {
+      handleVerifyTempUser({ id: tempUserId, ...values });
+    },
+    [handleVerifyTempUser, tempUserId],
+  );
 
   return (
     <Form {...form}>

@@ -1,12 +1,12 @@
-import { GoToHomepage } from "~/components/go-to-homepage";
 import {
   Card,
   CardContent,
-  CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
 } from "~/components/ui/card";
+import { GoToHomepage } from "~/components/go-to-homepage";
+import { LoginForm } from "./login-form";
 
 export function CredentialsLoginCard() {
   return (
@@ -15,7 +15,7 @@ export function CredentialsLoginCard() {
         <CardTitle className="text-3xl">Sign in</CardTitle>
       </CardHeader>
       <CardContent>
-        <p>Card Content</p>
+        <LoginForm />
       </CardContent>
       <CardFooter>
         <GoToHomepage />
