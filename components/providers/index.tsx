@@ -2,10 +2,10 @@
 
 import { TRPCProvider } from "./trpc-provider";
 
-interface Props {
+interface IProps {
   children: React.ReactNode;
 }
 
-export function Providers({ children }: Props) {
+export function Providers({ children }: IProps) {
   return <TRPCProvider>{children}</TRPCProvider>;
 }

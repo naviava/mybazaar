@@ -4,9 +4,7 @@ import { AccountActions } from "./account-actions";
 
 import { serverClient } from "~/app/_trpc/server-client";
 
-interface Props {}
-
-export async function Navbar({}: Props) {
+export async function Navbar() {
   const user = await serverClient.users.getAuthProfile();
 
   return (

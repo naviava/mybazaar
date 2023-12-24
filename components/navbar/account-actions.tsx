@@ -1,9 +1,7 @@
 import { UserMenu } from "./user-menu";
 import { serverClient } from "~/app/_trpc/server-client";
 
-interface Props {}
-
-export async function AccountActions({}: Props) {
+export async function AccountActions() {
   const user = await serverClient.users.getAuthProfile();
 
   return (

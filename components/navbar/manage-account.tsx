@@ -1,11 +1,8 @@
-import { serverClient } from "~/app/_trpc/server-client";
 import { Button } from "../ui/button";
 import { Separator } from "../ui/separator";
 import Link from "next/link";
 
-interface Props {}
-
-export function ManageAccount({}: Props) {
+export function ManageAccount() {
   return (
     <>
       <div className="space-y-2">

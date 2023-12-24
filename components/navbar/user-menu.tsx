@@ -12,11 +12,11 @@ import { ManageAccount } from "./manage-account";
 
 import { serverClient } from "~/app/_trpc/server-client";
 
-interface Props {
+interface IProps {
   user: Awaited<ReturnType<typeof serverClient.users.getAuthProfile>>;
 }
 
-export function UserMenu({ user }: Props) {
+export function UserMenu({ user }: IProps) {
   const router = useRouter();
 
   return (

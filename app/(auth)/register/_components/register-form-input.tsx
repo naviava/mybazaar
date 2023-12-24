@@ -13,13 +13,14 @@ import {
 import { Input } from "~/components/ui/input";
 import { RegisterFormSchemaType } from "./register-widget";
 
-interface Props {
+interface IProps {
   form: RegisterFormSchemaType;
   fieldName: "name" | "email" | "password" | "confirmPassword";
   label?: string;
   placeholder?: string;
   description?: string;
   type?: "text" | "password";
+  disabled?: boolean;
 }
 
 export const RegisterFormInput = memo(_RegisterFormInput);
@@ -30,7 +31,8 @@ function _RegisterFormInput({
   placeholder,
   description,
   type = "text",
-}: Props) {
+  disabled = false,
+}: IProps) {
   return (
     <FormField
       control={form.control}
@@ -43,8 +45,9 @@ function _RegisterFormInput({
           <FormControl>
             <Input
               type={type}
-              placeholder={placeholder ? placeholder : ""}
               {...field}
+              disabled={disabled}
+              placeholder={placeholder ? placeholder : ""}
               className="border-neutral-400 text-base"
             />
           </FormControl>

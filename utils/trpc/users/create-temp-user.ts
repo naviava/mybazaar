@@ -5,6 +5,7 @@ import { db } from "~/lib/db";
 import { TRPCError } from "@trpc/server";
 import { publicProcedure } from "~/server/trpc";
 import { generateOTP } from "~/utils/registration/generate-otp";
+import { sendVerificationEmail } from "~/utils/registration/send-verification-email";
 
 export const createTempUser = publicProcedure
   .input(
@@ -31,7 +32,6 @@ export const createTempUser = publicProcedure
           "Email already exists. If you have not signed in previously, please check your email for a verification link.",
       });
     }
-
     if (password !== confirmPassword) {
       throw new TRPCError({
         code: "BAD_REQUEST",
@@ -48,6 +48,16 @@ export const createTempUser = publicProcedure
         otp,
       },
     });
-
+    const response = await sendVerificationEmail({
+      emailAddress: email,
+      otp,
+      tempUserId: tempUser.id,
+    });
+    if (!!response.error) {
+      throw new TRPCError({
+        code: "INTERNAL_SERVER_ERROR",
+        message: "Failed to send verification email. Try again later.",
+      });
+    }
     return tempUser.id;
   });

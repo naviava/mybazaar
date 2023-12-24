@@ -1,5 +1,3 @@
-interface Props {}
-
-export function LoginWidget({}: Props) {
+export function LoginWidget() {
   return <div>LoginWidget</div>;
 }

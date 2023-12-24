@@ -4,6 +4,7 @@ import { Inter } from "next/font/google";
 
 import { getServerSession } from "next-auth";
 
+import { Toaster } from "~/components/ui/sonner";
 import { Providers } from "~/components/providers";
 import SessionProvider from "~/components/providers/session-provider";
 
@@ -36,7 +37,10 @@ export default async function RootLayout({
     <html lang="en">
       <body className={cn("bg-neutral-200 text-base", inter.className)}>
         <SessionProvider session={session}>
-          <Providers>{children}</Providers>
+          <Providers>
+            {children}
+            <Toaster />
+          </Providers>
         </SessionProvider>
       </body>
     </html>
