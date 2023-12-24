@@ -35,7 +35,9 @@ export default async function RootLayout({
 
   return (
     <html lang="en">
-      <body className={cn("bg-neutral-200 text-base", inter.className)}>
+      <body
+        className={cn("h-[5000px] bg-neutral-200 text-base", inter.className)}
+      >
         <SessionProvider session={session}>
           <Providers>
             {children}

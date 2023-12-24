@@ -49,7 +49,7 @@ export function LoginForm() {
         .then((callback) => {
           if (callback?.ok) {
             utils.user.getAuthProfile.invalidate();
-            toast.success(`Logged in`);
+            toast.success(`Logged in. Happy shopping!`);
             router.refresh();
             router.push("/");
           } else {
