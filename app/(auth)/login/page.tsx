@@ -2,8 +2,13 @@ import Link from "next/link";
 
 import { Button } from "~/components/ui/button";
 import { LoginWidget } from "./_components/login-widget";
+import { serverClient } from "~/app/_trpc/server-client";
+import { redirect } from "next/navigation";
 
-export default function LoginPage() {
+export default async function LoginPage() {
+  const user = await serverClient.user.getAuthProfile();
+  if (!!user) return redirect("/");
+
   return (
     <>
       <LoginWidget />
