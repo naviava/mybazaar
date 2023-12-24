@@ -28,7 +28,7 @@ export function OTPVerificationWidget({ user }: IProps) {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <OTPFormInput id={user.id} />
+        <OTPFormInput tempUserId={user.id} />
       </CardContent>
       <CardFooter>
         <Link href="/" className="flex items-center text-sm text-blue-700">
