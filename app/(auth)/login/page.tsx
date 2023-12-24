@@ -4,6 +4,7 @@ import { Button } from "~/components/ui/button";
 import { LoginWidget } from "./_components/login-widget";
 import { serverClient } from "~/app/_trpc/server-client";
 import { redirect } from "next/navigation";
+import { RegisterLink } from "./_components/register-link";
 
 export default async function LoginPage() {
   const user = await serverClient.user.getAuthProfile();
@@ -17,13 +18,7 @@ export default async function LoginPage() {
         <div className="text-sm">New to My Bazaar?</div>
         <div className="h-[1px] flex-1 bg-neutral-300" />
       </div>
-      <Button
-        asChild
-        variant="outline"
-        className="w-full border border-gray-300 shadow-lg"
-      >
-        <Link href="/register">Create your My Bazaar account</Link>
-      </Button>
+      <RegisterLink />
     </>
   );
 }
