@@ -7,7 +7,7 @@ interface IProps {
 export default function AuthLayout({ children }: IProps) {
   return (
     <div className="w-full bg-white px-4 pb-10 pt-6 md:px-0">
-      <div className="mx-auto max-w-md space-y-8">
+      <div className="mx-auto max-w-md">
         <Logo />
         {children}
       </div>

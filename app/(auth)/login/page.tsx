@@ -1,6 +1,5 @@
 import Link from "next/link";
 
-import { Logo } from "~/components/logo";
 import { Button } from "~/components/ui/button";
 import { LoginWidget } from "./_components/login-widget";
 
@@ -8,7 +7,11 @@ export default function LoginPage() {
   return (
     <>
       <LoginWidget />
-      <div>New to My Bazaar</div>
+      <div className="mb-4 mt-6 flex items-center gap-x-2">
+        <div className="h-[1px] flex-1 bg-neutral-300" />
+        <div className="text-sm">New to My Bazaar?</div>
+        <div className="h-[1px] flex-1 bg-neutral-300" />
+      </div>
       <Button
         asChild
         variant="outline"
