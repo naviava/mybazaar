@@ -41,7 +41,7 @@ const authOptions: AuthOptions = {
           user.hashedPassword,
         );
         if (!isCorrectPassword) throw new Error("Invalid credentials");
-        return { id: user.id };
+        return user;
       },
     }),
   ],

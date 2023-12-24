@@ -44,8 +44,8 @@ function _RegisterFormInput({
           )}
           <FormControl>
             <Input
-              type={type}
               {...field}
+              type={type}
               disabled={disabled}
               placeholder={placeholder ? placeholder : ""}
               className="border-neutral-400 text-base"

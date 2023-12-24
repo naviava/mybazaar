@@ -20,7 +20,7 @@ export default async function LoginPage() {
       <Button
         asChild
         variant="outline"
-        className="w-full border border-gray-500 shadow-lg"
+        className="w-full border border-gray-300 shadow-lg"
       >
         <Link href="/register">Create your My Bazaar account</Link>
       </Button>

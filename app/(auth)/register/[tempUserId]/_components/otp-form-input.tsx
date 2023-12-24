@@ -69,7 +69,7 @@ function _OTPFormInput({ tempUserId }: IProps) {
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <Input disabled={isLoading} {...field} />
+                <Input {...field} disabled={isLoading} />
               </FormControl>
               <FormDescription>
                 IMPORTANT: OTP is case-sensitive!

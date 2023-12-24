@@ -26,7 +26,7 @@ function _LoginFormInput({
   fieldName,
   label,
   type = "text",
-  disabled = false,
+  disabled,
 }: IProps) {
   return (
     <FormField
@@ -34,9 +34,9 @@ function _LoginFormInput({
       name={fieldName}
       render={({ field }) => (
         <FormItem>
-          <FormLabel>{label}</FormLabel>
+          <FormLabel className="text-base">{label}</FormLabel>
           <FormControl>
-            <Input type={type} disabled={disabled} {...field} />
+            <Input {...field} type={type} disabled={disabled} />
           </FormControl>
           <FormMessage />
         </FormItem>
