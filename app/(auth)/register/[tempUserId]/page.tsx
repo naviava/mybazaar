@@ -9,7 +9,7 @@ interface IProps {
 
 export default async function ConfirmRegistrationPage({ params }: IProps) {
   const { tempUserId } = params;
-  const tempUser = await serverClient.users.getTempUser(tempUserId);
+  const tempUser = await serverClient.user.getTempUser(tempUserId);
   if (!tempUser) return redirect("/register");
 
   return (

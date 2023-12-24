@@ -14,7 +14,7 @@ import { OTPFormInput } from "./otp-form-input";
 import { serverClient } from "~/app/_trpc/server-client";
 
 interface IProps {
-  user: Awaited<ReturnType<typeof serverClient.users.getTempUser>>;
+  user: Awaited<ReturnType<typeof serverClient.user.getTempUser>>;
 }
 
 export function OTPVerificationWidget({ user }: IProps) {

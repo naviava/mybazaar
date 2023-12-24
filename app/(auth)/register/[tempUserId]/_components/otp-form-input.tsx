@@ -1,21 +1,21 @@
 "use client";
 
 import { memo } from "react";
-
 import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+
 import {
   Form,
   FormControl,
   FormDescription,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from "~/components/ui/form";
 import { Input } from "~/components/ui/input";
 import { Button } from "~/components/ui/button";
+import { trpc } from "~/app/_trpc/client";
 
 const formSchema = z.object({
   otp: z
@@ -34,6 +34,8 @@ function _OTPFormInput({ tempUserId }: IProps) {
     resolver: zodResolver(formSchema),
     defaultValues: { otp: "" },
   });
+
+  //   const {} = trpc.user
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     console.log({ ...values, id: tempUserId });

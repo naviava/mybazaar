@@ -14,7 +14,7 @@ import { ManageAccount } from "./manage-account";
 import { serverClient } from "~/app/_trpc/server-client";
 
 interface IProps {
-  user: Awaited<ReturnType<typeof serverClient.users.getAuthProfile>>;
+  user: Awaited<ReturnType<typeof serverClient.user.getAuthProfile>>;
 }
 
 export const UserMenu = memo(_UserMenu);

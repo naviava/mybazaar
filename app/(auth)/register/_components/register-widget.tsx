@@ -50,7 +50,7 @@ export function RegisterWidget() {
   });
 
   const { mutate: handleCreateTempUser, isLoading } =
-    trpc.users.createTempUser.useMutation({
+    trpc.user.createTempUser.useMutation({
       onError: ({ message }) => toast.error(message),
       onSuccess: (tempUserId) => {
         toast.success("Verification email sent.");
