@@ -1,5 +1,6 @@
 "use client";
 
+import { memo } from "react";
 import { useRouter } from "next/navigation";
 import { ChevronDown } from "lucide-react";
 
@@ -16,7 +17,8 @@ interface IProps {
   user: Awaited<ReturnType<typeof serverClient.users.getAuthProfile>>;
 }
 
-export function UserMenu({ user }: IProps) {
+export const UserMenu = memo(_UserMenu);
+function _UserMenu({ user }: IProps) {
   const router = useRouter();
 
   return (

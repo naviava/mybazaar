@@ -4,19 +4,14 @@ import { db } from "~/lib/db";
 import { publicProcedure } from "~/server/trpc";
 
 export const getTempUser = publicProcedure
-  .input(z.string().cuid())
+  .input(z.string())
   .query(async ({ input }) => {
     const tempUserId = input;
     const tempUser = await db.tempUser.findUnique({
       where: { id: tempUserId },
     });
-    if (!tempUser) {
-      throw new TRPCError({
-        code: "NOT_FOUND",
-        message: "User not found",
-      });
-    }
+    if (!tempUser) return null;
 
-    const { hashedPassword, ...rest } = tempUser;
+    const { hashedPassword, otp, ...rest } = tempUser;
     return rest;
   });
