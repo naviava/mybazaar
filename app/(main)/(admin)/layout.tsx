@@ -13,7 +13,7 @@ export default async function AdminLayout({ children }: IProps) {
   }
 
   return (
-    <div className="flex h-full">
+    <div className="flex h-full pt-[56px]">
       <DesktopSidebar />
       {children}
     </div>
