@@ -25,13 +25,13 @@ export function SidebarContent({ handleCloseSheet }: IProps) {
       </h3>
       <div className="mt-4 space-y-4">
         {!isCollapsed && isDesktop ? (
-          <SidebarAccordion handleCloseSheet={handleCloseSheet} />
+          <SidebarAccordion />
         ) : (
           <div className="hidden xl:block">
             <SidebarHoverCards />
           </div>
         )}
-        {!isDesktop && <SidebarAccordion />}
+        {!isDesktop && <SidebarAccordion handleCloseSheet={handleCloseSheet} />}
       </div>
     </>
   );
