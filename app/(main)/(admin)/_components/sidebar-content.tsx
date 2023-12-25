@@ -17,13 +17,15 @@ export function SidebarContent() {
     <>
       <SidebarItem label="Home" href="/" icon={Home} />
       <h3 className="mt-6 px-4 py-2 font-bold uppercase text-muted-foreground">
-        {isCollapsed ? <MoreHorizontal /> : "Manage Shop"}
+        {isCollapsed && isDesktop ? <MoreHorizontal /> : "Manage Shop"}
       </h3>
       <div className="mt-4 space-y-4">
         {!isCollapsed && isDesktop ? (
           <SidebarAccordion />
         ) : (
-          <SidebarHoverCards />
+          <div className="hidden xl:block">
+            <SidebarHoverCards />
+          </div>
         )}
         {!isDesktop && <SidebarAccordion />}
       </div>

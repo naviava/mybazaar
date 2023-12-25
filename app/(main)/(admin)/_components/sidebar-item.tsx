@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Home, LucideIcon } from "lucide-react";
+import { LucideIcon } from "lucide-react";
 import { Button } from "~/components/ui/button";
 import { useMediaQuery } from "~/hooks/use-media-query";
 import { useDesktopSidebar } from "~/store/use-desktop-sidebar";
@@ -25,6 +25,7 @@ export function SidebarItem({ label, href, icon: Icon, isHoverCard }: IProps) {
       className={cn(
         "group w-full justify-start",
         isCollapsed && isDesktop && "p-2",
+        !isDesktop && "p-2",
       )}
     >
       <Link href={href} className="flex items-center">
@@ -37,6 +38,7 @@ export function SidebarItem({ label, href, icon: Icon, isHoverCard }: IProps) {
               "h-4 w-4 text-muted-foreground",
               !isCollapsed && "mr-4",
               isCollapsed && "ml-2",
+              !isDesktop && "mr-4",
             )}
           />
         )}

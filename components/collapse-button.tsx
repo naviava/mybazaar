@@ -2,8 +2,8 @@ import { ArrowLeftFromLine, ArrowRightFromLine } from "lucide-react";
 import { Button } from "~/components/ui/button";
 
 interface IProps {
-  toggleState: boolean;
-  onClickHandler: () => void;
+  toggleState?: boolean;
+  onClickHandler?: () => void;
 }
 
 export function CollapseButton({ toggleState, onClickHandler }: IProps) {
