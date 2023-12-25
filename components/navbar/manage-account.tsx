@@ -1,6 +1,7 @@
 "use client";
 
 import { memo } from "react";
+import { useIsMounted } from "~/hooks/use-is-mounted";
 
 import { Separator } from "~/components/ui/separator";
 import { AuthAndAdminOptions } from "./auth-and-admin-options";
@@ -16,6 +17,8 @@ interface IProps {
 export const ManageAccount = memo(_ManageAccount);
 function _ManageAccount({ handleClose }: IProps) {
   const { data: user } = trpc.user.getAuthProfile.useQuery();
+  const isMounted = useIsMounted();
+  if (!isMounted) return null;
 
   return (
     <>

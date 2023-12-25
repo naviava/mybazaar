@@ -1,4 +1,7 @@
+"use client";
+
 import { memo } from "react";
+import { useIsMounted } from "~/hooks/use-is-mounted";
 
 import {
   HoverCard,
@@ -15,6 +18,9 @@ interface IProps {
 
 export const DesktopUserMenu = memo(_DesktopUserMenu);
 function _DesktopUserMenu({ userName, handleTriggerClick }: IProps) {
+  const isMounted = useIsMounted();
+  if (!isMounted) return null;
+
   return (
     <HoverCard openDelay={200}>
       <HoverCardTrigger onClick={handleTriggerClick} className="cursor-pointer">

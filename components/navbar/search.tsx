@@ -1,3 +1,3 @@
 export function Search() {
-  return <div className="text-white">Search</div>;
+  return <div className="text-center text-white">Search</div>;
 }
