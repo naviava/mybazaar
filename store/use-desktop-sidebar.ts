@@ -5,7 +5,7 @@ type SidebarState = {
   toggleSidebar: () => void;
 };
 
-export const useSidebar = create<SidebarState>((set) => ({
+export const useDesktopSidebar = create<SidebarState>((set) => ({
   isCollapsed: false,
   toggleSidebar: () => set((state) => ({ isCollapsed: !state.isCollapsed })),
 }));
