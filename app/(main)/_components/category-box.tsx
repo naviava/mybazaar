@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Button } from "~/components/ui/button";
 
 interface IProps {
   label: string;
@@ -7,8 +8,10 @@ interface IProps {
 
 export function CategoryBox({ label, href }: IProps) {
   return (
-    <Link href={href} className="shrink-0 px-3 py-3 font-medium">
-      {label}
-    </Link>
+    <Button asChild variant="link" className="text-slate-200">
+      <Link href={href} className="shrink-0 font-medium">
+        {label}
+      </Link>
+    </Button>
   );
 }

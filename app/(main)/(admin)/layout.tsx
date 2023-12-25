@@ -16,9 +16,7 @@ export default async function AdminLayout({ children }: IProps) {
       <h1 className="text-xl font-bold md:text-2xl lg:text-3xl">
         Manage Your Shop
       </h1>
-      <div className="mt-2 rounded-sm border border-neutral-400 lg:mt-4">
-        {children}
-      </div>
+      <div className="mt-2 lg:mt-4">{children}</div>
     </div>
   );
 }
