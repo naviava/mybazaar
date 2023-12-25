@@ -9,7 +9,11 @@ import { SidebarHoverCards } from "./sidebar-hover-cards";
 import { SidebarAccordion } from "./sidebar-accordion";
 import { SidebarItem } from "./sidebar-item";
 
-export function SidebarContent() {
+interface IProps {
+  handleCloseSheet?: () => void;
+}
+
+export function SidebarContent({ handleCloseSheet }: IProps) {
   const { isDesktop } = useMediaQuery();
   const { isCollapsed } = useDesktopSidebar((state) => state);
 
@@ -21,7 +25,7 @@ export function SidebarContent() {
       </h3>
       <div className="mt-4 space-y-4">
         {!isCollapsed && isDesktop ? (
-          <SidebarAccordion />
+          <SidebarAccordion handleCloseSheet={handleCloseSheet} />
         ) : (
           <div className="hidden xl:block">
             <SidebarHoverCards />

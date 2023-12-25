@@ -3,7 +3,7 @@
 import { useDesktopSidebar } from "~/store/use-desktop-sidebar";
 
 import { CollapseButton } from "~/components/collapse-button";
-import { SidebarContent } from "./sidebar-content";
+import { SidebarContent } from "~/components/sidebar/sidebar-content";
 
 import { cn } from "~/lib/utils";
 

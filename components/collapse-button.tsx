@@ -1,3 +1,6 @@
+"use client";
+
+import { memo } from "react";
 import { ArrowLeftFromLine, ArrowRightFromLine } from "lucide-react";
 import { Button } from "~/components/ui/button";
 
@@ -6,7 +9,8 @@ interface IProps {
   onClickHandler?: () => void;
 }
 
-export function CollapseButton({ toggleState, onClickHandler }: IProps) {
+export const CollapseButton = memo(_CollapseButton);
+function _CollapseButton({ toggleState, onClickHandler }: IProps) {
   return (
     <Button
       size="icon"

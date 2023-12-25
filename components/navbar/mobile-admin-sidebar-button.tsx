@@ -1,13 +1,24 @@
 "use client";
 
-import { Sheet, SheetContent, SheetTrigger } from "~/components/ui/sheet";
-import { Button } from "../ui/button";
 import { ArrowRightFromLine } from "lucide-react";
-import { SidebarContent } from "~/app/(main)/(admin)/_components/sidebar-content";
 
-interface IProps {}
+import { Button } from "~/components/ui/button";
+import { SidebarContent } from "~/components/sidebar/sidebar-content";
+import {
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetTrigger,
+} from "~/components/ui/sheet";
+import { ElementRef, useCallback, useRef } from "react";
 
-export function MobileAdminSidebarButton({}: IProps) {
+export function MobileAdminSidebarButton() {
+  const closeRef = useRef<ElementRef<"button">>(null);
+
+  const handleCloseSheet = useCallback(() => {
+    closeRef.current && closeRef.current.click();
+  }, []);
+
   return (
     <Sheet>
       <SheetTrigger>
@@ -17,8 +28,9 @@ export function MobileAdminSidebarButton({}: IProps) {
       </SheetTrigger>
       <SheetContent side="left">
         <div className="pt-6">
-          <SidebarContent />
+          <SidebarContent handleCloseSheet={handleCloseSheet} />
         </div>
+        <SheetClose ref={closeRef} />
       </SheetContent>
     </Sheet>
   );

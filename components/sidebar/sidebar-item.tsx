@@ -1,10 +1,14 @@
 "use client";
 
+import { memo } from "react";
 import Link from "next/link";
+
 import { LucideIcon } from "lucide-react";
-import { Button } from "~/components/ui/button";
+
 import { useMediaQuery } from "~/hooks/use-media-query";
 import { useDesktopSidebar } from "~/store/use-desktop-sidebar";
+
+import { Button } from "~/components/ui/button";
 import { cn } from "~/lib/utils";
 
 interface IProps {
@@ -12,9 +16,17 @@ interface IProps {
   href: string;
   icon?: LucideIcon;
   isHoverCard?: boolean;
+  handleClick?: () => void;
 }
 
-export function SidebarItem({ label, href, icon: Icon, isHoverCard }: IProps) {
+export const SidebarItem = memo(_SidebarItem);
+function _SidebarItem({
+  label,
+  href,
+  icon: Icon,
+  isHoverCard,
+  handleClick,
+}: IProps) {
   const { isDesktop } = useMediaQuery();
   const { isCollapsed } = useDesktopSidebar((state) => state);
 
@@ -22,6 +34,7 @@ export function SidebarItem({ label, href, icon: Icon, isHoverCard }: IProps) {
     <Button
       asChild
       variant="ghost"
+      onClick={handleClick}
       className={cn(
         "group w-full justify-start",
         isCollapsed && isDesktop && "p-2",

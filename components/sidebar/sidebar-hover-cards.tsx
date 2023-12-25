@@ -3,9 +3,7 @@ import { CassetteTape, ShoppingCart, Truck, Users } from "lucide-react";
 import { SidebarHoverItem } from "./sidebar-hover-item";
 import { SidebarItem } from "./sidebar-item";
 
-interface IProps {}
-
-export function SidebarHoverCards({}: IProps) {
+export function SidebarHoverCards() {
   return (
     <div className="mt-4 flex flex-col gap-y-4">
       <SidebarHoverItem icon={ShoppingCart}>

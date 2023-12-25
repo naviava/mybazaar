@@ -1,5 +1,4 @@
 import { UserMenu } from "./user-menu";
-import { serverClient } from "~/app/_trpc/server-client";
 
 export function AccountActions() {
   return (
