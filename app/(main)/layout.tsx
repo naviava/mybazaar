@@ -7,7 +7,7 @@ interface IProps {
 
 export default function HomeLayout({ children }: IProps) {
   return (
-    <main>
+    <main className="h-full">
       <Navbar />
       <CategoryNav />
       {children}

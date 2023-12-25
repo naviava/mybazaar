@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
+import { DesktopSidebar } from "./_components/desktop-sidebar";
 import { serverClient } from "~/app/_trpc/server-client";
-import { ManageOptions } from "./_components/manage-options";
 
 interface IProps {
   children: React.ReactNode;
@@ -13,14 +13,9 @@ export default async function AdminLayout({ children }: IProps) {
   }
 
   return (
-    <div className="mx-auto max-w-7xl p-4 lg:py-6">
-      <h1 className="text-xl font-bold md:text-2xl lg:text-3xl">
-        Manage Your Shop
-      </h1>
-      <div className="mt-2 lg:mt-4">
-        <ManageOptions />
-        {children}
-      </div>
+    <div className="flex h-full">
+      <DesktopSidebar />
+      {children}
     </div>
   );
 }
