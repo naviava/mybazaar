@@ -7,9 +7,7 @@ import { SidebarContent } from "./sidebar-content";
 
 import { cn } from "~/lib/utils";
 
-interface IProps {}
-
-export function DesktopSidebar({}: IProps) {
+export function DesktopSidebar() {
   const { isCollapsed, toggleSidebar } = useDesktopSidebar((state) => state);
 
   return (

@@ -11,9 +11,10 @@ interface IProps {
   label: string;
   href: string;
   icon?: LucideIcon;
+  isHoverCard?: boolean;
 }
 
-export function SidebarItem({ label, href, icon: Icon }: IProps) {
+export function SidebarItem({ label, href, icon: Icon, isHoverCard }: IProps) {
   const { isDesktop } = useMediaQuery();
   const { isCollapsed } = useDesktopSidebar((state) => state);
 
@@ -23,11 +24,11 @@ export function SidebarItem({ label, href, icon: Icon }: IProps) {
       variant="ghost"
       className={cn(
         "group w-full justify-start",
-        isCollapsed && isDesktop && "p-1",
+        isCollapsed && isDesktop && "p-2",
       )}
     >
       <Link href={href} className="flex items-center">
-        {isCollapsed && isDesktop && (
+        {isCollapsed && isDesktop && !isHoverCard && (
           <div className="h-1.5 w-1.5 rounded-full bg-muted-foreground group-hover:bg-blue-600" />
         )}
         {Icon && (
@@ -39,7 +40,12 @@ export function SidebarItem({ label, href, icon: Icon }: IProps) {
             )}
           />
         )}
-        <span className={cn("text-lg", isDesktop && isCollapsed && "hidden")}>
+        <span
+          className={cn(
+            "text-lg text-muted-foreground",
+            isDesktop && isCollapsed && !isHoverCard && "hidden",
+          )}
+        >
           {label}
         </span>
       </Link>

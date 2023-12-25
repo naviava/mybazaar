@@ -3,9 +3,7 @@ import { CassetteTape, ShoppingCart, Truck, Users } from "lucide-react";
 import { SidebarAccordionItem } from "./sidebar-accordion-item";
 import { SidebarItem } from "./sidebar-item";
 
-interface IProps {}
-
-export function SidebarAccordion({}: IProps) {
+export function SidebarAccordion() {
   return (
     <>
       <SidebarAccordionItem label="Products" icon={ShoppingCart}>
