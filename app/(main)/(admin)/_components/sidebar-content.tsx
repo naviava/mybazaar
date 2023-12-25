@@ -1,20 +1,17 @@
 "use client";
 
 import { Home } from "lucide-react";
-import Link from "next/link";
-import { Button } from "~/components/ui/button";
+import { SidebarItem } from "./sidebar-item";
 
 interface IProps {}
 
 export function SidebarContent({}: IProps) {
   return (
     <>
-      <Button asChild variant="ghost" className="w-full justify-start">
-        <Link href="/" className="flex items-center">
-          <Home className="mr-2 h-4 w-4 text-muted-foreground" />
-          <span>Home</span>
-        </Link>
-      </Button>
+      <SidebarItem label="Home" href="/" icon={Home} />
+      <h3 className="mt-6 px-4 font-bold uppercase text-muted-foreground">
+        Manage Shop
+      </h3>
     </>
   );
 }
