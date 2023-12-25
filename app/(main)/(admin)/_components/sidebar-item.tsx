@@ -10,7 +10,7 @@ import { cn } from "~/lib/utils";
 interface IProps {
   label: string;
   href: string;
-  icon: LucideIcon;
+  icon?: LucideIcon;
 }
 
 export function SidebarItem({ label, href, icon: Icon }: IProps) {
@@ -30,13 +30,15 @@ export function SidebarItem({ label, href, icon: Icon }: IProps) {
         {isCollapsed && isDesktop && (
           <div className="h-1.5 w-1.5 rounded-full bg-muted-foreground group-hover:bg-blue-600" />
         )}
-        <Icon
-          className={cn(
-            "h-4 w-4 text-muted-foreground",
-            !isCollapsed && "mr-4",
-            isCollapsed && "ml-2",
-          )}
-        />
+        {Icon && (
+          <Icon
+            className={cn(
+              "h-4 w-4 text-muted-foreground",
+              !isCollapsed && "mr-4",
+              isCollapsed && "ml-2",
+            )}
+          />
+        )}
         <span className={cn("text-lg", isDesktop && isCollapsed && "hidden")}>
           {label}
         </span>

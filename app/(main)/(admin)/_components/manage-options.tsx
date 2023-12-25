@@ -4,8 +4,6 @@ import { MdShoppingCart } from "react-icons/md";
 import { BiSolidCategoryAlt } from "react-icons/bi";
 import { TbSquareRoundedPlusFilled } from "react-icons/tb";
 
-import { ManageOptionItem } from "./manage-option-item";
-
 const MANAGE_OPTIONS = [
   {
     label: "Add Product",
@@ -40,17 +38,5 @@ const MANAGE_OPTIONS = [
 ];
 
 export function ManageOptions() {
-  return (
-    <ul className="flex gap-x-2 overflow-x-auto py-2">
-      {MANAGE_OPTIONS.map((item) => (
-        <ManageOptionItem
-          key={item.href}
-          label={item.label}
-          href={item.href}
-          icon={item.icon}
-          color={item.color}
-        />
-      ))}
-    </ul>
-  );
+  return <ul className="flex gap-x-2 overflow-x-auto py-2"></ul>;
 }
