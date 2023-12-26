@@ -1,3 +1,5 @@
+"use client";
+
 interface IProps {}
 
 export function NewProductForm({}: IProps) {
