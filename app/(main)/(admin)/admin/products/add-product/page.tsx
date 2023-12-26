@@ -1,6 +1,7 @@
 import { PageHeading } from "~/components/page-heading";
 import { AdminPageWrapper } from "~/components/admin-page-wrapper";
 import { NewProductForm } from "../_components/new-product-form";
+import { Suspense } from "react";
 
 const BREADCRUMBS = [
   {
