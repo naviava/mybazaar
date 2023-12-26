@@ -6,6 +6,7 @@ import {
   FormLabel,
   FormMessage,
 } from "~/components/ui/form";
+import { Switch } from "~/components/ui/switch";
 import { ProductFormSchemaType } from "~/utils/form-inputs/products/product-form-schema";
 
 interface IProps {
@@ -28,11 +29,17 @@ export function ProductFormSwitch({
       control={form.control}
       name={fieldName}
       render={({ field }) => (
-        <FormItem>
+        <FormItem className="flex items-center justify-between">
           {label && (
             <FormLabel className="text-base font-normal">{label}</FormLabel>
           )}
-          <FormControl></FormControl>
+          <FormControl>
+            <Switch
+              checked={field.value}
+              onCheckedChange={field.onChange}
+              className="data-[state=checked]:bg-amz-yellow"
+            />
+          </FormControl>
           {description && <FormDescription>{description}</FormDescription>}
           <FormMessage />
         </FormItem>
