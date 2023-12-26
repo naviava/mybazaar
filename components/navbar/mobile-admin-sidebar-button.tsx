@@ -9,7 +9,6 @@ import {
   SheetContent,
   SheetTrigger,
 } from "~/components/ui/sheet";
-import { Button } from "~/components/ui/button";
 import { SidebarContent } from "~/components/sidebar/sidebar-content";
 
 export function MobileAdminSidebarButton() {
@@ -18,18 +17,20 @@ export function MobileAdminSidebarButton() {
   const handleCloseSheet = useCallback(() => closeRef.current?.click(), []);
 
   return (
-    <Sheet>
-      <SheetTrigger onClick={handleCloseSheet}>
-        <Button variant="ghost" className="hover:bg-slate-900">
-          <ArrowRightFromLine className="h-5 w-5 text-neutral-50" />
-        </Button>
-      </SheetTrigger>
-      <SheetContent side="left">
-        <div className="pt-6">
-          <SidebarContent handleCloseSheet={handleCloseSheet} />
-        </div>
-        <SheetClose ref={closeRef} className="hidden" />
-      </SheetContent>
-    </Sheet>
+    <div className="xl:hidden">
+      <Sheet>
+        <SheetTrigger onClick={handleCloseSheet}>
+          <div role="button" className="m-auto p-2">
+            <ArrowRightFromLine className="h-5 w-5 text-neutral-50" />
+          </div>
+        </SheetTrigger>
+        <SheetContent side="left" className="max-w-xs">
+          <div className="pt-6">
+            <SidebarContent handleCloseSheet={handleCloseSheet} />
+          </div>
+          <SheetClose ref={closeRef} className="hidden" />
+        </SheetContent>
+      </Sheet>
+    </div>
   );
 }

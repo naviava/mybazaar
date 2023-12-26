@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
-import { DesktopSidebar } from "./_components/desktop-sidebar";
+import { DesktopSidebar } from "~/components/sidebar/desktop-sidebar";
 import { serverClient } from "~/app/_trpc/server-client";
 
 interface IProps {

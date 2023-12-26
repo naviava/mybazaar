@@ -17,7 +17,7 @@ export function Navbar() {
       <div className="flex items-center gap-x-2">
         <Logo height={50} width={50} />
         {(user?.role === "ADMIN" || user?.role === "SUPER_ADMIN") &&
-          pathname.includes("/admin") && <MobileAdminSidebarButton />}
+          pathname.startsWith("/admin") && <MobileAdminSidebarButton />}
       </div>
       <div className="hidden max-w-2xl flex-1 md:block">
         <Search />

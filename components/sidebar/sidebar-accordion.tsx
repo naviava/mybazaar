@@ -18,19 +18,19 @@ export function SidebarAccordion({ handleCloseSheet }: IProps) {
         />
         <SidebarItem
           label="Manage Products"
-          href="/admin/products/manage-products"
+          href="/admin/products"
           handleClick={handleCloseSheet}
         />
       </SidebarAccordionItem>
       <SidebarAccordionItem label="Categories" icon={CassetteTape}>
         <SidebarItem
           label="Add Category"
-          href="/admin/products/add-product"
+          href="/admin/categories/add-category"
           handleClick={handleCloseSheet}
         />
         <SidebarItem
           label="Manage Categories"
-          href="/admin/products/manage-products"
+          href="/admin/categories"
           handleClick={handleCloseSheet}
         />
       </SidebarAccordionItem>

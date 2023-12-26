@@ -15,19 +15,19 @@ export function SidebarHoverCards() {
         <SidebarItem
           isHoverCard
           label="Manage Products"
-          href="/admin/products/manage-products"
+          href="/admin/products"
         />
       </SidebarHoverItem>
       <SidebarHoverItem icon={CassetteTape}>
         <SidebarItem
           isHoverCard
           label="Add Category"
-          href="/admin/products/add-product"
+          href="/admin/categories/add-category"
         />
         <SidebarItem
           isHoverCard
           label="Manage Categories"
-          href="/admin/products/manage-products"
+          href="/admin/categories"
         />
       </SidebarHoverItem>
       <SidebarHoverItem icon={Truck}>
