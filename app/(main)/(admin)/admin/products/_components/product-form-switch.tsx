@@ -31,12 +31,14 @@ export function ProductFormSwitch({
       render={({ field }) => (
         <FormItem className="flex items-center justify-between">
           {label && (
+            // TODO: Add information hover tooltip.
             <FormLabel className="text-base font-normal">{label}</FormLabel>
           )}
           <FormControl>
             <Switch
               checked={field.value}
               onCheckedChange={field.onChange}
+              disabled={disabled}
               className="data-[state=checked]:bg-amz-yellow"
             />
           </FormControl>

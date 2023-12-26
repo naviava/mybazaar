@@ -13,8 +13,8 @@ interface IProps {
   form: ProductFormSchemaType;
 }
 
-export const PriceCard = memo(_PriceCard);
-function _PriceCard({ form }: IProps) {
+export const PricingAvailabilityCard = memo(_PricingAvailabilityCard);
+function _PricingAvailabilityCard({ form }: IProps) {
   return (
     <AdminFormWrapper title="Pricing and Availability">
       <div className="mt-6 space-y-6">

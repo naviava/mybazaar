@@ -1,10 +1,12 @@
 "use client";
 
+import { memo } from "react";
+
+import { useIsMounted } from "~/hooks/use-is-mounted";
 import { useMediaQuery } from "~/hooks/use-media-query";
 import { useDesktopSidebar } from "~/store/use-desktop-sidebar";
 
 import { cn } from "~/lib/utils";
-import { memo } from "react";
 
 interface IProps {
   children: React.ReactNode;
@@ -12,9 +14,11 @@ interface IProps {
 
 export const AdminPageWrapper = memo(_AdminPageWrapper);
 function _AdminPageWrapper({ children }: IProps) {
+  const isMounted = useIsMounted();
   const { isDesktop } = useMediaQuery();
   const { isCollapsed } = useDesktopSidebar();
 
+  if (!isMounted) return null;
   return (
     <div
       className={cn(

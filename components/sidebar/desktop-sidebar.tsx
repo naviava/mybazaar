@@ -6,10 +6,13 @@ import { CollapseButton } from "~/components/collapse-button";
 import { SidebarContent } from "~/components/sidebar/sidebar-content";
 
 import { cn } from "~/lib/utils";
+import { useIsMounted } from "~/hooks/use-is-mounted";
 
 export function DesktopSidebar() {
+  const isMounted = useIsMounted();
   const { isCollapsed, toggleSidebar } = useDesktopSidebar((state) => state);
 
+  if (!isMounted) return null;
   return (
     <article
       className={cn(

@@ -2,6 +2,7 @@
 
 import { Home, MoreHorizontal } from "lucide-react";
 
+import { useIsMounted } from "~/hooks/use-is-mounted";
 import { useMediaQuery } from "~/hooks/use-media-query";
 import { useDesktopSidebar } from "~/store/use-desktop-sidebar";
 
@@ -14,9 +15,11 @@ interface IProps {
 }
 
 export function SidebarContent({ handleCloseSheet }: IProps) {
+  const isMounted = useIsMounted();
   const { isDesktop } = useMediaQuery();
   const { isCollapsed } = useDesktopSidebar((state) => state);
 
+  // if (!isMounted) return null;
   return (
     <>
       <SidebarItem label="Home" href="/" icon={Home} />

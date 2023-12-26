@@ -1,6 +1,7 @@
 "use client";
 
-import { memo } from "react";
+import { parse } from "path";
+import { memo, useEffect } from "react";
 
 import {
   FormControl,
@@ -19,6 +20,9 @@ interface IProps {
   label: string;
   placeholder?: string;
   description?: string;
+  min?: number;
+  max?: number;
+  step?: number;
   disabled?: boolean;
   type?: "text" | "number";
   fieldName: "name" | "price" | "discountPct" | "stockCount";
@@ -30,10 +34,22 @@ function _ProductFormInput({
   label,
   placeholder,
   description,
+  min,
+  max,
+  step,
   fieldName,
   type = "text",
   disabled = false,
 }: IProps) {
+  const isNumber = type === "number";
+  const fieldValue = form.watch(fieldName);
+
+  useEffect(() => {
+    if (isNumber && typeof fieldValue === "string") {
+      form.setValue(fieldName, parseFloat(fieldValue));
+    }
+  }, [fieldName, type, form, fieldValue, isNumber]);
+
   return (
     <FormField
       control={form.control}
@@ -44,6 +60,7 @@ function _ProductFormInput({
           <FormControl>
             <Input
               {...field}
+              {...(type === "number" && { min, max, step })}
               type={type}
               disabled={disabled}
               placeholder={placeholder ? placeholder : ""}
