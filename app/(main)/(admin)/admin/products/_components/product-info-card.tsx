@@ -1,14 +1,18 @@
+"use client";
+
 import { AdminFormWrapper } from "~/components/admin-form-wrapper";
 import { ProductFormInput } from "./product-form-input";
 import { DisabledInput } from "./disabled-input";
 
 import { ProductFormSchemaType } from "~/utils/form-inputs/products/product-form-schema";
+import { memo } from "react";
 
 interface IProps {
   form: ProductFormSchemaType;
 }
 
-export function ProductInfoCard({ form }: IProps) {
+export const ProductInfoCard = memo(_ProductInfoCard);
+function _ProductInfoCard({ form }: IProps) {
   const isLoading = false;
 
   return (

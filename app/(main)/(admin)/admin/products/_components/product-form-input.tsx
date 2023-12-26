@@ -1,3 +1,7 @@
+"use client";
+
+import { memo } from "react";
+
 import {
   FormControl,
   FormDescription,
@@ -7,6 +11,7 @@ import {
   FormMessage,
 } from "~/components/ui/form";
 import { Input } from "~/components/ui/input";
+
 import { ProductFormSchemaType } from "~/utils/form-inputs/products/product-form-schema";
 
 interface IProps {
@@ -19,7 +24,8 @@ interface IProps {
   fieldName: "name" | "price" | "discountPct" | "stockCount";
 }
 
-export function ProductFormInput({
+export const ProductFormInput = memo(_ProductFormInput);
+function _ProductFormInput({
   form,
   label,
   placeholder,

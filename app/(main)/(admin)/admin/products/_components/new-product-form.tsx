@@ -10,12 +10,11 @@ import { useIsMounted } from "~/hooks/use-is-mounted";
 
 import { Form } from "~/components/ui/form";
 import { ProductInfoCard } from "./product-info-card";
+import { PriceCard } from "./price-card";
 
 import { productFormSchema } from "~/utils/form-inputs/products/product-form-schema";
 
-interface IProps {}
-
-export function NewProductForm({}: IProps) {
+export function NewProductForm() {
   const inMounted = useIsMounted();
 
   const form = useForm<z.infer<typeof productFormSchema>>({
@@ -40,11 +39,17 @@ export function NewProductForm({}: IProps) {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="grid grid-cols-3">
-        <div className="col-span-3 lg:col-span-2">
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="grid grid-cols-3 gap-6"
+      >
+        <div className="col-span-3 space-y-6 lg:col-span-2">
           <ProductInfoCard form={form} />
+          <div>Image Upload Widget</div>
         </div>
-        <div className="col-span-3 lg:col-span-1">Grid 2</div>
+        <div className="col-span-3 lg:col-span-1">
+          <PriceCard form={form} />
+        </div>
       </form>
     </Form>
   );
