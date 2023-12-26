@@ -32,9 +32,12 @@ export function NewProductForm() {
     },
   });
 
-  const onSubmit = useCallback((values: z.infer<typeof productFormSchema>) => {
-    console.log(values);
-  }, []);
+  const onSubmit = useCallback(
+    async (values: z.infer<typeof productFormSchema>) => {
+      console.log(values);
+    },
+    [],
+  );
 
   if (!inMounted) return null;
   return (
