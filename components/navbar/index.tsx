@@ -1,16 +1,22 @@
 "use client";
 
+import { usePathname } from "next/navigation";
+import { useIsMounted } from "~/hooks/use-is-mounted";
+
 import { Logo } from "~/components/logo";
 import { MobileAdminSidebarButton } from "./mobile-admin-sidebar-button";
 import { AccountActions } from "./account-actions";
 import { Search } from "./search";
 
 import { trpc } from "~/app/_trpc/client";
-import { usePathname } from "next/navigation";
 
 export function Navbar() {
+  const isMounted = useIsMounted();
   const pathname = usePathname();
   const { data: user } = trpc.user.getAuthProfile.useQuery();
+
+  if (!isMounted)
+    return <div className="fixed top-0 h-14 w-full bg-slate-900" />;
 
   return (
     <nav className="fixed top-0 flex h-14 w-full items-center justify-between gap-x-8 bg-slate-900 px-2 md:px-4 lg:px-6">
