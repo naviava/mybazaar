@@ -96,6 +96,7 @@ model Product {
   price        Float
   discountPct  Float          @default(0)
   stockCount   Int            @default(0)
+  isAvailable  Boolean        @default(false)
   categorySlug String
   category     Category       @relation(fields: [categorySlug], references: [slug])
   images       ProductImage[]
