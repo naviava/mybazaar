@@ -29,7 +29,7 @@ function _BannerAndActionButtons({
           </Link>
         </Button>
       )}
-      <Button type="submit" variant="amazon" size="sm">
+      <Button type="submit" variant="amazon" size="sm" className="shadow-md">
         {actionLabel}
       </Button>
     </div>

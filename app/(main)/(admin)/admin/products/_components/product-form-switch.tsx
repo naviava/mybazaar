@@ -39,7 +39,7 @@ export function ProductFormSwitch({
               checked={field.value}
               onCheckedChange={field.onChange}
               disabled={disabled}
-              className="data-[state=checked]:bg-amz-yellow"
+              className="data-[state=checked]:bg-sky-600"
             />
           </FormControl>
           {description && <FormDescription>{description}</FormDescription>}

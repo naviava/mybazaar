@@ -22,7 +22,7 @@ function _AdminPageWrapper({ children }: IProps) {
   return (
     <div
       className={cn(
-        "w-full transition-all duration-300",
+        "mx-auto w-full max-w-[90rem] transition-all duration-300",
         isDesktop && (isCollapsed ? "pl-24" : "pl-72"),
       )}
     >

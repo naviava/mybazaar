@@ -39,7 +39,7 @@ export function NewProductForm() {
   if (!inMounted) return null;
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
         <BannerAndActionButtons
           actionLabel="Create Product"
           secondaryActionLabel="Cancel"

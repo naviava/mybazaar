@@ -7,6 +7,7 @@ import { ProductFormInput } from "./product-form-input";
 import { DisabledInput } from "./disabled-input";
 
 import { ProductFormSchemaType } from "~/utils/form-inputs/products/product-form-schema";
+import { CategoryCombobox } from "~/components/category-combobox";
 
 interface IProps {
   form: ProductFormSchemaType;
@@ -26,14 +27,16 @@ function _ProductInfoCard({ form }: IProps) {
           fieldName="name"
           disabled={isLoading}
         />
-        <div className="space-y-6 md:flex md:gap-x-6 md:space-y-0">
+        <div className="gap-x-6 space-y-6 md:flex md:space-y-0">
           <div className="flex-1">
             <DisabledInput label="SKU" placeholder="Not yet generated" />
           </div>
           {/* TODO: Add category combobox. */}
-          <div className="flex-1">Category Combobox</div>
+          <div className="flex-1">
+            <CategoryCombobox form={form} />
+          </div>
         </div>
-        <div className="space-y-6 md:flex md:gap-x-6 md:space-y-0">
+        <div className="flex gap-x-6">
           <div className="flex-1">
             <ProductFormInput
               form={form}
