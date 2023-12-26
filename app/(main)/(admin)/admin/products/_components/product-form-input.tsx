@@ -15,6 +15,7 @@ interface IProps {
   placeholder?: string;
   description?: string;
   disabled?: boolean;
+  type?: "text" | "number";
   fieldName: "name" | "price" | "discountPct" | "stockCount";
 }
 
@@ -23,8 +24,9 @@ export function ProductFormInput({
   label,
   placeholder,
   description,
-  disabled = false,
   fieldName,
+  type = "text",
+  disabled = false,
 }: IProps) {
   return (
     <FormField
@@ -32,10 +34,11 @@ export function ProductFormInput({
       name={fieldName}
       render={({ field }) => (
         <FormItem>
-          <FormLabel className="text-base">{label}</FormLabel>
+          <FormLabel className="text-base font-normal">{label}</FormLabel>
           <FormControl>
             <Input
               {...field}
+              type={type}
               disabled={disabled}
               placeholder={placeholder ? placeholder : ""}
               className="text-base"

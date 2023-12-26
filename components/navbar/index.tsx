@@ -24,7 +24,6 @@ export function Navbar() {
         {(user?.role === "ADMIN" || user?.role === "SUPER_ADMIN") &&
           pathname.startsWith("/admin") && <MobileAdminSidebarButton />}
       </div>
-      z
       <div className="hidden max-w-2xl flex-1 md:block">
         <Search />
       </div>
