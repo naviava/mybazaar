@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect } from "react";
+import { useCallback } from "react";
 
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";

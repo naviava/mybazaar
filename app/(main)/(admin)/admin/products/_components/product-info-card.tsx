@@ -1,11 +1,12 @@
 "use client";
 
+import { memo } from "react";
+
 import { AdminFormWrapper } from "~/components/admin-form-wrapper";
 import { ProductFormInput } from "./product-form-input";
 import { DisabledInput } from "./disabled-input";
 
 import { ProductFormSchemaType } from "~/utils/form-inputs/products/product-form-schema";
-import { memo, useEffect } from "react";
 
 interface IProps {
   form: ProductFormSchemaType;

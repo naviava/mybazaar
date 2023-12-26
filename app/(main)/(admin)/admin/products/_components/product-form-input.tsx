@@ -1,7 +1,6 @@
 "use client";
 
-import { parse } from "path";
-import { memo, useEffect } from "react";
+import { memo } from "react";
 
 import {
   FormControl,
@@ -41,15 +40,6 @@ function _ProductFormInput({
   type = "text",
   disabled = false,
 }: IProps) {
-  const isNumber = type === "number";
-  const fieldValue = form.watch(fieldName);
-
-  useEffect(() => {
-    if (isNumber && typeof fieldValue === "string") {
-      form.setValue(fieldName, parseFloat(fieldValue));
-    }
-  }, [fieldName, type, form, fieldValue, isNumber]);
-
   return (
     <FormField
       control={form.control}

@@ -6,11 +6,13 @@ export const productFormSchema = z.object({
     .string()
     .min(1, { message: "Product name is required" })
     .max(255, { message: "Product name is too long" }),
-  price: z.number().min(0.01, { message: "Price must be greater than 0" }),
+  price: z.coerce
+    .number()
+    .min(0.01, { message: "Price must be greater than 0" }),
   categorySlug: z.string(),
   description: z.string().optional(),
-  discountPct: z.number().optional(),
-  stockCount: z.number().optional(),
+  discountPct: z.coerce.number().optional(),
+  stockCount: z.coerce.number().optional(),
   isAvailable: z.boolean().optional(),
   images: z.array(z.string()).optional(),
 });
