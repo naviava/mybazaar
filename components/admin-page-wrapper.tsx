@@ -4,12 +4,14 @@ import { useMediaQuery } from "~/hooks/use-media-query";
 import { useDesktopSidebar } from "~/store/use-desktop-sidebar";
 
 import { cn } from "~/lib/utils";
+import { memo } from "react";
 
 interface IProps {
   children: React.ReactNode;
 }
 
-export function AdminPageWrapper({ children }: IProps) {
+export const AdminPageWrapper = memo(_AdminPageWrapper);
+function _AdminPageWrapper({ children }: IProps) {
   const { isDesktop } = useMediaQuery();
   const { isCollapsed } = useDesktopSidebar();
 
