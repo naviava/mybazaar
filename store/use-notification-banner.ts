@@ -5,13 +5,22 @@ type BannerType = "success" | "error" | "warning" | "info" | "hidden";
 type SidebarState = {
   message: string;
   type: BannerType;
-  showBanner: (message: string, type: BannerType) => void;
+  showBanner: ({
+    message,
+    type,
+  }: {
+    message: string;
+    type: BannerType;
+  }) => void;
   hideBanner: () => void;
 };
 
 export const useNotificationBanner = create<SidebarState>((set) => ({
   type: "hidden",
   message: "",
-  showBanner: (message: string, type: BannerType) => set({ message, type }),
+  showBanner: ({ message, type }) => {
+    set({ message, type });
+    setTimeout(() => set({ message: "", type: "hidden" }), 10000);
+  },
   hideBanner: () => set({ message: "", type: "hidden" }),
 }));

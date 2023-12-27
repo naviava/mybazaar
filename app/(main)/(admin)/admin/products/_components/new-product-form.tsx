@@ -9,6 +9,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 import { useForm } from "react-hook-form";
 import { useIsMounted } from "~/hooks/use-is-mounted";
+import { useNotificationBanner } from "~/store/use-notification-banner";
 
 import { Form } from "~/components/ui/form";
 import { NotificationBanner } from "~/components/notification-banner";
@@ -22,6 +23,7 @@ import { productFormSchema } from "~/utils/form-inputs/products/product-form-sch
 export function NewProductForm() {
   const router = useRouter();
   const inMounted = useIsMounted();
+  const { showBanner } = useNotificationBanner((state) => state);
 
   const form = useForm<z.infer<typeof productFormSchema>>({
     resolver: zodResolver(productFormSchema),
@@ -39,10 +41,17 @@ export function NewProductForm() {
 
   const { mutate: handleCreateProduct, isLoading } =
     trpc.product.createProduct.useMutation({
-      onError: ({ message }) => toast.error(message),
+      onError: ({ message }) =>
+        showBanner({
+          type: "error",
+          message,
+        }),
       onSuccess: (data) => {
-        toast.success("Product created successfully");
-        console.log(data);
+        router.push(`/admin/products/${data.id}`);
+        showBanner({
+          type: "success",
+          message: "Product created successfully",
+        });
       },
     });
 
@@ -61,6 +70,7 @@ export function NewProductForm() {
           actionLabel="Create Product"
           secondaryActionLabel="Cancel"
           secondaryActionHref="/admin/products"
+          disabled={isLoading}
         >
           <NotificationBanner />
         </BannerAndActionButtons>

@@ -1,16 +1,12 @@
 "use client";
 
-import { CheckCircle, Info, X, XCircle } from "lucide-react";
+import { AlertTriangle, CheckCircle, Info, X, XCircle } from "lucide-react";
 
 import { cn } from "~/lib/utils";
 import { useNotificationBanner } from "~/store/use-notification-banner";
 
-interface IProps {}
-
-export function NotificationBanner({}: IProps) {
-  const { message, type, showBanner, hideBanner } = useNotificationBanner(
-    (state) => state,
-  );
+export function NotificationBanner() {
+  const { message, type, hideBanner } = useNotificationBanner((state) => state);
 
   return (
     <div
@@ -35,7 +31,7 @@ export function NotificationBanner({}: IProps) {
         {type === "success" && <CheckCircle className="mr-2 h-4 w-4" />}
         {type === "error" && <XCircle className="mr-2 h-4 w-4" />}
         {type === "info" && <Info className="mr-2 h-4 w-4" />}
-        {type === "warning" && <Info className="mr-2 h-4 w-4" />}
+        {type === "warning" && <AlertTriangle className="mr-2 h-4 w-4" />}
         <span className="text-sm">{message}</span>
       </div>
       <X onClick={hideBanner} className="h-4 w-4 cursor-pointer" />
