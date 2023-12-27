@@ -14,7 +14,6 @@ export const productFormSchema = z.object({
   discountPct: z.coerce.number().optional(),
   stockCount: z.coerce.number().optional(),
   isAvailable: z.boolean(),
-  images: z.array(z.string()).optional(),
 });
 
 export type ProductFormSchemaType = UseFormReturn<{
@@ -25,5 +24,4 @@ export type ProductFormSchemaType = UseFormReturn<{
   description?: string;
   discountPct?: number;
   stockCount?: number;
-  images?: string[];
 }>;

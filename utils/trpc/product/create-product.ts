@@ -20,7 +20,6 @@ export const createProduct = adminProcedure
       discountPct: z.coerce.number().optional(),
       stockCount: z.coerce.number().optional(),
       isAvailable: z.boolean(),
-      images: z.array(z.string()).optional(),
     }),
   )
   .mutation(async ({ ctx, input }) => {
@@ -41,7 +40,6 @@ export const createProduct = adminProcedure
       discountPct,
       stockCount,
       isAvailable,
-      images,
     } = input;
 
     const categoryExists = await db.category.findFirst({
@@ -74,17 +72,9 @@ export const createProduct = adminProcedure
         discountPct: discountPct || 0,
         stockCount: stockCount || 0,
         isAvailable,
-        images: !!images?.length
-          ? {
-              createMany: {
-                data: images?.map((image) => ({ imageUrl: image })),
-              },
-            }
-          : undefined,
       },
       include: {
         category: true,
-        images: true,
       },
     });
     return newProduct;

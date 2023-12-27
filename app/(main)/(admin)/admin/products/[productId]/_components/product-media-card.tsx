@@ -1,54 +1,32 @@
 "use client";
 
-import Dropzone, { useDropzone } from "react-dropzone";
-import { ProductFormSchemaType } from "~/utils/form-inputs/products/product-form-schema";
-
-import { AdminFormWrapper } from "~/components/admin-form-wrapper";
-import { FormControl, FormField, FormItem } from "~/components/ui/form";
 import { useCallback, useEffect, useState } from "react";
-import Image from "next/image";
-import { toast } from "sonner";
+
+import { v4 as uuid } from "uuid";
+import { useDropzone } from "react-dropzone";
+
 import { Button } from "~/components/ui/button";
+import { AdminFormWrapper } from "~/components/admin-form-wrapper";
+import { uploadToS3 } from "~/lib/s3-client";
+import { trpc } from "~/app/_trpc/client";
 
 interface IProps {
-  form: ProductFormSchemaType;
   productId: string;
-  fieldName: "images";
-  type?: "file";
-  disabled?: boolean;
 }
 
-export function ProductMediaCard({
-  form,
-  fieldName,
-  productId,
-  disabled = false,
-  type = "file",
-}: IProps) {
+export function ProductMediaCard({ productId }: IProps) {
   const [files, setFiles] = useState<File[]>([]);
   const [imageUrls, setImageUrls] = useState<string[]>([]);
 
-  const onDrop = useCallback(
-    (acceptedFiles: File[]) => {
-      if (files.length <= 4) {
-        acceptedFiles.forEach((file) => {
-          const reader = new FileReader();
+  const onDrop = useCallback((acceptedFiles: File[]) => {
+    acceptedFiles.forEach((file) => {
+      const reader = new FileReader();
 
-          reader.onabort = () => console.log("file reading was aborted");
-          reader.onerror = () => console.log("file reading has failed");
-          reader.onload = () => {
-            // Do whatever you want with the file contents
-            const binaryStr = reader.result;
-            console.log(binaryStr);
-          };
-          reader.readAsArrayBuffer(file);
-        });
-      } else {
-        toast.error("You can only upload 4 images");
-      }
-    },
-    [files.length],
-  );
+      reader.onabort = () => console.log("file reading was aborted");
+      reader.onerror = () => console.log("file reading has failed");
+      reader.readAsArrayBuffer(file);
+    });
+  }, []);
   const { acceptedFiles, getRootProps, getInputProps } = useDropzone({
     onDrop,
   });
@@ -61,6 +39,24 @@ export function ProductMediaCard({
     setImageUrls((prevImages) => [...prevImages, ...updatedImageUrls]);
   }, [acceptedFiles]);
 
+  const handleClick = useCallback(() => {
+    files.forEach((file) => {
+      const reader = new FileReader();
+
+      reader.onabort = () => console.log("file reading was aborted");
+      reader.onerror = () => console.log("file reading has failed");
+      reader.onload = async () => {
+        // Do whatever you want with the file contents
+        const buffer = reader.result;
+        const mimeType = file.type;
+        const extension = file.name.split(".").pop();
+        const newFileName = `${uuid()}-${Date.now()}.${extension}`;
+        const uploadKey = `products/${productId}/${newFileName}`;
+      };
+      reader.readAsArrayBuffer(file);
+    });
+  }, [files, productId]);
+
   return (
     <AdminFormWrapper title="Media">
       <div className="mt-6 space-y-6">
@@ -70,7 +66,7 @@ export function ProductMediaCard({
               key={imageUrl}
               src={imageUrl}
               alt={imageUrl}
-              className="aspect-square w-full object-contain"
+              className="aspect-square w-full object-cover"
             />
           ))}
         </div>
@@ -78,15 +74,21 @@ export function ProductMediaCard({
           {...getRootProps()}
           className="cursor-pointer rounded-lg border border-dashed border-neutral-500 p-6"
         >
-          <input {...getInputProps()} />
+          <input {...getInputProps()} accept="image/png, image/jpeg" />
           <p>Drag n drop some files here, or click to select files</p>
         </div>
         <div className="space-y-1">
-          <Button type="button" variant="amazon" className="w-full">
+          <Button
+            type="button"
+            variant="amazon"
+            onClick={handleClick}
+            className="w-full"
+          >
             Upload Images
           </Button>
           <p className="text-sm">
-            IMPORTANT: You must upload images using this button.
+            IMPORTANT: You must upload images using this button, or they will
+            not be saved once you leave this page.
           </p>
         </div>
       </div>

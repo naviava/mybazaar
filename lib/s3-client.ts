@@ -15,7 +15,7 @@ const s3Client = new S3Client({
   },
 });
 
-export async function getS3SignedURL(key: string) {
+export async function getS3ObjectURL(key: string) {
   const command = new GetObjectCommand({
     Bucket: BUCKET_NAME,
     Key: key,
@@ -26,14 +26,19 @@ export async function getS3SignedURL(key: string) {
   return signedURL;
 }
 
-export async function getS3UploadURL(key: string, contentType: string) {
+export async function uploadToS3(
+  key: string,
+  buffer: any,
+  contentType: string,
+) {
   const command = new PutObjectCommand({
     Bucket: BUCKET_NAME,
     Key: key,
+    Body: buffer,
     ContentType: contentType,
   });
-  const signedURL = await getSignedUrl(s3Client, command);
-  return signedURL;
+  // const signedURL = await getSignedUrl(s3Client, command);
+  await s3Client.send(command);
 }
 
 export async function deleteS3Object(key: string) {

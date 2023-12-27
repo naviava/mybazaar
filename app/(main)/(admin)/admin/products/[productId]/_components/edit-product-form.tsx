@@ -63,7 +63,6 @@ export function EditProductForm({ productId, initialData }: IProps) {
       discountPct: product?.discountPct || 0,
       stockCount: product?.stockCount || 0,
       isAvailable: product?.isAvailable || false,
-      images: product?.images.map((image) => image.imageUrl) || [],
     },
   });
 
@@ -107,12 +106,7 @@ export function EditProductForm({ productId, initialData }: IProps) {
         <div className="grid grid-cols-3 gap-6">
           <div className="col-span-3 space-y-6 lg:col-span-2">
             <ProductInfoCard form={form} disabled={isLoading} />
-            {/* TODO: Add image upload widget. */}
-            <ProductMediaCard
-              form={form}
-              fieldName="images"
-              productId={productId}
-            />
+            <ProductMediaCard productId={productId} />
           </div>
           <div className="col-span-3 lg:col-span-1">
             <PricingAvailabilityCard form={form} />
