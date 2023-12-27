@@ -15,10 +15,11 @@ import { NotificationBanner } from "~/components/notification-banner";
 import { BannerAndActionButtons } from "~/components/banner-and-action-buttons";
 import { PricingAvailabilityCard } from "../../_components/price-availability-card";
 import { ProductInfoCard } from "../../_components/product-info-card";
+import { ProductMediaCard } from "./product-media-card";
 
 import { trpc } from "~/app/_trpc/client";
-import { productFormSchema } from "~/utils/form-inputs/products/product-form-schema";
 import { serverClient } from "~/app/_trpc/server-client";
+import { productFormSchema } from "~/utils/form-inputs/products/product-form-schema";
 
 interface IProps {
   productId: string;
@@ -107,7 +108,11 @@ export function EditProductForm({ productId, initialData }: IProps) {
           <div className="col-span-3 space-y-6 lg:col-span-2">
             <ProductInfoCard form={form} disabled={isLoading} />
             {/* TODO: Add image upload widget. */}
-            <div>Image Upload Widget</div>
+            <ProductMediaCard
+              form={form}
+              fieldName="images"
+              productId={productId}
+            />
           </div>
           <div className="col-span-3 lg:col-span-1">
             <PricingAvailabilityCard form={form} />
