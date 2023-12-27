@@ -35,6 +35,40 @@ const isAuthenticated = middleware(async (opts) => {
   });
 });
 
+const isAdmin = middleware(async (opts) => {
+  const session = await getServerSession();
+  if (!session || !session.user || !session.user.email)
+    throw new TRPCError({
+      code: "UNAUTHORIZED",
+      message: "Unauthorized action",
+    });
+  const user = await db.user.findUnique({
+    where: { email: session.user.email },
+  });
+  if (
+    !user ||
+    user.disabled ||
+    (user.role !== "ADMIN" && user.role !== "SUPER_ADMIN")
+  )
+    throw new TRPCError({
+      code: "UNAUTHORIZED",
+      message: "Unauthorized action",
+    });
+  return opts.next({
+    ctx: {
+      user: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        image: user.image,
+        role: user.role,
+        disabled: user.disabled,
+      },
+    },
+  });
+});
+
 export const router = t.router;
 export const publicProcedure = t.procedure;
+export const adminProcedure = t.procedure.use(isAdmin);
 export const privateProcedure = t.procedure.use(isAuthenticated);

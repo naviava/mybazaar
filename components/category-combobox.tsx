@@ -38,7 +38,7 @@ export const CategoryCombobox = memo(_CategoryCombobox);
 function _CategoryCombobox({ form }: IProps) {
   const [contentWidth, setContentWidth] = useState<string>();
   const buttonRef = useRef<ElementRef<"button">>(null);
-  const { data: categories } = trpc.list.getCategories.useQuery();
+  const { data: categories } = trpc.utils.getCategories.useQuery();
 
   useEffect(() => {
     const updateWidth = () => {

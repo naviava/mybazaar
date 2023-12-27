@@ -21,6 +21,8 @@ function _PricingAvailabilityCard({ form }: IProps) {
         <ProductFormInput
           form={form}
           type="number"
+          min={0}
+          step={0.1}
           fieldName="price"
           label="Price"
         />

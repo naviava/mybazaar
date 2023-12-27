@@ -10,7 +10,7 @@ import SessionProvider from "~/components/providers/session-provider";
 
 import { cn } from "~/lib/utils";
 
-const inter = Inter({ subsets: ["latin"] });
+const font = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: {
@@ -35,7 +35,7 @@ export default async function RootLayout({
 
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={cn("bg-neutral-200 text-base", inter.className)}>
+      <body className={cn("bg-neutral-200 text-base", font.className)}>
         <SessionProvider session={session}>
           <Providers>
             {children}
