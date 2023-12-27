@@ -27,7 +27,7 @@ export const createProduct = adminProcedure
       !ctx.user ||
       (ctx.user.role !== "ADMIN" && ctx.user.role !== "SUPER_ADMIN")
     )
-      return new TRPCError({
+      throw new TRPCError({
         code: "UNAUTHORIZED",
         message: "Unauthorized action",
       });
@@ -42,10 +42,24 @@ export const createProduct = adminProcedure
       isAvailable,
       images,
     } = input;
-    if (!name || !price || !categorySlug || !isAvailable)
-      return new TRPCError({
+
+    const categoryExists = await db.category.findFirst({
+      where: { slug: categorySlug },
+    });
+    if (!name || !price)
+      throw new TRPCError({
         code: "BAD_REQUEST",
         message: "Invalid input",
+      });
+    if (!categorySlug)
+      throw new TRPCError({
+        code: "BAD_REQUEST",
+        message: "Category is required",
+      });
+    if (!categoryExists)
+      throw new TRPCError({
+        code: "BAD_REQUEST",
+        message: "Category does not exist",
       });
 
     const newSKU = await generateSku();
@@ -66,6 +80,10 @@ export const createProduct = adminProcedure
               },
             }
           : undefined,
+      },
+      include: {
+        category: true,
+        images: true,
       },
     });
     return newProduct;

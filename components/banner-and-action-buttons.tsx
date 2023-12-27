@@ -10,6 +10,7 @@ interface IProps {
   actionLabel: string;
   secondaryActionLabel?: string;
   secondaryActionHref?: string;
+  disabled?: boolean;
 }
 
 export const BannerAndActionButtons = memo(_BannerAndActionButtons);
@@ -18,18 +19,31 @@ function _BannerAndActionButtons({
   actionLabel,
   secondaryActionHref,
   secondaryActionLabel,
+  disabled = false,
 }: IProps) {
   return (
     <div className="flex items-center gap-x-2">
       <div className="flex-1">{children}</div>
       {secondaryActionHref && (
-        <Button asChild type="button" variant="ghost" size="sm">
+        <Button
+          asChild
+          type="button"
+          variant="ghost"
+          size="sm"
+          disabled={disabled}
+        >
           <Link href={secondaryActionHref} className="hover:bg-transparent">
             {secondaryActionLabel}
           </Link>
         </Button>
       )}
-      <Button type="submit" variant="amazon" size="sm" className="shadow-md">
+      <Button
+        type="submit"
+        variant="amazon"
+        size="sm"
+        disabled={disabled}
+        className="shadow-md"
+      >
         {actionLabel}
       </Button>
     </div>

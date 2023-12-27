@@ -1,8 +1,10 @@
 "use client";
 
 import { useCallback } from "react";
+import { useRouter } from "next/navigation";
 
 import { z } from "zod";
+import { toast } from "sonner";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { useForm } from "react-hook-form";
@@ -13,9 +15,11 @@ import { BannerAndActionButtons } from "~/components/banner-and-action-buttons";
 import { PricingAvailabilityCard } from "./price-availability-card";
 import { ProductInfoCard } from "./product-info-card";
 
+import { trpc } from "~/app/_trpc/client";
 import { productFormSchema } from "~/utils/form-inputs/products/product-form-schema";
 
 export function NewProductForm() {
+  const router = useRouter();
   const inMounted = useIsMounted();
 
   const form = useForm<z.infer<typeof productFormSchema>>({
@@ -32,11 +36,20 @@ export function NewProductForm() {
     },
   });
 
+  const { mutate: handleCreateProduct, isLoading } =
+    trpc.product.createProduct.useMutation({
+      onError: ({ message }) => toast.error(message),
+      onSuccess: (data) => {
+        toast.success("Product created successfully");
+        console.log(data);
+      },
+    });
+
   const onSubmit = useCallback(
     async (values: z.infer<typeof productFormSchema>) => {
-      console.log(values);
+      handleCreateProduct(values);
     },
-    [],
+    [handleCreateProduct],
   );
 
   if (!inMounted) return null;
@@ -52,7 +65,7 @@ export function NewProductForm() {
         </BannerAndActionButtons>
         <div className="grid grid-cols-3 gap-6">
           <div className="col-span-3 space-y-6 lg:col-span-2">
-            <ProductInfoCard form={form} />
+            <ProductInfoCard form={form} disabled={isLoading} />
             {/* TODO: Add image upload widget. */}
             <div>Image Upload Widget</div>
           </div>

@@ -11,13 +11,11 @@ import { CategoryCombobox } from "~/components/category-combobox";
 
 interface IProps {
   form: ProductFormSchemaType;
+  disabled?: boolean;
 }
 
 export const ProductInfoCard = memo(_ProductInfoCard);
-function _ProductInfoCard({ form }: IProps) {
-  // TODO: Replace with real data.
-  const isLoading = false;
-
+function _ProductInfoCard({ form, disabled = false }: IProps) {
   return (
     <AdminFormWrapper title="Product Information">
       <div className="mt-6 space-y-6">
@@ -25,7 +23,7 @@ function _ProductInfoCard({ form }: IProps) {
           form={form}
           label="Name"
           fieldName="name"
-          disabled={isLoading}
+          disabled={disabled}
         />
         <div className="gap-x-6 space-y-6 md:flex md:space-y-0">
           <div className="flex-1">
@@ -45,7 +43,7 @@ function _ProductInfoCard({ form }: IProps) {
               step={1}
               fieldName="stockCount"
               label="Stock Count"
-              disabled={isLoading}
+              disabled={disabled}
             />
           </div>
           <div className="flex-1">
@@ -57,7 +55,7 @@ function _ProductInfoCard({ form }: IProps) {
               step={0.1}
               fieldName="discountPct"
               label="Discount %"
-              disabled={isLoading}
+              disabled={disabled}
             />
           </div>
         </div>
