@@ -11,6 +11,7 @@ import { useForm } from "react-hook-form";
 import { useIsMounted } from "~/hooks/use-is-mounted";
 
 import { Form } from "~/components/ui/form";
+import { NotificationBanner } from "~/components/notification-banner";
 import { BannerAndActionButtons } from "~/components/banner-and-action-buttons";
 import { PricingAvailabilityCard } from "./price-availability-card";
 import { ProductInfoCard } from "./product-info-card";
@@ -61,7 +62,7 @@ export function NewProductForm() {
           secondaryActionLabel="Cancel"
           secondaryActionHref="/admin/products"
         >
-          TODO: Banner goes here.
+          <NotificationBanner />
         </BannerAndActionButtons>
         <div className="grid grid-cols-3 gap-6">
           <div className="col-span-3 space-y-6 lg:col-span-2">
