@@ -12,6 +12,13 @@ type SidebarState = {
     message: string;
     type: BannerType;
   }) => void;
+  showConsistentBanner: ({
+    message,
+    type,
+  }: {
+    message: string;
+    type: BannerType;
+  }) => void;
   hideBanner: () => void;
 };
 
@@ -22,5 +29,6 @@ export const useNotificationBanner = create<SidebarState>((set) => ({
     set({ message, type });
     setTimeout(() => set({ message: "", type: "hidden" }), 10000);
   },
+  showConsistentBanner: ({ message, type }) => set({ message, type }),
   hideBanner: () => set({ message: "", type: "hidden" }),
 }));
