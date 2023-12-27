@@ -15,7 +15,7 @@ interface IProps {
 }
 
 export function ProductMediaCard({ productId }: IProps) {
-  const [files, setFiles] = useState<File[]>([]);
+  const [files, setFiles] = useState<File[] | null>(null);
   const [imageUrls, setImageUrls] = useState<string[]>([]);
 
   const onDrop = useCallback((acceptedFiles: File[]) => {
@@ -31,31 +31,20 @@ export function ProductMediaCard({ productId }: IProps) {
     onDrop,
   });
 
+  useEffect(
+    () => console.log(files?.forEach((file) => console.log(file.type))),
+    [files],
+  );
+
   useEffect(() => {
-    setFiles((prev) => [...prev, ...acceptedFiles]);
+    setFiles(acceptedFiles);
     const updatedImageUrls = acceptedFiles.map((file) =>
       URL.createObjectURL(file),
     );
-    setImageUrls((prevImages) => [...prevImages, ...updatedImageUrls]);
+    setImageUrls(updatedImageUrls);
   }, [acceptedFiles]);
 
-  const handleClick = useCallback(() => {
-    files.forEach((file) => {
-      const reader = new FileReader();
-
-      reader.onabort = () => console.log("file reading was aborted");
-      reader.onerror = () => console.log("file reading has failed");
-      reader.onload = async () => {
-        // Do whatever you want with the file contents
-        const buffer = reader.result;
-        const mimeType = file.type;
-        const extension = file.name.split(".").pop();
-        const newFileName = `${uuid()}-${Date.now()}.${extension}`;
-        const uploadKey = `products/${productId}/${newFileName}`;
-      };
-      reader.readAsArrayBuffer(file);
-    });
-  }, [files, productId]);
+  const handleClick = useCallback(() => {}, []);
 
   return (
     <AdminFormWrapper title="Media">
@@ -74,7 +63,13 @@ export function ProductMediaCard({ productId }: IProps) {
           {...getRootProps()}
           className="cursor-pointer rounded-lg border border-dashed border-neutral-500 p-6"
         >
-          <input {...getInputProps()} accept="image/png, image/jpeg" />
+          <input
+            {...getInputProps()}
+            id="file-upload"
+            type="file"
+            multiple
+            accept="image/png, image/jpeg"
+          />
           <p>Drag n drop some files here, or click to select files</p>
         </div>
         <div className="space-y-1">
