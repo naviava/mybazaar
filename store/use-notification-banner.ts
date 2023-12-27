@@ -27,7 +27,7 @@ export const useNotificationBanner = create<SidebarState>((set) => ({
   message: "",
   showBanner: ({ message, type }) => {
     set({ message, type });
-    setTimeout(() => set({ message: "", type: "hidden" }), 10000);
+    setTimeout(() => set({ message: "", type: "hidden" }), 5000);
   },
   showConsistentBanner: ({ message, type }) => set({ message, type }),
   hideBanner: () => set({ message: "", type: "hidden" }),

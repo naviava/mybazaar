@@ -3,11 +3,11 @@ import { z } from "zod";
 import { db } from "~/lib/db";
 import { TRPCError } from "@trpc/server";
 import { adminProcedure } from "~/server/trpc";
-import { generateSku } from "~/utils/generate-sku";
 
-export const createProduct = adminProcedure
+export const updateProduct = adminProcedure
   .input(
     z.object({
+      id: z.string().cuid({ message: "Invalid product ID" }),
       name: z
         .string()
         .min(1, { message: "Product name is required" })
@@ -34,6 +34,7 @@ export const createProduct = adminProcedure
       });
 
     const {
+      id,
       name,
       price,
       categorySlug,
@@ -63,11 +64,10 @@ export const createProduct = adminProcedure
         message: "Category does not exist",
       });
 
-    const newSKU = await generateSku();
-    const newProduct = await db.product.create({
+    const updatedProduct = await db.product.update({
+      where: { id },
       data: {
         name,
-        sku: newSKU,
         price,
         categorySlug,
         description: description || "",
@@ -76,7 +76,8 @@ export const createProduct = adminProcedure
         isAvailable,
         images: !!images?.length
           ? {
-              createMany: {
+              updateMany: {
+                where: { productId: id },
                 data: images?.map((image) => ({ imageUrl: image })),
               },
             }
@@ -87,5 +88,5 @@ export const createProduct = adminProcedure
         images: true,
       },
     });
-    return newProduct;
+    return updatedProduct;
   });

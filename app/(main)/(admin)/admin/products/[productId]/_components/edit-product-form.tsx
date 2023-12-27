@@ -28,6 +28,7 @@ interface IProps {
 export function EditProductForm({ productId, initialData }: IProps) {
   const router = useRouter();
   const isMounted = useIsMounted();
+  const utils = trpc.useUtils();
   const { showBanner, hideBanner } = useNotificationBanner((state) => state);
 
   const { data: product } = trpc.product.getProductById.useQuery(
@@ -66,15 +67,16 @@ export function EditProductForm({ productId, initialData }: IProps) {
   });
 
   const { mutate: handleUpdateProduct, isLoading } =
-    trpc.product.createProduct.useMutation({
+    trpc.product.updateProduct.useMutation({
       onMutate: () => hideBanner(),
       onError: ({ message }) =>
         showBanner({
           type: "error",
           message,
         }),
-      onSuccess: (data) => {
-        router.push(`/admin/products/${data.id}`);
+      onSuccess: () => {
+        utils.product.getProductById.invalidate(productId);
+        router.refresh();
         showBanner({
           type: "success",
           message: "Product updated successfully",
@@ -84,9 +86,9 @@ export function EditProductForm({ productId, initialData }: IProps) {
 
   const onSubmit = useCallback(
     async (values: z.infer<typeof productFormSchema>) => {
-      handleUpdateProduct(values);
+      handleUpdateProduct({ ...values, id: productId });
     },
-    [handleUpdateProduct],
+    [handleUpdateProduct, productId],
   );
 
   if (!isMounted || !product) return null;
