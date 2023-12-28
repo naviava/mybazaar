@@ -171,7 +171,7 @@ export function ProductMediaCard({ productId }: IProps) {
   return (
     <AdminFormWrapper title="Media">
       <div className="mt-6 space-y-6">
-        <div className="grid grid-cols-3">
+        <div className="grid grid-cols-2 gap-6 md:grid-cols-4">
           {!!product &&
             !!product.images.length &&
             product.images.map((image) => (
@@ -179,7 +179,7 @@ export function ProductMediaCard({ productId }: IProps) {
                 key={image.imageUrl}
                 src={image.imageUrl}
                 alt={image.imageUrl}
-                className="aspect-square w-full object-cover"
+                className="mx-auto aspect-square w-full max-w-[300px] object-cover"
               />
             ))}
           {!!previewUrls.length &&
@@ -188,7 +188,7 @@ export function ProductMediaCard({ productId }: IProps) {
                 key={imageUrl}
                 src={imageUrl}
                 alt={imageUrl}
-                className="aspect-square w-full object-cover"
+                className="mx-auto aspect-square w-full max-w-[300px] object-cover"
               />
             ))}
         </div>
@@ -204,7 +204,9 @@ export function ProductMediaCard({ productId }: IProps) {
             disabled={isLoading}
             accept="image/jpeg,image/png,image/webp,image/gif"
           />
-          <p>Drag n drop some files here, or click to select files</p>
+          <p>
+            Drag &apos;n&apos; drop some files here, or click to select files
+          </p>
         </div>
         <div className="space-y-1">
           <Button
