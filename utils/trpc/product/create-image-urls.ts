@@ -6,6 +6,8 @@ import { TRPCError } from "@trpc/server";
 import { db } from "~/lib/db";
 import { adminProcedure } from "~/server/trpc";
 
+const MAX_IMAGES = 4;
+
 export const createImageUrls = adminProcedure
   .input(
     z.object({
@@ -30,6 +32,16 @@ export const createImageUrls = adminProcedure
       throw new TRPCError({
         code: "BAD_REQUEST",
         message: "Missing required fields",
+      });
+    }
+
+    const existingImages = await db.productImage.findMany({
+      where: { productId },
+    });
+    if (existingImages.length + imageUrls.length > MAX_IMAGES) {
+      throw new TRPCError({
+        code: "BAD_REQUEST",
+        message: `You can only have ${MAX_IMAGES} images per product.`,
       });
     }
 

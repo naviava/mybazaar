@@ -1,17 +1,19 @@
 "use client";
+
 import { useCallback, useEffect, useState } from "react";
 
 import { useDropzone } from "react-dropzone";
 
 import { Button } from "~/components/ui/button";
+import { LoaderSpinner } from "~/components/loader-spinner";
 import { AdminFormWrapper } from "~/components/admin-form-wrapper";
 
 import { useNotificationBanner } from "~/store/use-notification-banner";
 
+import { trpc } from "~/app/_trpc/client";
 import { getS3UploadURL } from "~/lib/s3-client";
 import { computeSHA256 } from "~/utils/compute-sha-256";
 import { generateFileName } from "~/utils/generate-file-name";
-import { trpc } from "~/app/_trpc/client";
 
 const MAX_FILES = 4;
 const APPROVED_TYPES = ["image/jpeg", "image/png", "image/webp", "image/gif"];
@@ -27,15 +29,6 @@ export function ProductMediaCard({ productId }: IProps) {
   const [previewUrls, setPreviewUrls] = useState<string[]>([]);
 
   const { data: product } = trpc.product.getProductById.useQuery(productId);
-  const [uploadedImageUrls, setUploadedImageUrls] = useState<string[]>([]);
-
-  // useEffect(() => {
-  //   if (!product || !product.images.length) return;
-  //   setUploadedImageUrls(
-  //     () => product?.images?.map((image) => image.imageUrl) || [],
-  //   );
-  //   console.log(product);
-  // }, [product]);
 
   const onDrop = useCallback(
     (acceptedFiles: File[]) => {
@@ -60,6 +53,21 @@ export function ProductMediaCard({ productId }: IProps) {
   });
 
   useEffect(() => {
+    if (acceptedFiles.length > MAX_FILES) {
+      showBanner({
+        message: `You can only upload ${MAX_FILES} images at a time.`,
+        type: "warning",
+      });
+      return;
+    }
+    const existingImagesCount = product?.images.length || 0;
+    if (acceptedFiles.length + existingImagesCount > MAX_FILES) {
+      showBanner({
+        message: `You can only have ${MAX_FILES} images per product.`,
+        type: "warning",
+      });
+      return;
+    }
     setFiles(acceptedFiles);
     if (previewUrls.length > 0) {
       previewUrls.forEach((url) => URL.revokeObjectURL(url));
@@ -78,16 +86,18 @@ export function ProductMediaCard({ productId }: IProps) {
      * previewUrls is deliberately excluded from the dependency
      * array, as it will cause an infinite loop.
      */
-  }, [acceptedFiles]);
+  }, [acceptedFiles, product, showBanner]);
 
   const { mutate: handleLinktoDB } = trpc.product.createImageUrls.useMutation({
     onError: ({ message }) => {
+      setPreviewUrls([]);
       showBanner({
         message,
         type: "error",
       });
     },
     onSuccess: () => {
+      setFiles(null);
       showBanner({
         message: "Successfully uploaded images.",
         type: "success",
@@ -120,7 +130,6 @@ export function ProductMediaCard({ productId }: IProps) {
             return null;
           } else {
             const uploadedUrl = signedUrl.split("?")[0];
-            setUploadedImageUrls((prev) => [...prev, uploadedUrl]);
             return uploadedUrl;
           }
         } catch (error) {
@@ -138,7 +147,6 @@ export function ProductMediaCard({ productId }: IProps) {
   );
 
   const handleClick = useCallback(async () => {
-    setIsLoading(true);
     if (!files?.length) {
       showBanner({
         message: "No files selected.",
@@ -146,12 +154,14 @@ export function ProductMediaCard({ productId }: IProps) {
       });
       return;
     }
+    if (files.length > MAX_FILES) {
+    }
     try {
+      setIsLoading(true);
       const uploadedUrls = await handleFileUpload(files);
       const validUrls = uploadedUrls.filter((url): url is string =>
         Boolean(url),
       );
-      console.log(validUrls);
       handleLinktoDB({ productId, imageUrls: validUrls });
     } finally {
       setIsLoading(false);
@@ -162,12 +172,13 @@ export function ProductMediaCard({ productId }: IProps) {
     <AdminFormWrapper title="Media">
       <div className="mt-6 space-y-6">
         <div className="grid grid-cols-3">
-          {!!uploadedImageUrls.length &&
-            uploadedImageUrls.map((imageUrl) => (
+          {!!product &&
+            !!product.images.length &&
+            product.images.map((image) => (
               <img
-                key={imageUrl}
-                src={imageUrl}
-                alt={imageUrl}
+                key={image.imageUrl}
+                src={image.imageUrl}
+                alt={image.imageUrl}
                 className="aspect-square w-full object-cover"
               />
             ))}
@@ -199,9 +210,11 @@ export function ProductMediaCard({ productId }: IProps) {
           <Button
             type="button"
             variant="amazon"
+            disabled={isLoading}
             onClick={handleClick}
             className="w-full"
           >
+            {isLoading && <LoaderSpinner className="mr-2" />}
             Upload Images
           </Button>
           <p className="text-sm">
