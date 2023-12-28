@@ -1,3 +1,5 @@
+"use server";
+
 import {
   S3Client,
   GetObjectCommand,
@@ -26,19 +28,28 @@ export async function getS3ObjectURL(key: string) {
   return signedURL;
 }
 
-export async function uploadToS3(
-  key: string,
-  buffer: any,
-  contentType: string,
-) {
+type getS3UploadURLParams = {
+  key: string;
+  fileType: string;
+  fileSize: number;
+  checksum: string;
+};
+
+export async function getS3UploadURL({
+  key,
+  fileType,
+  fileSize,
+  checksum,
+}: getS3UploadURLParams) {
   const command = new PutObjectCommand({
     Bucket: BUCKET_NAME,
     Key: key,
-    Body: buffer,
-    ContentType: contentType,
+    ContentType: fileType,
+    ContentLength: fileSize,
+    ChecksumSHA256: checksum,
   });
-  // const signedURL = await getSignedUrl(s3Client, command);
-  await s3Client.send(command);
+  const signedURL = await getSignedUrl(s3Client, command, { expiresIn: 60 });
+  return signedURL;
 }
 
 export async function deleteS3Object(key: string) {
