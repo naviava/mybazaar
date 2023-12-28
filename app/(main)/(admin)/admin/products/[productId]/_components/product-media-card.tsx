@@ -25,7 +25,17 @@ export function ProductMediaCard({ productId }: IProps) {
   const [files, setFiles] = useState<File[] | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [previewUrls, setPreviewUrls] = useState<string[]>([]);
+
+  const { data: product } = trpc.product.getProductById.useQuery(productId);
   const [uploadedImageUrls, setUploadedImageUrls] = useState<string[]>([]);
+
+  // useEffect(() => {
+  //   if (!product || !product.images.length) return;
+  //   setUploadedImageUrls(
+  //     () => product?.images?.map((image) => image.imageUrl) || [],
+  //   );
+  //   console.log(product);
+  // }, [product]);
 
   const onDrop = useCallback(
     (acceptedFiles: File[]) => {
@@ -87,8 +97,8 @@ export function ProductMediaCard({ productId }: IProps) {
 
   const handleFileUpload = useCallback(
     (files: File[]) => {
-      try {
-        files.forEach(async (file) => {
+      const uploadPromises = files.map(async (file) => {
+        try {
           const signedUrl = await getS3UploadURL({
             key: `products/${productId}/${await generateFileName()}.${
               file.name.split(".").pop() || "jpg"
@@ -107,25 +117,25 @@ export function ProductMediaCard({ productId }: IProps) {
               message: "Something went wrong. Refresh the page and try again.",
               type: "error",
             });
+            return null;
           } else {
-            setUploadedImageUrls((prev) => [...prev, signedUrl.split("?")[0]]);
+            const uploadedUrl = signedUrl.split("?")[0];
+            setUploadedImageUrls((prev) => [...prev, uploadedUrl]);
+            return uploadedUrl;
           }
-        });
-      } catch (error) {
-        showBanner({
-          message: "Something went wrong. Refresh the page and try again.",
-          type: "error",
-        });
-      } finally {
-        setIsLoading(false);
-      }
+        } catch (error) {
+          showBanner({
+            message: "Something went wrong. Refresh the page and try again.",
+            type: "error",
+          });
+          return null;
+        }
+      });
+
+      return Promise.all(uploadPromises);
     },
     [showBanner, productId],
   );
-
-  useEffect(() => {
-    console.log(uploadedImageUrls);
-  }, [uploadedImageUrls]);
 
   const handleClick = useCallback(async () => {
     setIsLoading(true);
@@ -137,24 +147,30 @@ export function ProductMediaCard({ productId }: IProps) {
       return;
     }
     try {
-      handleFileUpload(files);
-      handleLinktoDB({ productId, imageUrls: uploadedImageUrls });
+      const uploadedUrls = await handleFileUpload(files);
+      const validUrls = uploadedUrls.filter((url): url is string =>
+        Boolean(url),
+      );
+      console.log(validUrls);
+      handleLinktoDB({ productId, imageUrls: validUrls });
     } finally {
       setIsLoading(false);
     }
-  }, [
-    files,
-    productId,
-    uploadedImageUrls,
-    showBanner,
-    handleFileUpload,
-    handleLinktoDB,
-  ]);
+  }, [files, productId, showBanner, handleFileUpload, handleLinktoDB]);
 
   return (
     <AdminFormWrapper title="Media">
       <div className="mt-6 space-y-6">
         <div className="grid grid-cols-3">
+          {!!uploadedImageUrls.length &&
+            uploadedImageUrls.map((imageUrl) => (
+              <img
+                key={imageUrl}
+                src={imageUrl}
+                alt={imageUrl}
+                className="aspect-square w-full object-cover"
+              />
+            ))}
           {!!previewUrls.length &&
             previewUrls.map((imageUrl) => (
               <img
