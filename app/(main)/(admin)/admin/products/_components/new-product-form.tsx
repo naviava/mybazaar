@@ -35,7 +35,6 @@ export function NewProductForm() {
       discountPct: 0,
       stockCount: 0,
       isAvailable: false,
-      images: [],
     },
   });
 

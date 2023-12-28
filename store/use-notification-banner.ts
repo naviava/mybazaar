@@ -2,7 +2,7 @@ import { create } from "zustand";
 
 export type BannerType = "success" | "error" | "warning" | "info" | "hidden";
 
-type SidebarState = {
+type NotificationBannerState = {
   message: string;
   type: BannerType;
   showBanner: ({
@@ -22,7 +22,7 @@ type SidebarState = {
   hideBanner: () => void;
 };
 
-export const useNotificationBanner = create<SidebarState>((set) => ({
+export const useNotificationBanner = create<NotificationBannerState>((set) => ({
   type: "hidden",
   message: "",
   showBanner: ({ message, type }) => {

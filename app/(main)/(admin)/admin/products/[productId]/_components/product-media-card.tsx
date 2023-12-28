@@ -12,6 +12,7 @@ import { UploadImagesButton } from "~/components/image-upload-widget/upload-imag
 
 import { trpc } from "~/app/_trpc/client";
 import { onFileUpload } from "~/utils/form-inputs/products/handle-file-upload";
+import { handleDragDropImage } from "~/utils/form-inputs/products/handle-drag-drop-image";
 
 const MAX_FILES = 4;
 const APPROVED_TYPES = ["image/jpeg", "image/png", "image/webp", "image/gif"];
@@ -22,30 +23,15 @@ interface IProps {
 
 export function ProductMediaCard({ productId }: IProps) {
   const router = useRouter();
-  const { showBanner } = useNotificationBanner();
+  const { showBanner } = useNotificationBanner((state) => state);
+
   const [files, setFiles] = useState<File[] | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [previewUrls, setPreviewUrls] = useState<string[]>([]);
 
   const { data: product } = trpc.product.getProductById.useQuery(productId);
-
-  const onDrop = (acceptedFiles: File[]) => {
-    acceptedFiles.forEach((file) => {
-      if (!APPROVED_TYPES.includes(file.type)) {
-        showBanner({
-          message: "Invalid file type. Please upload an image.",
-          type: "warning",
-        });
-      } else {
-        const reader = new FileReader();
-        reader.onabort = () => console.log("file reading was aborted");
-        reader.onerror = () => console.log("file reading has failed");
-        reader.readAsArrayBuffer(file);
-      }
-    });
-  };
   const { acceptedFiles, getRootProps, getInputProps } = useDropzone({
-    onDrop,
+    onDrop: () => handleDragDropImage({ acceptedFiles, showBanner }),
   });
 
   useEffect(() => {

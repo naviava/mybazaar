@@ -1,4 +1,5 @@
 import { memo } from "react";
+import { ImagePreviewCard } from "./image-preview-card";
 
 interface IProps {
   children: React.ReactNode;
@@ -24,22 +25,10 @@ function _ImageDropzone({
         {!!dbImages &&
           !!dbImages.length &&
           dbImages.map((url) => (
-            <img
-              key={url}
-              src={url}
-              alt={url}
-              className="mx-auto aspect-square w-full max-w-[300px] object-cover"
-            />
+            <ImagePreviewCard key={url} url={url} hasActions />
           ))}
         {!!previewUrls.length &&
-          previewUrls.map((url) => (
-            <img
-              key={url}
-              src={url}
-              alt={url}
-              className="mx-auto aspect-square w-full max-w-[300px] object-cover"
-            />
-          ))}
+          previewUrls.map((url) => <ImagePreviewCard key={url} url={url} />)}
       </div>
       <div
         {...getRootProps()}
