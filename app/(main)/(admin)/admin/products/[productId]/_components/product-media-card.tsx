@@ -21,6 +21,12 @@ export const APPROVED_TYPES = [
   "image/webp",
   "image/gif",
 ];
+const ERROR_MESSAGES = {
+  INVALID_FILE_TYPE: "Invalid file type. Please upload an image.",
+  MAX_IMAGES: `You can only have ${MAX_FILES} images per product.`,
+  NO_FILES_SELECTED: "No files selected.",
+  SUCCESS_UPLOAD: "Successfully uploaded images.",
+};
 
 interface IProps {
   productId: string;
@@ -43,34 +49,38 @@ export function ProductMediaCard({ productId }: IProps) {
     acceptedFiles.forEach((file) => {
       if (!APPROVED_TYPES.includes(file.type)) {
         showBanner({
-          message: "Invalid file type. Please upload an image.",
+          message: ERROR_MESSAGES.INVALID_FILE_TYPE,
           type: "warning",
         });
+        return;
       }
     });
-    if (acceptedFiles.length > MAX_FILES) {
+    const approvedFiles = acceptedFiles.filter((file) =>
+      APPROVED_TYPES.includes(file.type),
+    );
+    if (approvedFiles.length > MAX_FILES) {
       showBanner({
-        message: `You can only upload ${MAX_FILES} images at a time.`,
+        message: ERROR_MESSAGES.MAX_IMAGES,
         type: "warning",
       });
       return;
     }
     const existingImagesCount = product?.images.length || 0;
     if (
-      acceptedFiles.length + existingImagesCount + previewUrls.length >
+      approvedFiles.length + existingImagesCount + previewUrls.length >
       MAX_FILES
     ) {
       showBanner({
-        message: `You can only have ${MAX_FILES} images per product.`,
+        message: ERROR_MESSAGES.MAX_IMAGES,
         type: "warning",
       });
       return;
     }
-    setFiles((prev) => [...(prev || []), ...acceptedFiles]);
+    setFiles((prev) => [...(prev || []), ...approvedFiles]);
     if (previewUrls.length > 0) {
       previewUrls.forEach((url) => URL.revokeObjectURL(url));
     }
-    const updatedPreviewUrls = acceptedFiles
+    const updatedPreviewUrls = approvedFiles
       .map((file) => {
         if (!APPROVED_TYPES.includes(file.type)) {
           return;
@@ -101,7 +111,7 @@ export function ProductMediaCard({ productId }: IProps) {
       utils.product.getProductById.invalidate(productId);
       router.refresh();
       showBanner({
-        message: "Successfully uploaded images.",
+        message: ERROR_MESSAGES.SUCCESS_UPLOAD,
         type: "success",
       });
     },
@@ -115,19 +125,15 @@ export function ProductMediaCard({ productId }: IProps) {
   const handleClick = useCallback(async () => {
     if (!files?.length) {
       showBanner({
-        message: "No files selected.",
+        message: ERROR_MESSAGES.NO_FILES_SELECTED,
         type: "warning",
       });
       return;
     }
-    if (files.length > MAX_FILES) {
-    }
     try {
       setIsLoading(true);
       const uploadedUrls = await handleFileUpload(files);
-      const validUrls = uploadedUrls.filter((url): url is string =>
-        Boolean(url),
-      );
+      const validUrls = uploadedUrls.filter((url): url is string => !!url);
       handleLinktoDB({ productId, imageUrls: validUrls });
     } finally {
       setIsLoading(false);
