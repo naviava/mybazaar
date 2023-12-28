@@ -8,7 +8,6 @@ import { AdminFormWrapper } from "~/components/admin-form-wrapper";
 import { ProductFormInput } from "./product-form-input";
 import { DisabledInput } from "./disabled-input";
 
-import { trpc } from "~/app/_trpc/client";
 import { ProductFormSchemaType } from "~/utils/form-inputs/products/product-form-schema";
 
 interface IProps {
@@ -19,9 +18,6 @@ interface IProps {
 export const ProductInfoCard = memo(_ProductInfoCard);
 function _ProductInfoCard({ form, disabled = false }: IProps) {
   const params = useParams<{ productId: string }>();
-  const { data: product } = trpc.product.getProductById.useQuery(
-    params.productId,
-  );
 
   return (
     <AdminFormWrapper title="Product Information">
@@ -33,14 +29,16 @@ function _ProductInfoCard({ form, disabled = false }: IProps) {
           disabled={disabled}
         />
         <div className="gap-x-6 space-y-6 md:flex md:space-y-0">
-          <div className="flex-1">
-            <DisabledInput
-              label="SKU"
-              fieldId="sku"
-              value={product?.sku || ""}
-              placeholder="Not yet generated"
-            />
-          </div>
+          {!!params.productId && (
+            <div className="flex-1">
+              <DisabledInput
+                label="SKU"
+                fieldId="sku"
+                productId={params.productId}
+                placeholder="Not yet generated"
+              />
+            </div>
+          )}
           {/* TODO: Add category combobox. */}
           <div className="flex-1">
             <CategoryCombobox form={form} />

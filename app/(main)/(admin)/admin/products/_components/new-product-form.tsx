@@ -77,8 +77,6 @@ export function NewProductForm() {
         <div className="grid grid-cols-3 gap-6">
           <div className="col-span-3 space-y-6 lg:col-span-2">
             <ProductInfoCard form={form} disabled={isLoading} />
-            {/* TODO: Add image upload widget. */}
-            <div>Image Upload Widget</div>
           </div>
           <div className="col-span-3 lg:col-span-1">
             <PricingAvailabilityCard form={form} />

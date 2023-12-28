@@ -1,6 +1,6 @@
 import { create } from "zustand";
 
-type BannerType = "success" | "error" | "warning" | "info" | "hidden";
+export type BannerType = "success" | "error" | "warning" | "info" | "hidden";
 
 type SidebarState = {
   message: string;

@@ -1,10 +1,11 @@
+import { trpc } from "~/app/_trpc/client";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
 
 interface IProps {
   label: string;
-  fieldId?: string;
-  value?: string;
+  productId: string;
+  fieldId: "sku";
   placeholder?: string;
   description?: string;
 }
@@ -12,10 +13,13 @@ interface IProps {
 export function DisabledInput({
   label,
   fieldId,
-  value,
+  productId,
   description,
   placeholder,
 }: IProps) {
+  const { data: product } = trpc.product.getProductById.useQuery(productId);
+  const fieldValue = product && product[fieldId];
+
   return (
     <div>
       <Label htmlFor={fieldId} className="text-base font-normal">
@@ -24,8 +28,8 @@ export function DisabledInput({
       <Input
         disabled
         id={fieldId}
-        value={value}
-        placeholder={value ? value : placeholder}
+        value={fieldValue}
+        placeholder={fieldValue ? "" : placeholder}
         className="mt-2 text-base placeholder:text-sm placeholder:italic"
       />
     </div>
