@@ -11,6 +11,7 @@ import { useNotificationBanner } from "~/store/use-notification-banner";
 import { getS3UploadURL } from "~/lib/s3-client";
 import { computeSHA256 } from "~/utils/compute-sha-256";
 import { generateFileName } from "~/utils/generate-file-name";
+import { trpc } from "~/app/_trpc/client";
 
 const acceptedFileTypes = [
   "image/jpeg",
@@ -73,7 +74,46 @@ export function ProductMediaCard({ productId }: IProps) {
      */
   }, [acceptedFiles]);
 
-  const handleFileUpload = useCallback(async () => {
+  const { mutate: handleLinktoDB } = trpc.product.createImageUrls.useMutation({
+    onError: ({ message }) => {
+      showBanner({
+        message,
+        type: "error",
+      });
+    },
+    onSuccess: () => {},
+  });
+
+  const handleFileUpload = useCallback(
+    (files: File[]) => {
+      try {
+        files.forEach(async (file) => {
+          const signedUrl = await getS3UploadURL({
+            key: file.name,
+            fileType: file.type,
+            fileSize: file.size,
+            checksum: await computeSHA256(file),
+          });
+          await fetch(signedUrl, {
+            headers: { "Content-Type": file.type },
+            method: "PUT",
+            body: file,
+          });
+          setUploadedImageUrls((prev) => [...prev, signedUrl.split("?")[0]]);
+        });
+      } catch (error) {
+        showBanner({
+          message: "Something went wrong. Refresh the page and try again.",
+          type: "error",
+        });
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [showBanner],
+  );
+
+  const handleClick = useCallback(async () => {
     setIsLoading(true);
     if (!files?.length) {
       showBanner({
@@ -83,31 +123,10 @@ export function ProductMediaCard({ productId }: IProps) {
       return;
     }
     try {
-      files.forEach(async (file) => {
-        const signedUrl = await getS3UploadURL({
-          key: file.name,
-          fileType: file.type,
-          fileSize: file.size,
-          checksum: await computeSHA256(file),
-        });
-        await fetch(signedUrl, {
-          headers: { "Content-Type": file.type },
-          method: "PUT",
-          body: file,
-        });
-        setUploadedImageUrls((prev) => [...prev, signedUrl.split("?")[0]]);
-      });
-    } catch (error) {
-      showBanner({
-        message: "Something went wrong. Refresh the page and try again.",
-        type: "error",
-      });
     } finally {
       setIsLoading(false);
     }
-  }, [showBanner, files]);
-
-  useEffect(() => console.log(uploadedImageUrls), [uploadedImageUrls]);
+  }, [files?.length, showBanner]);
 
   return (
     <AdminFormWrapper title="Media">
@@ -141,7 +160,7 @@ export function ProductMediaCard({ productId }: IProps) {
           <Button
             type="button"
             variant="amazon"
-            onClick={handleFileUpload}
+            onClick={handleClick}
             className="w-full"
           >
             Upload Images
