@@ -1,5 +1,4 @@
 "use client";
-
 import { useCallback, useEffect, useState } from "react";
 
 import { useDropzone } from "react-dropzone";
@@ -8,17 +7,14 @@ import { Button } from "~/components/ui/button";
 import { AdminFormWrapper } from "~/components/admin-form-wrapper";
 
 import { useNotificationBanner } from "~/store/use-notification-banner";
+
 import { getS3UploadURL } from "~/lib/s3-client";
 import { computeSHA256 } from "~/utils/compute-sha-256";
 import { generateFileName } from "~/utils/generate-file-name";
 import { trpc } from "~/app/_trpc/client";
 
-const acceptedFileTypes = [
-  "image/jpeg",
-  "image/png",
-  "image/webp",
-  "image/gif",
-];
+const MAX_FILES = 4;
+const APPROVED_TYPES = ["image/jpeg", "image/png", "image/webp", "image/gif"];
 
 interface IProps {
   productId: string;
@@ -26,15 +22,15 @@ interface IProps {
 
 export function ProductMediaCard({ productId }: IProps) {
   const { showBanner } = useNotificationBanner();
-  const [isLoading, setIsLoading] = useState(false);
   const [files, setFiles] = useState<File[] | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
   const [previewUrls, setPreviewUrls] = useState<string[]>([]);
   const [uploadedImageUrls, setUploadedImageUrls] = useState<string[]>([]);
 
   const onDrop = useCallback(
     (acceptedFiles: File[]) => {
       acceptedFiles.forEach((file) => {
-        if (!acceptedFileTypes.includes(file.type)) {
+        if (!APPROVED_TYPES.includes(file.type)) {
           showBanner({
             message: "Invalid file type. Please upload an image.",
             type: "warning",
@@ -60,7 +56,7 @@ export function ProductMediaCard({ productId }: IProps) {
     }
     const updatedPreviewUrls = acceptedFiles
       .map((file) => {
-        if (!acceptedFileTypes.includes(file.type)) {
+        if (!APPROVED_TYPES.includes(file.type)) {
           return;
         } else {
           return URL.createObjectURL(file);
@@ -81,7 +77,12 @@ export function ProductMediaCard({ productId }: IProps) {
         type: "error",
       });
     },
-    onSuccess: () => {},
+    onSuccess: () => {
+      showBanner({
+        message: "Successfully uploaded images.",
+        type: "success",
+      });
+    },
   });
 
   const handleFileUpload = useCallback(
@@ -89,17 +90,26 @@ export function ProductMediaCard({ productId }: IProps) {
       try {
         files.forEach(async (file) => {
           const signedUrl = await getS3UploadURL({
-            key: file.name,
+            key: `products/${productId}/${await generateFileName()}.${
+              file.name.split(".").pop() || "jpg"
+            }`,
             fileType: file.type,
             fileSize: file.size,
             checksum: await computeSHA256(file),
           });
-          await fetch(signedUrl, {
+          const response = await fetch(signedUrl, {
             headers: { "Content-Type": file.type },
             method: "PUT",
             body: file,
           });
-          setUploadedImageUrls((prev) => [...prev, signedUrl.split("?")[0]]);
+          if (!response.ok) {
+            showBanner({
+              message: "Something went wrong. Refresh the page and try again.",
+              type: "error",
+            });
+          } else {
+            setUploadedImageUrls((prev) => [...prev, signedUrl.split("?")[0]]);
+          }
         });
       } catch (error) {
         showBanner({
@@ -110,8 +120,12 @@ export function ProductMediaCard({ productId }: IProps) {
         setIsLoading(false);
       }
     },
-    [showBanner],
+    [showBanner, productId],
   );
+
+  useEffect(() => {
+    console.log(uploadedImageUrls);
+  }, [uploadedImageUrls]);
 
   const handleClick = useCallback(async () => {
     setIsLoading(true);
@@ -123,10 +137,19 @@ export function ProductMediaCard({ productId }: IProps) {
       return;
     }
     try {
+      handleFileUpload(files);
+      handleLinktoDB({ productId, imageUrls: uploadedImageUrls });
     } finally {
       setIsLoading(false);
     }
-  }, [files?.length, showBanner]);
+  }, [
+    files,
+    productId,
+    uploadedImageUrls,
+    showBanner,
+    handleFileUpload,
+    handleLinktoDB,
+  ]);
 
   return (
     <AdminFormWrapper title="Media">

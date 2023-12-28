@@ -34,7 +34,6 @@ type getS3UploadURLParams = {
   fileSize: number;
   checksum: string;
 };
-
 export async function getS3UploadURL({
   key,
   fileType,
