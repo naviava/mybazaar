@@ -8,20 +8,24 @@ interface IProps {
 
 export function ImagePreviewCard({ url, hasActions = false }: IProps) {
   return (
-    <Card className="rounded-lg shadow-lg">
+    <Card className="overflow-hidden rounded-lg shadow-lg">
       <CardContent className="p-0">
-        <img
-          key={url}
-          src={url}
-          alt={url}
-          className="mx-auto aspect-square w-full max-w-[300px] rounded-t-lg object-cover"
-        />
+        <div className="rounded-t-lg">
+          <img
+            key={url}
+            src={url}
+            alt={url}
+            className="mx-auto aspect-square w-full max-w-[300px] object-cover"
+          />
+        </div>
       </CardContent>
       <CardFooter className="p-0">
         {hasActions ? (
           <ImageActions url={url} />
         ) : (
-          <span className="mx-auto py-3 text-sm italic">Upload pending...</span>
+          <span className="mx-auto py-3 text-sm italic">
+            Awaiting upload on save
+          </span>
         )}
       </CardFooter>
     </Card>

@@ -15,7 +15,12 @@ import { onFileUpload } from "~/utils/form-inputs/products/handle-file-upload";
 import { handleDragDropImage } from "~/utils/form-inputs/products/handle-drag-drop-image";
 
 const MAX_FILES = 4;
-const APPROVED_TYPES = ["image/jpeg", "image/png", "image/webp", "image/gif"];
+export const APPROVED_TYPES = [
+  "image/jpeg",
+  "image/png",
+  "image/webp",
+  "image/gif",
+];
 
 interface IProps {
   productId: string;
@@ -35,6 +40,14 @@ export function ProductMediaCard({ productId }: IProps) {
   });
 
   useEffect(() => {
+    acceptedFiles.forEach((file) => {
+      if (!APPROVED_TYPES.includes(file.type)) {
+        showBanner({
+          message: "Invalid file type. Please upload an image.",
+          type: "warning",
+        });
+      }
+    });
     if (acceptedFiles.length > MAX_FILES) {
       showBanner({
         message: `You can only upload ${MAX_FILES} images at a time.`,
@@ -43,14 +56,17 @@ export function ProductMediaCard({ productId }: IProps) {
       return;
     }
     const existingImagesCount = product?.images.length || 0;
-    if (acceptedFiles.length + existingImagesCount > MAX_FILES) {
+    if (
+      acceptedFiles.length + existingImagesCount + previewUrls.length >
+      MAX_FILES
+    ) {
       showBanner({
         message: `You can only have ${MAX_FILES} images per product.`,
         type: "warning",
       });
       return;
     }
-    setFiles(acceptedFiles);
+    setFiles((prev) => [...(prev || []), ...acceptedFiles]);
     if (previewUrls.length > 0) {
       previewUrls.forEach((url) => URL.revokeObjectURL(url));
     }
@@ -63,7 +79,7 @@ export function ProductMediaCard({ productId }: IProps) {
         }
       })
       .filter((url): url is string => Boolean(url));
-    setPreviewUrls(updatedPreviewUrls);
+    setPreviewUrls((prev) => [...prev, ...updatedPreviewUrls]);
     /**
      * previewUrls is deliberately excluded from the dependency
      * array, as it will cause an infinite loop.
@@ -128,14 +144,27 @@ export function ProductMediaCard({ productId }: IProps) {
           disabled={isLoading}
           dbImages={product?.images.map((image) => image.imageUrl)}
         >
-          Drag &apos;n&apos; drop some files here, or click to select files
+          <div className="space-y-1 text-center">
+            <p>
+              Drag &apos;n&apos; drop some files here, or click to select files
+            </p>
+            <p className="text-sm italic text-muted-foreground">
+              Recommended: 800x800 px
+            </p>
+          </div>
         </ImageDropzone>
-        {!!product && product.images.length < MAX_FILES && (
-          <UploadImagesButton disabled={isLoading} handleClick={handleClick}>
-            IMPORTANT: You must upload images using this button, or they will
-            not be saved once you leave this page.
-          </UploadImagesButton>
-        )}
+        {!!product &&
+          product.images.length < MAX_FILES &&
+          !!previewUrls.length && (
+            <UploadImagesButton
+              disabled={isLoading}
+              setPreviewUrls={setPreviewUrls}
+              handleClick={handleClick}
+            >
+              IMPORTANT: You must upload images using this button, or they will
+              not be saved once you leave this page.
+            </UploadImagesButton>
+          )}
       </div>
     </AdminFormWrapper>
   );

@@ -21,7 +21,7 @@ function _ImageDropzone({
 }: IProps) {
   return (
     <>
-      <div className="grid grid-cols-2 gap-6 md:grid-cols-4">
+      <div className="grid grid-cols-2 gap-6 md:grid-cols-4 lg:grid-cols-2">
         {!!dbImages &&
           !!dbImages.length &&
           dbImages.map((url) => (
