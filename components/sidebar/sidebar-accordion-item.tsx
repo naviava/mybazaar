@@ -16,9 +16,9 @@ interface IProps {
 export function SidebarAccordionItem({ children, label, icon: Icon }: IProps) {
   return (
     <Accordion type="single" collapsible>
-      <AccordionItem value={label}>
+      <AccordionItem value={label} className="">
         <Button asChild variant="ghost">
-          <AccordionTrigger className="justify-between text-lg text-muted-foreground">
+          <AccordionTrigger className="justify-between text-base text-muted-foreground md:text-lg">
             <div className="flex items-center">
               {!!Icon && (
                 <Icon className="mr-4 h-4 w-4 text-muted-foreground" />

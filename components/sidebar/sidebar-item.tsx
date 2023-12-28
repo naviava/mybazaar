@@ -57,7 +57,7 @@ function _SidebarItem({
         )}
         <span
           className={cn(
-            "text-lg text-muted-foreground",
+            " text-base text-muted-foreground md:text-lg",
             isDesktop && isCollapsed && !isHoverCard && "hidden",
           )}
         >

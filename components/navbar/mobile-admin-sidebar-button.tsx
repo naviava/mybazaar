@@ -24,7 +24,7 @@ export function MobileAdminSidebarButton() {
             <ArrowRightFromLine className="h-5 w-5 text-neutral-50" />
           </div>
         </SheetTrigger>
-        <SheetContent side="left" className="max-w-xs">
+        <SheetContent side="left" className="max-w-[17rem] md:max-w-[20rem]">
           <div className="pt-6">
             <SidebarContent handleCloseSheet={handleCloseSheet} />
           </div>
