@@ -18,7 +18,7 @@ export function Navbar() {
   if (!isMounted) return <div className="fixed top-0 h-14 w-full bg-sky-900" />;
 
   return (
-    <nav className="fixed top-0 flex h-14 w-full items-center justify-between gap-x-8 bg-sky-900 px-2 md:px-4 lg:px-6">
+    <nav className="fixed top-0 z-[50] flex h-14 w-full items-center justify-between gap-x-8 bg-sky-900 px-2 md:px-4 lg:px-6">
       <div className="flex items-center gap-x-2">
         <Logo height={50} width={50} />
         {(user?.role === "ADMIN" || user?.role === "SUPER_ADMIN") &&
