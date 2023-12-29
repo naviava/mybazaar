@@ -85,4 +85,7 @@ body,
   .link {
     @apply cursor-pointer hover:text-[#ce7421] hover:underline;
   }
+  .ql-editor {
+    @apply rounded-b-md;
+  }
 }

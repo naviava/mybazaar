@@ -9,7 +9,7 @@ import { ProductFormInput } from "./product-form-input";
 import { DisabledInput } from "./disabled-input";
 
 import { ProductFormSchemaType } from "~/utils/form-inputs/products/product-form-schema";
-import { ProductFormRichTextDescription } from "./product-form-rich-text-description";
+import { ProductFormRichText } from "./product-form-rich-text";
 
 interface IProps {
   form: ProductFormSchemaType;
@@ -69,7 +69,7 @@ function _ProductInfoCard({ form, disabled = false }: IProps) {
             />
           </div>
         </div>
-        <ProductFormRichTextDescription
+        <ProductFormRichText
           form={form}
           fieldName="description"
           label="Description"
