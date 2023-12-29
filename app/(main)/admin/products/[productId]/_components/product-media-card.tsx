@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useReducer, useState } from "react";
 import { useRouter } from "next/navigation";
 
 import { useDropzone } from "react-dropzone";
@@ -14,19 +14,15 @@ import { trpc } from "~/app/_trpc/client";
 import { onFileUpload } from "~/utils/form-inputs/products/handle-file-upload";
 import { handleDragDropImage } from "~/utils/form-inputs/products/handle-drag-drop-image";
 
-const MAX_FILES = 4;
-export const APPROVED_TYPES = [
-  "image/jpeg",
-  "image/png",
-  "image/webp",
-  "image/gif",
-];
-const ERROR_MESSAGES = {
-  INVALID_FILE_TYPE: "Invalid file type. Please upload an image.",
-  MAX_IMAGES: `You can only have ${MAX_FILES} images per product.`,
-  NO_FILES_SELECTED: "No files selected.",
-  SUCCESS_UPLOAD: "Successfully uploaded images.",
-};
+import {
+  initialState,
+  productMediaCardReducer,
+} from "~/store/product-media-card-reducer";
+import {
+  APPROVED_TYPES,
+  ERROR_MESSAGES,
+  MAX_FILES,
+} from "~/utils/form-inputs/products/file-validation";
 
 interface IProps {
   productId: string;
@@ -35,10 +31,7 @@ interface IProps {
 export function ProductMediaCard({ productId }: IProps) {
   const router = useRouter();
   const { showBanner } = useNotificationBanner((state) => state);
-
-  const [files, setFiles] = useState<File[] | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const [previewUrls, setPreviewUrls] = useState<string[]>([]);
+  const [state, dispatch] = useReducer(productMediaCardReducer, initialState);
 
   const { data: product } = trpc.product.getProductById.useQuery(productId);
   const { acceptedFiles, getRootProps, getInputProps } = useDropzone({
@@ -67,7 +60,7 @@ export function ProductMediaCard({ productId }: IProps) {
     }
     const existingImagesCount = product?.images.length || 0;
     if (
-      approvedFiles.length + existingImagesCount + previewUrls.length >
+      approvedFiles.length + existingImagesCount + state.previewUrls.length >
       MAX_FILES
     ) {
       showBanner({
@@ -76,9 +69,9 @@ export function ProductMediaCard({ productId }: IProps) {
       });
       return;
     }
-    setFiles((prev) => [...(prev || []), ...approvedFiles]);
-    if (previewUrls.length > 0) {
-      previewUrls.forEach((url) => URL.revokeObjectURL(url));
+    dispatch({ type: "APPEND_FILES", payload: approvedFiles });
+    if (state.previewUrls.length > 0) {
+      state.previewUrls.forEach((url) => URL.revokeObjectURL(url));
     }
     const updatedPreviewUrls = approvedFiles
       .map((file) => {
@@ -89,7 +82,7 @@ export function ProductMediaCard({ productId }: IProps) {
         }
       })
       .filter((url): url is string => Boolean(url));
-    setPreviewUrls((prev) => [...prev, ...updatedPreviewUrls]);
+    dispatch({ type: "APPEND_PREVIEW_URLS", payload: updatedPreviewUrls });
     /**
      * previewUrls is deliberately excluded from the dependency
      * array, as it will cause an infinite loop.
@@ -99,15 +92,15 @@ export function ProductMediaCard({ productId }: IProps) {
   const utils = trpc.useUtils();
   const { mutate: handleLinktoDB } = trpc.product.createImageUrls.useMutation({
     onError: ({ message }) => {
-      setPreviewUrls([]);
+      dispatch({ type: "SET_PREVIEW_URLS", payload: [] });
       showBanner({
         message,
         type: "error",
       });
     },
     onSuccess: () => {
-      setPreviewUrls([]);
-      setFiles(null);
+      dispatch({ type: "SET_PREVIEW_URLS", payload: [] });
+      dispatch({ type: "SET_FILES", payload: [] });
       utils.product.getProductById.invalidate(productId);
       router.refresh();
       showBanner({
@@ -123,7 +116,7 @@ export function ProductMediaCard({ productId }: IProps) {
   );
 
   const handleClick = useCallback(async () => {
-    if (!files?.length) {
+    if (!state.files?.length) {
       showBanner({
         message: ERROR_MESSAGES.NO_FILES_SELECTED,
         type: "warning",
@@ -131,23 +124,23 @@ export function ProductMediaCard({ productId }: IProps) {
       return;
     }
     try {
-      setIsLoading(true);
-      const uploadedUrls = await handleFileUpload(files);
+      dispatch({ type: "SET_LOADING", payload: true });
+      const uploadedUrls = await handleFileUpload(state.files);
       const validUrls = uploadedUrls.filter((url): url is string => !!url);
       handleLinktoDB({ productId, imageUrls: validUrls });
     } finally {
-      setIsLoading(false);
+      dispatch({ type: "SET_LOADING", payload: false });
     }
-  }, [files, productId, showBanner, handleFileUpload, handleLinktoDB]);
+  }, [state.files, handleFileUpload, handleLinktoDB, productId, showBanner]);
 
   return (
     <AdminFormWrapper title="Media">
       <div className="mt-6 space-y-6">
         <ImageDropzone
-          previewUrls={previewUrls}
+          previewUrls={state.previewUrls}
           getRootProps={getRootProps}
           getInputProps={getInputProps}
-          disabled={isLoading}
+          disabled={state.isLoading}
           dbImages={product?.images.map((image) => image.imageUrl)}
         >
           <div className="space-y-1 text-center">
@@ -161,11 +154,13 @@ export function ProductMediaCard({ productId }: IProps) {
         </ImageDropzone>
         {!!product &&
           product.images.length < MAX_FILES &&
-          !!previewUrls.length && (
+          !!state.previewUrls.length && (
             <UploadImagesButton
-              disabled={isLoading}
-              setPreviewUrls={setPreviewUrls}
+              disabled={state.isLoading}
               handleClick={handleClick}
+              setPreviewUrls={(newUrls) =>
+                dispatch({ type: "SET_PREVIEW_URLS", payload: newUrls })
+              }
             >
               IMPORTANT: You must upload images using this button, or they will
               not be saved once you leave this page.

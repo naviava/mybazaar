@@ -7,7 +7,7 @@ interface IProps {
   children: React.ReactNode;
   disabled?: boolean;
   handleClick: () => Promise<void>;
-  setPreviewUrls: Dispatch<SetStateAction<string[]>>;
+  setPreviewUrls: (newUrls: string[]) => void;
 }
 
 export function UploadImagesButton({
