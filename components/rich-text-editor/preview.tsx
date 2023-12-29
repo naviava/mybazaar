@@ -19,7 +19,10 @@ export default function Preview({ value }: PreviewProps) {
   return (
     <ReactQuill
       theme="bubble"
-      value={value || "No description provided yet."}
+      value={
+        value ||
+        `Description not available. Add details about your product here to provide valuable information to customers.`
+      }
       readOnly
       className={cn(!value && "italic text-muted-foreground")}
     />

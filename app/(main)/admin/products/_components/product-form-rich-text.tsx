@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import "react-quill/dist/quill.snow.css";
 
 import {
@@ -67,16 +67,18 @@ export function ProductFormRichText({
             </Button>
           </div>
           <FormControl>
-            {isEditing ? (
-              <Editor
-                value={field.value || ""}
-                placeholder={placeholder}
-                disabled={disabled}
-                onChange={(value) => field.onChange(value)}
-              />
-            ) : (
-              <Preview value={field.value || ""} />
-            )}
+            <div className="min-h-[90px]">
+              {isEditing ? (
+                <Editor
+                  value={field.value || ""}
+                  placeholder={placeholder}
+                  disabled={disabled}
+                  onChange={(value) => field.onChange(value)}
+                />
+              ) : (
+                <Preview value={field.value || ""} />
+              )}
+            </div>
           </FormControl>
         </FormItem>
       )}

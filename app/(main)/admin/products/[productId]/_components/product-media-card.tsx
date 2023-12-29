@@ -1,10 +1,11 @@
 "use client";
 
-import { useCallback, useEffect, useReducer, useState } from "react";
+import { useCallback, useReducer } from "react";
 import { useRouter } from "next/navigation";
 
 import { useDropzone } from "react-dropzone";
 import { useNotificationBanner } from "~/store/use-notification-banner";
+import { useHandleAcceptedFiles } from "~/hooks/use-handle-accepted-files";
 
 import { AdminFormWrapper } from "~/components/admin-form-wrapper";
 import { ImageDropzone } from "~/components/image-upload-widget/image-dropzone";
@@ -19,11 +20,9 @@ import {
   productMediaCardReducer,
 } from "~/store/product-media-card-reducer";
 import {
-  APPROVED_TYPES,
   ERROR_MESSAGES,
   MAX_FILES,
 } from "~/utils/form-inputs/products/file-validation";
-import { useHandleAcceptedFiles } from "~/hooks/use-handle-accepted-files";
 
 interface IProps {
   productId: string;
@@ -39,6 +38,7 @@ export function ProductMediaCard({ productId }: IProps) {
     onDrop: () => handleDragDropImage({ acceptedFiles, showBanner }),
   });
 
+  // Runs a useEffect to handle accepted files.
   useHandleAcceptedFiles({
     acceptedFiles,
     product,
