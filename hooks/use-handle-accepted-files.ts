@@ -55,11 +55,11 @@ export function useHandleAcceptedFiles({
       });
       return;
     }
+
     const existingImagesCount = product?.images.length || 0;
-    if (
-      approvedFiles.length + existingImagesCount + state.previewUrls.length >
-      MAX_FILES
-    ) {
+    const totalFiles =
+      approvedFiles.length + existingImagesCount + state.previewUrls.length;
+    if (totalFiles > MAX_FILES) {
       showBanner({
         message: ERROR_MESSAGES.MAX_IMAGES,
         type: "warning",

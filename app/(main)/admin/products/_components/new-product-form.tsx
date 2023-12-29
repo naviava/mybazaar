@@ -13,7 +13,7 @@ import { useNotificationBanner } from "~/store/use-notification-banner";
 import { Form } from "~/components/ui/form";
 import { NotificationBanner } from "~/components/notification-banner";
 import { BannerAndActionButtons } from "~/components/banner-and-action-buttons";
-import { PricingAvailabilityCard } from "./price-availability-card";
+import { PricingAvailabilityCard } from "./pricing-availability-card";
 import { ProductInfoCard } from "./product-info-card";
 
 import { trpc } from "~/app/_trpc/client";

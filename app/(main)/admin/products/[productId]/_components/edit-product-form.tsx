@@ -13,7 +13,7 @@ import { useNotificationBanner } from "~/store/use-notification-banner";
 import { Form } from "~/components/ui/form";
 import { NotificationBanner } from "~/components/notification-banner";
 import { BannerAndActionButtons } from "~/components/banner-and-action-buttons";
-import { PricingAvailabilityCard } from "../../_components/price-availability-card";
+import { PricingAvailabilityCard } from "../../_components/pricing-availability-card";
 import { ProductInfoCard } from "../../_components/product-info-card";
 import { ProductMediaCard } from "./product-media-card";
 
