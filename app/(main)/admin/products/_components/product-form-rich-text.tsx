@@ -52,17 +52,18 @@ export function ProductFormRichText({
               variant="ghost"
               size="sm"
               onClick={toggleEditing}
+              className="group text-muted-foreground"
             >
               {isEditing ? (
                 <>
                   Close without saving
-                  <X className="ml-2 h-4 w-4" />
+                  <X className="ml-2 h-4 w-4 group-hover:text-rose-500" />
                 </>
               ) : (
-                <>
+                <div className="flex items-center">
                   Edit
-                  <Edit className="ml-2 h-4 w-4" />
-                </>
+                  <Edit className="ml-2 h-4 w-4 group-hover:text-sky-500" />
+                </div>
               )}
             </Button>
           </div>
