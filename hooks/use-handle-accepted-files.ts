@@ -1,20 +1,24 @@
-import { useEffect, useReducer } from "react";
+import { Dispatch, useEffect } from "react";
+
 import { ProductWithCategoryAndImages } from "~/types";
+import { BannerType } from "~/store/use-notification-banner";
 
 import {
-  initialState,
-  productMediaCardReducer,
+  ProductMediaState,
+  ProdutMediaAction,
 } from "~/store/product-media-card-reducer";
-import { BannerType } from "~/store/use-notification-banner";
+
 import {
   APPROVED_TYPES,
   ERROR_MESSAGES,
   MAX_FILES,
-} from "~/app/(main)/admin/products/[productId]/_components/product-media-card";
+} from "~/utils/form-inputs/products/file-validation";
 
-type TProps = {
+interface UseHandleAcceptedFilesProps {
   acceptedFiles: File[];
+  state: ProductMediaState; // replace with the actual type
   product: ProductWithCategoryAndImages | undefined;
+  dispatch: Dispatch<ProdutMediaAction>;
   showBanner: ({
     message,
     type,
@@ -22,15 +26,15 @@ type TProps = {
     message: string;
     type: BannerType;
   }) => void;
-};
+}
 
-export function useDroppedFileHandler({
+export function useHandleAcceptedFiles({
   acceptedFiles,
   product,
   showBanner,
-}: TProps) {
-  const [state, dispatch] = useReducer(productMediaCardReducer, initialState);
-
+  state,
+  dispatch,
+}: UseHandleAcceptedFilesProps) {
   useEffect(() => {
     acceptedFiles.forEach((file) => {
       if (!APPROVED_TYPES.includes(file.type)) {
@@ -81,6 +85,4 @@ export function useDroppedFileHandler({
      * array, as it will cause an infinite loop.
      */
   }, [acceptedFiles, product, showBanner]);
-
-  return [state, dispatch];
 }

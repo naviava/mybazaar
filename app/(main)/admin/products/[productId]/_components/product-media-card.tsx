@@ -23,6 +23,7 @@ import {
   ERROR_MESSAGES,
   MAX_FILES,
 } from "~/utils/form-inputs/products/file-validation";
+import { useHandleAcceptedFiles } from "~/hooks/use-handle-accepted-files";
 
 interface IProps {
   productId: string;
@@ -38,56 +39,13 @@ export function ProductMediaCard({ productId }: IProps) {
     onDrop: () => handleDragDropImage({ acceptedFiles, showBanner }),
   });
 
-  useEffect(() => {
-    acceptedFiles.forEach((file) => {
-      if (!APPROVED_TYPES.includes(file.type)) {
-        showBanner({
-          message: ERROR_MESSAGES.INVALID_FILE_TYPE,
-          type: "warning",
-        });
-        return;
-      }
-    });
-    const approvedFiles = acceptedFiles.filter((file) =>
-      APPROVED_TYPES.includes(file.type),
-    );
-    if (approvedFiles.length > MAX_FILES) {
-      showBanner({
-        message: ERROR_MESSAGES.MAX_IMAGES,
-        type: "warning",
-      });
-      return;
-    }
-    const existingImagesCount = product?.images.length || 0;
-    if (
-      approvedFiles.length + existingImagesCount + state.previewUrls.length >
-      MAX_FILES
-    ) {
-      showBanner({
-        message: ERROR_MESSAGES.MAX_IMAGES,
-        type: "warning",
-      });
-      return;
-    }
-    dispatch({ type: "APPEND_FILES", payload: approvedFiles });
-    if (state.previewUrls.length > 0) {
-      state.previewUrls.forEach((url) => URL.revokeObjectURL(url));
-    }
-    const updatedPreviewUrls = approvedFiles
-      .map((file) => {
-        if (!APPROVED_TYPES.includes(file.type)) {
-          return;
-        } else {
-          return URL.createObjectURL(file);
-        }
-      })
-      .filter((url): url is string => Boolean(url));
-    dispatch({ type: "APPEND_PREVIEW_URLS", payload: updatedPreviewUrls });
-    /**
-     * previewUrls is deliberately excluded from the dependency
-     * array, as it will cause an infinite loop.
-     */
-  }, [acceptedFiles, product, showBanner]);
+  useHandleAcceptedFiles({
+    acceptedFiles,
+    product,
+    showBanner,
+    state,
+    dispatch,
+  });
 
   const utils = trpc.useUtils();
   const { mutate: handleLinktoDB } = trpc.product.createImageUrls.useMutation({

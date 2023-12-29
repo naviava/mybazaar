@@ -1,23 +1,26 @@
-interface State {
+export type ProductMediaState = {
   files: File[] | null;
   isLoading: boolean;
   previewUrls: string[];
-}
+};
 
-export const initialState: State = {
+export const initialState: ProductMediaState = {
   files: null,
   isLoading: false,
   previewUrls: [],
 };
 
-type Action =
+export type ProdutMediaAction =
   | { type: "SET_FILES"; payload: File[] }
   | { type: "APPEND_FILES"; payload: File[] }
   | { type: "SET_LOADING"; payload: boolean }
   | { type: "SET_PREVIEW_URLS"; payload: string[] }
   | { type: "APPEND_PREVIEW_URLS"; payload: string[] };
 
-export function productMediaCardReducer(state: State, action: Action): State {
+export function productMediaCardReducer(
+  state: ProductMediaState,
+  action: ProdutMediaAction,
+): ProductMediaState {
   switch (action.type) {
     case "SET_FILES":
       return { ...state, files: action.payload };
