@@ -51,6 +51,7 @@ export function ProductMediaCard({ productId }: IProps) {
   const { mutate: handleLinktoDB } = trpc.product.createImageUrls.useMutation({
     onError: ({ message }) => {
       dispatch({ type: "SET_PREVIEW_URLS", payload: [] });
+      dispatch({ type: "SET_FILES", payload: [] });
       showBanner({
         message,
         type: "error",
@@ -89,7 +90,7 @@ export function ProductMediaCard({ productId }: IProps) {
     } finally {
       dispatch({ type: "SET_LOADING", payload: false });
     }
-  }, [state.files, handleFileUpload, handleLinktoDB, productId, showBanner]);
+  }, [state.files, productId, handleFileUpload, showBanner, handleLinktoDB]);
 
   return (
     <AdminFormWrapper title="Media">
