@@ -6,7 +6,7 @@ import { SidebarItem } from "./sidebar-item";
 export function SidebarHoverCards() {
   return (
     <div className="mt-4 flex flex-col gap-y-4">
-      <SidebarHoverItem icon={ShoppingCart}>
+      <SidebarHoverItem icon={ShoppingCart} groupHref="/admin/products">
         <SidebarItem
           isHoverCard
           label="Add Product"
@@ -18,7 +18,7 @@ export function SidebarHoverCards() {
           href="/admin/products"
         />
       </SidebarHoverItem>
-      <SidebarHoverItem icon={CassetteTape}>
+      <SidebarHoverItem icon={CassetteTape} groupHref="/admin/categories">
         <SidebarItem
           isHoverCard
           label="Add Category"
@@ -30,10 +30,10 @@ export function SidebarHoverCards() {
           href="/admin/categories"
         />
       </SidebarHoverItem>
-      <SidebarHoverItem icon={Truck}>
+      <SidebarHoverItem icon={Truck} groupHref="/admin/orders">
         <SidebarItem isHoverCard label="View Orders" href="/admin/orders" />
       </SidebarHoverItem>
-      <SidebarHoverItem icon={Users}>
+      <SidebarHoverItem icon={Users} groupHref="/admin/users">
         <SidebarItem isHoverCard label="Back Office" href="/admin/users" />
         <SidebarItem isHoverCard label="Customers" href="/admin/customers" />
       </SidebarHoverItem>

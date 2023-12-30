@@ -1,8 +1,8 @@
 "use client";
 
+import { memo } from "react";
 import { Home, MoreHorizontal } from "lucide-react";
 
-import { useIsMounted } from "~/hooks/use-is-mounted";
 import { useMediaQuery } from "~/hooks/use-media-query";
 import { useDesktopSidebar } from "~/store/use-desktop-sidebar";
 
@@ -14,8 +14,8 @@ interface IProps {
   handleCloseSheet?: () => void;
 }
 
-export function SidebarContent({ handleCloseSheet }: IProps) {
-  const isMounted = useIsMounted();
+export const SidebarContent = memo(_SidebarContent);
+function _SidebarContent({ handleCloseSheet }: IProps) {
   const { isDesktop } = useMediaQuery();
   const { isCollapsed } = useDesktopSidebar((state) => state);
 

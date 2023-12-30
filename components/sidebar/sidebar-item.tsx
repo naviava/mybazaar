@@ -1,7 +1,8 @@
 "use client";
 
-import { memo } from "react";
+import { memo, useMemo } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 import { LucideIcon } from "lucide-react";
 
@@ -27,8 +28,12 @@ function _SidebarItem({
   isHoverCard,
   handleClick,
 }: IProps) {
+  const pathname = usePathname();
   const { isDesktop } = useMediaQuery();
   const { isCollapsed } = useDesktopSidebar((state) => state);
+  const isActive = useMemo(() => pathname === href, [pathname, href]);
+
+  console.log(isActive);
 
   return (
     <Button
@@ -59,6 +64,7 @@ function _SidebarItem({
           className={cn(
             " text-base text-muted-foreground md:text-lg",
             isDesktop && isCollapsed && !isHoverCard && "hidden",
+            isActive && "text-sky-500",
           )}
         >
           {label}

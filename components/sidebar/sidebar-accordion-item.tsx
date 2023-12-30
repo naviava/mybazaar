@@ -1,4 +1,9 @@
+"use client";
+
+import { memo, useMemo } from "react";
+import { usePathname } from "next/navigation";
 import { LucideIcon } from "lucide-react";
+
 import {
   Accordion,
   AccordionContent,
@@ -7,21 +12,46 @@ import {
 } from "~/components/ui/accordion";
 import { Button } from "~/components/ui/button";
 
+import { cn } from "~/lib/utils";
+
 interface IProps {
   children: React.ReactNode;
   label: string;
   icon?: LucideIcon;
+  groupHref?: string;
 }
 
-export function SidebarAccordionItem({ children, label, icon: Icon }: IProps) {
+export const SidebarAccordionItem = memo(_SidebarAccordionItem);
+function _SidebarAccordionItem({
+  children,
+  label,
+  icon: Icon,
+  groupHref,
+}: IProps) {
+  const pathname = usePathname();
+  const isActive = useMemo(
+    () => pathname.startsWith(groupHref ?? ""),
+    [pathname, groupHref],
+  );
+
   return (
     <Accordion type="single" collapsible>
       <AccordionItem value={label} className="">
         <Button asChild variant="ghost">
-          <AccordionTrigger className="justify-between text-base text-muted-foreground md:text-lg">
+          <AccordionTrigger
+            className={cn(
+              "justify-between text-base text-muted-foreground md:text-lg",
+              isActive && "bg-neutral-100",
+            )}
+          >
             <div className="flex items-center">
               {!!Icon && (
-                <Icon className="mr-4 h-4 w-4 text-muted-foreground" />
+                <Icon
+                  className={cn(
+                    "mr-4 h-4 w-4 text-muted-foreground",
+                    isActive && "text-sky-500",
+                  )}
+                />
               )}
               {label}
             </div>
