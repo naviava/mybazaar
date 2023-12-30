@@ -1,11 +1,13 @@
-import { ElementRef, memo, useEffect, useRef, useState } from "react";
+import { memo, useMemo } from "react";
 import Image from "next/image";
 
 import { CarouselItem } from "~/components/ui/carousel";
 import { Card, CardContent } from "~/components/ui/card";
+import { CarouselCTA } from "./carousel-cta";
 
 interface IProps {
   index: number;
+  centerIndex: number | undefined;
   productId: string;
   productName: string;
   imageUrl: string;
@@ -14,46 +16,29 @@ interface IProps {
 export const ProductCarouselItem = memo(_ProductCarouselItem);
 function _ProductCarouselItem({
   index,
+  centerIndex,
   productId,
   productName,
   imageUrl,
 }: IProps) {
-  const frameRef = useRef<ElementRef<"div">>(null);
-  const [frameWidth, setFrameWidth] = useState<number>(
-    frameRef.current?.clientWidth || 0,
-  );
-  const [frameHeight, setFrameHeight] = useState<number>(
-    frameRef.current?.clientHeight || 0,
-  );
-
-  useEffect(() => {
-    if (!frameRef.current) {
-      return;
-    }
-    setFrameWidth(frameRef.current.clientWidth);
-    setFrameHeight(frameRef.current.clientHeight);
-  }, []);
-
-  console.log(imageUrl);
+  const isVisible = useMemo(() => centerIndex === index, [centerIndex, index]);
 
   return (
     <CarouselItem key={index} className="pl-1 md:basis-1/2 2xl:basis-1/3">
-      <div>
-        <Card className="rounded-none">
-          <CardContent className="relative flex aspect-square items-center justify-center">
-            <Image
-              fill
-              src={imageUrl}
-              alt={`Preview image of ${productName}`}
-              width={frameWidth}
-              height={frameHeight}
-            />
-            <span className="text-4xl font-semibold uppercase lg:text-5xl">
-              {productName}
-            </span>
-          </CardContent>
-        </Card>
-      </div>
+      <Card className="rounded-none">
+        <CardContent className="relative flex aspect-square items-center justify-center">
+          <Image
+            fill
+            src={imageUrl}
+            alt={`Preview image of ${productName}`}
+            className="object-cover"
+          />
+          <div className="absolute inset-0 bg-black/70" />
+          {isVisible && (
+            <CarouselCTA productId={productId} productName={productName} />
+          )}
+        </CardContent>
+      </Card>
     </CarouselItem>
   );
 }

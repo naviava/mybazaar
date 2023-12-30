@@ -1,31 +1,45 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { memo, useCallback, useEffect, useRef, useState } from "react";
+import Autoplay from "embla-carousel-autoplay";
 
 import {
   Carousel,
-  CarouselApi,
   CarouselContent,
-  CarouselItem,
   CarouselNext,
   CarouselPrevious,
+  type CarouselApi,
 } from "~/components/ui/carousel";
 import { ProductCarouselItem } from "./product-carousel-item";
-
 import { serverClient } from "~/app/_trpc/server-client";
 
 interface IProps {
   products: Awaited<ReturnType<typeof serverClient.product.get5Products>>;
 }
 
-export function HomePageCarousel({ products }: IProps) {
+export const HomePageCarousel = memo(_HomePageCarousel);
+function _HomePageCarousel({ products }: IProps) {
+  const hasSetApi = useRef(false);
   const [api, setApi] = useState<CarouselApi>(null);
+  const [centerIndex, setCenterIndex] = useState<number>(0);
 
-  useEffect(() => {
-    if (!api) {
+  const handleSetApi = useCallback((api: CarouselApi) => {
+    if (hasSetApi.current) {
       return;
     }
-    console.log(api.root);
+    hasSetApi.current = true;
+    setApi(api);
+  }, []);
+
+  useEffect(() => {
+    if (!api) return;
+    const onScroll = () => {
+      setCenterIndex(api.selectedScrollSnap());
+    };
+    api.on("scroll", onScroll);
+    return () => {
+      api.off("scroll", onScroll);
+    };
   }, [api]);
 
   return (
@@ -35,7 +49,8 @@ export function HomePageCarousel({ products }: IProps) {
           align: "center",
           loop: true,
         }}
-        setApi={setApi}
+        plugins={[Autoplay({ delay: 5000 })]}
+        setApi={handleSetApi}
         className="mx-auto h-full w-full"
       >
         <CarouselContent className="-ml-1">
@@ -43,6 +58,7 @@ export function HomePageCarousel({ products }: IProps) {
             <ProductCarouselItem
               key={product.id}
               index={idx}
+              centerIndex={centerIndex}
               productId={product.id}
               productName={product.name}
               imageUrl={
@@ -51,8 +67,14 @@ export function HomePageCarousel({ products }: IProps) {
             />
           ))}
         </CarouselContent>
-        <CarouselPrevious className="left-2 md:left-4 xl:left-6" />
-        <CarouselNext className="right-2 md:right-4 xl:right-6" />
+        <CarouselPrevious
+          variant="ghost"
+          className="left-2 text-white hover:bg-white/20 hover:text-white md:left-4 xl:left-6"
+        />
+        <CarouselNext
+          variant="ghost"
+          className="right-2 text-white hover:bg-white/20 hover:text-white md:right-4 xl:right-6"
+        />
       </Carousel>
     </div>
   );

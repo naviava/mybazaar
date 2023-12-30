@@ -6,7 +6,9 @@ import { db } from "~/lib/db";
 interface IProps {}
 
 export default async function ProductsPage({}: IProps) {
-  const products = await db.product.findMany();
+  const products = await db.product.findMany({
+    orderBy: { createdAt: "desc" },
+  });
 
   return (
     <AdminPageWrapper>
