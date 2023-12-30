@@ -33,8 +33,6 @@ function _SidebarItem({
   const { isCollapsed } = useDesktopSidebar((state) => state);
   const isActive = useMemo(() => pathname === href, [pathname, href]);
 
-  console.log(isActive);
-
   return (
     <Button
       asChild
