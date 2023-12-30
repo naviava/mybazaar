@@ -1,39 +1,58 @@
 "use client";
 
-import { Card, CardContent } from "~/components/ui/card";
+import { useEffect, useState } from "react";
+
 import {
   Carousel,
+  CarouselApi,
   CarouselContent,
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
 } from "~/components/ui/carousel";
+import { ProductCarouselItem } from "./product-carousel-item";
 
-export default function HomePageCarousel() {
+import { serverClient } from "~/app/_trpc/server-client";
+
+interface IProps {
+  products: Awaited<ReturnType<typeof serverClient.product.get5Products>>;
+}
+
+export function HomePageCarousel({ products }: IProps) {
+  const [api, setApi] = useState<CarouselApi>(null);
+
+  useEffect(() => {
+    if (!api) {
+      return;
+    }
+    console.log(api.root);
+  }, [api]);
+
   return (
-    <div>
+    <div className="w-full">
       <Carousel
         opts={{
           align: "center",
           loop: true,
         }}
-        className="mx-auto w-full max-w-[80%]"
+        setApi={setApi}
+        className="mx-auto h-full w-full"
       >
-        <CarouselContent>
-          {Array.from({ length: 4 }).map((_, index) => (
-            <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3">
-              <div>
-                <Card>
-                  <CardContent className="flex aspect-square items-center justify-center p-6">
-                    <span className="text-3xl font-semibold">{index + 1}</span>
-                  </CardContent>
-                </Card>
-              </div>
-            </CarouselItem>
+        <CarouselContent className="-ml-1">
+          {products.map((product, idx) => (
+            <ProductCarouselItem
+              key={product.id}
+              index={idx}
+              productId={product.id}
+              productName={product.name}
+              imageUrl={
+                !!product.images.length ? product.images[0].imageUrl : "" // TODO: Placeholder image to go here.
+              }
+            />
           ))}
         </CarouselContent>
-        <CarouselPrevious />
-        <CarouselNext />
+        <CarouselPrevious className="left-2 md:left-4 xl:left-6" />
+        <CarouselNext className="right-2 md:right-4 xl:right-6" />
       </Carousel>
     </div>
   );

@@ -1,17 +1,15 @@
+import { serverClient } from "~/app/_trpc/server-client";
+import { HomePageCarousel } from "./_components/home-page-carousel";
 import { db } from "~/lib/db";
-import HomePageCarousel from "./_components/home-page-carousel";
 
 export default async function Home() {
-  const product = await db.product.findFirst({
-    include: {
-      category: true,
-      images: true,
-    },
-  });
+  const products = await serverClient.product.get5Products();
 
   return (
-    <div className="mx-auto w-full">
-      <HomePageCarousel />
-    </div>
+    <>
+      {!!products && !!products.length && (
+        <HomePageCarousel products={products} />
+      )}
+    </>
   );
 }
