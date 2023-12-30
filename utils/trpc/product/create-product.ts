@@ -1,9 +1,9 @@
 import { z } from "zod";
-
-import { db } from "~/lib/db";
 import { TRPCError } from "@trpc/server";
 import { adminProcedure } from "~/server/trpc";
-import { generateSku } from "~/utils/generate-sku";
+
+import { db } from "~/lib/db";
+import { generateSku } from "~/utils";
 
 export const createProduct = adminProcedure
   .input(

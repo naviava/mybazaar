@@ -4,7 +4,8 @@ import { hash } from "bcrypt";
 import { db } from "~/lib/db";
 import { TRPCError } from "@trpc/server";
 import { publicProcedure } from "~/server/trpc";
-import { generateOTP } from "~/utils/registration/generate-otp";
+
+import { generateOTP } from "~/utils";
 import { sendVerificationEmail } from "~/utils/registration/send-verification-email";
 
 export const createTempUser = publicProcedure

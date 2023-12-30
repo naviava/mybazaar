@@ -1,8 +1,7 @@
-import { getS3UploadURL } from "~/lib/s3-client";
-import { computeSHA256 } from "~/utils/compute-sha-256";
-import { generateFileName } from "~/utils/generate-file-name";
-
 import { BannerType } from "~/store/use-notification-banner";
+
+import { getS3UploadURL } from "~/lib/s3-client";
+import { computeSHA256, generateFileName } from "~/utils";
 
 type HandleFileUploadProps = {
   files: File[];
