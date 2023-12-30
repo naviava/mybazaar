@@ -8,6 +8,7 @@ import { useNotificationBanner } from "~/store/use-notification-banner";
 
 import { Separator } from "~/components/ui/separator";
 import ConfirmModal from "~/components/modals/confirm-modal";
+import { ImagePreviewModal } from "~/components/modals/image-preview-modal";
 
 import { trpc } from "~/app/_trpc/client";
 
@@ -42,13 +43,14 @@ function _ImageActions({ url }: IProps) {
 
   return (
     <div className="flex w-full items-center">
-      {/* TODO: Click handler to open image modal. */}
-      <div
-        role="button"
-        className="group flex flex-1 justify-center rounded-bl-lg py-3 transition hover:bg-neutral-200/70"
-      >
-        <Eye className="h-5 w-5 text-muted-foreground transition group-hover:text-sky-700" />
-      </div>
+      <ImagePreviewModal imageUrl={url} className="flex-1">
+        <div
+          role="button"
+          className="group flex justify-center rounded-bl-lg py-3 transition hover:bg-neutral-200/70"
+        >
+          <Eye className="h-5 w-5 text-muted-foreground transition group-hover:text-sky-700" />
+        </div>
+      </ImagePreviewModal>
       <Separator orientation="vertical" className="h-7" />
       <ConfirmModal onConfirm={() => handleDelete({ url, imageKey })}>
         <div

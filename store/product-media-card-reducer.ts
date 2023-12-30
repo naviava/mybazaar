@@ -1,3 +1,9 @@
+/**
+ * TODO: Convert this reducer into a Zustand store.
+ *  WHY: This reducer is used in the ProductMediaCard component.
+ *       The state for notification banner on uploading the 4th image,
+ *       does not update properly.
+ */
 export type ProductMediaState = {
   files: File[] | null;
   isLoading: boolean;
