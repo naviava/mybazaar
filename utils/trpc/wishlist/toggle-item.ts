@@ -41,6 +41,7 @@ export const toggleItem = privateProcedure
           wishlistId: wishlist.id,
         },
       });
+      return "Removed from wishlist.";
     } else {
       await db.wishlistItem.create({
         data: {
@@ -48,5 +49,6 @@ export const toggleItem = privateProcedure
           wishlistId: wishlist.id,
         },
       });
+      return "Added to wishlist.";
     }
   });

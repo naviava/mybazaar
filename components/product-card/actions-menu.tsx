@@ -25,7 +25,15 @@ export function ActionsMenu({ productId, isHover, isStatic }: IProps) {
     modifyCart({ productId });
   }, [modifyCart, productId]);
 
-  // TODO: Add wishlist functionality.
+  const { mutate: toggleItem } = trpc.wishlist.toggleItem.useMutation({
+    onError: ({ message }) => toast.error(message),
+    onSuccess: (data) => {
+      toast.success(data);
+    },
+  });
+  const handleToggleItem = useCallback(() => {
+    toggleItem(productId);
+  }, [toggleItem, productId]);
 
   return (
     <div
@@ -41,6 +49,7 @@ export function ActionsMenu({ productId, isHover, isStatic }: IProps) {
         isHover={isHover}
         productId={productId}
         disabled={isLoading}
+        onClick={handleToggleItem}
       >
         <Heart className="h-5 w-5 text-neutral-500" />
       </ActionButton>
