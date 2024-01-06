@@ -14,7 +14,7 @@ import { ProductCarouselItem } from "./product-carousel-item";
 import { serverClient } from "~/app/_trpc/server-client";
 
 interface IProps {
-  products: Awaited<ReturnType<typeof serverClient.product.get5Products>>;
+  products: Awaited<ReturnType<typeof serverClient.product.getNProducts>>;
 }
 
 export const HomePageCarousel = memo(_HomePageCarousel);
@@ -62,7 +62,9 @@ function _HomePageCarousel({ products }: IProps) {
               productId={product.id}
               productName={product.name}
               imageUrl={
-                !!product.images.length ? product.images[0].imageUrl : "" // TODO: Placeholder image to go here.
+                !!product.images.length
+                  ? product.images[0].imageUrl
+                  : "/placeholder.jpg" // TODO: Placeholder image to go here.
               }
             />
           ))}

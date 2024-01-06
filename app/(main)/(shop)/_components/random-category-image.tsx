@@ -15,7 +15,7 @@ export function RandomCategoryImage({
   href,
 }: IProps) {
   return (
-    <Link href={href}>
+    <Link href={href} className="h-full w-full">
       <Image fill src={src} alt={alt} className="object-cover" />
       <div className="absolute inset-0 bg-black/70" />
       <div className="absolute bottom-2 left-2 text-3xl font-semibold uppercase text-white">
