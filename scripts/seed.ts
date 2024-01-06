@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client";
-import { generateSku } from "~/utils/generate-sku";
+import { generateSku } from "~/utils";
 
 const db = new PrismaClient();
 
