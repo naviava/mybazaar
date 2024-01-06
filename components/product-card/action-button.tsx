@@ -8,6 +8,7 @@ interface IProps {
   isHover?: boolean;
   productId: string;
   href?: string;
+  disabled?: boolean;
   onClick?: () => void;
 }
 
@@ -17,6 +18,7 @@ export function ActionButton({
   isHover,
   productId,
   href,
+  disabled,
   onClick,
 }: IProps) {
   return (
@@ -25,6 +27,7 @@ export function ActionButton({
       type="button"
       variant="link"
       onClick={onClick}
+      disabled={disabled}
       className={cn("h-8 w-8 p-0", isHover && "bg-white")}
     >
       {asChild && href ? <Link href={href}>{children}</Link> : children}

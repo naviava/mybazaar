@@ -1,6 +1,11 @@
+"use client";
+
 import { Eye, Heart, ShoppingCart } from "lucide-react";
 import { ActionButton } from "./action-button";
+
 import { cn } from "~/lib/utils";
+import { trpc } from "~/app/_trpc/client";
+import { useCallback } from "react";
 
 interface IProps {
   productId: string;
@@ -9,7 +14,15 @@ interface IProps {
 }
 
 export function ActionsMenu({ productId, isHover, isStatic }: IProps) {
-  // TODO: Add add to card and wishlist functionality.
+  const { mutate: modifyCart, isLoading } = trpc.cart.modifyCart.useMutation();
+  const handleModifyCart = useCallback(() => {
+    modifyCart({
+      productId,
+      quantity: 1,
+    });
+  }, [modifyCart, productId]);
+
+  // TODO: Add wishlist functionality.
   return (
     <div
       className={cn(
@@ -20,7 +33,11 @@ export function ActionsMenu({ productId, isHover, isStatic }: IProps) {
         isStatic && "lg:hidden",
       )}
     >
-      <ActionButton isHover={isHover} productId={productId}>
+      <ActionButton
+        isHover={isHover}
+        productId={productId}
+        disabled={isLoading}
+      >
         <Heart className="h-5 w-5 text-neutral-500" />
       </ActionButton>
       <ActionButton
@@ -28,10 +45,16 @@ export function ActionsMenu({ productId, isHover, isStatic }: IProps) {
         href={`/products/${productId}`}
         isHover={isHover}
         productId={productId}
+        disabled={isLoading}
       >
         <Eye className="h-5 w-5 text-neutral-500" />
       </ActionButton>
-      <ActionButton isHover={isHover} productId={productId}>
+      <ActionButton
+        isHover={isHover}
+        productId={productId}
+        disabled={isLoading}
+        onClick={handleModifyCart}
+      >
         <ShoppingCart className="h-5 w-5 text-neutral-500" />
       </ActionButton>
     </div>
