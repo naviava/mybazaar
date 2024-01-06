@@ -11,8 +11,8 @@ interface IProps {
 
 export function ProductCard({ data }: IProps) {
   return (
-    <article className="space-y-5 px-2">
-      <div className="relative aspect-square w-full">
+    <article className="group/card px-2 transition-all">
+      <div className="relative mb-5 aspect-square w-full transition-all">
         <Image
           fill
           src={
@@ -22,11 +22,12 @@ export function ProductCard({ data }: IProps) {
         />
         <ActionsMenu productId={data.id} isHover />
       </div>
-      <div className="text-center">
+      <div className="mb-1 text-center">
         <div>Rating</div>
         <div>Name</div>
         <div>Price</div>
       </div>
+      <ActionsMenu productId={data.id} isStatic />
     </article>
   );
 }
