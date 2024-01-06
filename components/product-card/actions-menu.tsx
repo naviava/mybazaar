@@ -26,6 +26,7 @@ export function ActionsMenu({ productId, isHover, isStatic }: IProps) {
   }, [modifyCart, productId]);
 
   // TODO: Add wishlist functionality.
+
   return (
     <div
       className={cn(
