@@ -11,17 +11,16 @@ export const modifyCart = privateProcedure
     }),
   )
   .mutation(async ({ ctx, input }) => {
-    const { productId, quantity } = input;
+    const { productId } = input;
+    const quantity = input.quantity ?? 1;
     const { user } = ctx;
     const cart = await getCart(user.id);
 
     const existingCartItem = cart.items.find(
       (item) => item.productId === productId,
     );
-    if (
-      !existingCartItem?.quantity &&
-      existingCartItem?.quantity === quantity
-    ) {
+    console.log(existingCartItem);
+    if (!!quantity && existingCartItem?.quantity === quantity) {
       return { message: "No changes detected." };
     }
     if (!!existingCartItem) {
@@ -29,15 +28,17 @@ export const modifyCart = privateProcedure
         where: { id: existingCartItem.id },
         data: { quantity },
       });
+      console.log(cartItem);
       return cartItem;
     } else {
       const cartItem = await db.cartItem.create({
         data: {
           cartId: cart.id,
           productId,
-          quantity: quantity ?? 1,
+          quantity,
         },
       });
+      console.log(cartItem);
       return cartItem;
     }
   });
