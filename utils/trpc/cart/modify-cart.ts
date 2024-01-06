@@ -19,7 +19,6 @@ export const modifyCart = privateProcedure
     const existingCartItem = cart.items.find(
       (item) => item.productId === productId,
     );
-    console.log(existingCartItem);
     if (!!quantity && existingCartItem?.quantity === quantity) {
       return { message: "No changes detected." };
     }
@@ -28,7 +27,6 @@ export const modifyCart = privateProcedure
         where: { id: existingCartItem.id },
         data: { quantity },
       });
-      console.log(cartItem);
       return cartItem;
     } else {
       const cartItem = await db.cartItem.create({
@@ -38,7 +36,6 @@ export const modifyCart = privateProcedure
           quantity,
         },
       });
-      console.log(cartItem);
       return cartItem;
     }
   });

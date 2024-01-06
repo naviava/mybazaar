@@ -17,8 +17,7 @@ interface IProps {
 export function ActionsMenu({ productId, isHover, isStatic }: IProps) {
   const { mutate: modifyCart, isLoading } = trpc.cart.modifyCart.useMutation({
     onError: () => toast.error("Something went wrong."),
-    onSuccess: (data) => {
-      console.log(data);
+    onSuccess: () => {
       toast.success("Added to cart.");
     },
   });
