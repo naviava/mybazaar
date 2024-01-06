@@ -1,6 +1,7 @@
-import { Category, Product, ProductImage } from "@prisma/client";
 import Image from "next/image";
+import { Category, Product, ProductImage } from "@prisma/client";
 import { ActionsMenu } from "./actions-menu";
+import { generatePriceTag } from "~/utils";
 
 interface IProps {
   data: Product & {
@@ -24,8 +25,10 @@ export function ProductCard({ data }: IProps) {
       </div>
       <div className="mb-1 text-center">
         <div>Rating</div>
-        <div>Name</div>
-        <div>Price</div>
+        <h4 className="font-medium">{data.name}</h4>
+        <p className="text-lg font-medium text-blue-700">
+          {generatePriceTag(data.price)}
+        </p>
       </div>
       <ActionsMenu productId={data.id} isStatic />
     </article>

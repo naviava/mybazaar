@@ -32,3 +32,10 @@ export async function generateFileName() {
   const newName = (bytes = 32) => crypto.randomBytes(bytes).toString("hex");
   return newName().toString();
 }
+
+export function generatePriceTag(price: number) {
+  return price.toLocaleString("en-US", {
+    style: "currency",
+    currency: "INR",
+  });
+}
