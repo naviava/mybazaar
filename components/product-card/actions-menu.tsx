@@ -6,6 +6,7 @@ import { ActionButton } from "./action-button";
 import { cn } from "~/lib/utils";
 import { trpc } from "~/app/_trpc/client";
 import { useCallback } from "react";
+import { toast } from "sonner";
 
 interface IProps {
   productId: string;
@@ -14,12 +15,15 @@ interface IProps {
 }
 
 export function ActionsMenu({ productId, isHover, isStatic }: IProps) {
-  const { mutate: modifyCart, isLoading } = trpc.cart.modifyCart.useMutation();
+  const { mutate: modifyCart, isLoading } = trpc.cart.modifyCart.useMutation({
+    onError: () => toast.error("Something went wrong."),
+    onSuccess: (data) => {
+      console.log(data);
+      toast.success("Added to cart.");
+    },
+  });
   const handleModifyCart = useCallback(() => {
-    modifyCart({
-      productId,
-      quantity: 1,
-    });
+    modifyCart({ productId });
   }, [modifyCart, productId]);
 
   // TODO: Add wishlist functionality.
