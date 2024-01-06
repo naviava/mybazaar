@@ -1,9 +1,14 @@
-interface IProps {}
+import { ProductCard } from "./product-card";
+import { serverClient } from "~/app/_trpc/server-client";
 
-export function ProductsGrid({}: IProps) {
+export async function ProductsGrid() {
+  const products = await serverClient.product.getNProducts(8);
+
   return (
     <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
-      ProductsGrid
+      {products.map((product) => (
+        <ProductCard key={product.id} data={product} />
+      ))}
     </div>
   );
 }

@@ -1,9 +1,9 @@
+import { Separator } from "~/components/ui/separator";
+import { TopSellingProducts } from "./_components/top-selling-products";
 import { RandomCategoryGrid } from "./_components/random-category-grid";
 import { HomePageCarousel } from "./_components/home-page-carousel";
 
 import { serverClient } from "~/app/_trpc/server-client";
-import { Separator } from "~/components/ui/separator";
-import { TopSellingProducts } from "./_components/top-selling-products";
 
 export const CATEGORIES = [
   {
@@ -29,10 +29,10 @@ export const CATEGORIES = [
 ];
 
 export default async function HomePage() {
-  const products = await serverClient.product.get5Products();
+  const products = await serverClient.product.getNProducts(5);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 pb-24">
       {!!products && !!products.length && (
         <HomePageCarousel products={products} />
       )}
