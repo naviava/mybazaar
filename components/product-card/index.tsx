@@ -12,7 +12,7 @@ interface IProps {
 
 export function ProductCard({ data }: IProps) {
   return (
-    <article className="group/card px-2 transition-all">
+    <article className="group/card cursor-pointer px-2 transition-all">
       <div className="relative mb-5 aspect-square w-full transition-all">
         <Image
           fill

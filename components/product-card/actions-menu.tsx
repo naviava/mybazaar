@@ -15,6 +15,9 @@ interface IProps {
 }
 
 export function ActionsMenu({ productId, isHover, isStatic }: IProps) {
+  const utils = trpc.useUtils();
+  const { data: isInWishlist } = trpc.wishlist.isInWishlist.useQuery(productId);
+
   const { mutate: modifyCart, isLoading } = trpc.cart.modifyCart.useMutation({
     onError: () => toast.error("Something went wrong."),
     onSuccess: () => {
@@ -28,6 +31,7 @@ export function ActionsMenu({ productId, isHover, isStatic }: IProps) {
   const { mutate: toggleItem } = trpc.wishlist.toggleItem.useMutation({
     onError: ({ message }) => toast.error(message),
     onSuccess: (data) => {
+      utils.wishlist.isInWishlist.invalidate(productId);
       toast.success(data);
     },
   });
@@ -51,7 +55,13 @@ export function ActionsMenu({ productId, isHover, isStatic }: IProps) {
         disabled={isLoading}
         onClick={handleToggleItem}
       >
-        <Heart className="h-5 w-5 text-neutral-500" />
+        <Heart
+          fill={isInWishlist ? "#e3bb09" : "none"}
+          className={cn(
+            "h-5 w-5 text-neutral-500",
+            isInWishlist && "text-amz-yellow-shaded drop-shadow-md",
+          )}
+        />
       </ActionButton>
       <ActionButton
         asChild
