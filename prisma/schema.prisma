@@ -74,8 +74,10 @@ model User {
   accounts       Account[]
   sessions       Session[]
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  Cart      Cart[]
+  Wishlist  Wishlist[]
 }
 
 model Category {
@@ -101,10 +103,13 @@ model Product {
   isFeatured   Boolean        @default(false)
   categorySlug String
   category     Category       @relation(fields: [categorySlug], references: [slug], onDelete: Restrict)
+  cartItems    CartItem[]
   images       ProductImage[]
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  Wishlist   Wishlist? @relation(fields: [wishlistId], references: [id])
+  wishlistId String?
 }
 
 model ProductImage {
@@ -112,6 +117,38 @@ model ProductImage {
   imageUrl  String  @db.Text
   productId String
   product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Cart {
+  id     String     @id @default(cuid())
+  userId String
+  user   User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  items  CartItem[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model CartItem {
+  id        String  @id @default(cuid())
+  quantity  Int
+  cartId    String
+  cart      Cart    @relation(fields: [cartId], references: [id], onDelete: Cascade)
+  productId String
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Wishlist {
+  id     String    @id @default(cuid())
+  userId String    @unique
+  user   User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  items  Product[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
