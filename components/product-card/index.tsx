@@ -20,6 +20,7 @@ export function ProductCard({ data }: IProps) {
             !!data.images.length ? data.images[0].imageUrl : "/placeholder.jpg"
           }
           alt={`${data.name} Image`}
+          className="object-cover"
         />
         <ActionsMenu productId={data.id} isHover />
       </div>
