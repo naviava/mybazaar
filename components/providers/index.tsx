@@ -1,5 +1,12 @@
 "use client";
 
+import {
+  RecoilRoot,
+  atom,
+  selector,
+  useRecoilState,
+  useRecoilValue,
+} from "recoil";
 import { TRPCProvider } from "./trpc-provider";
 
 interface IProps {
@@ -7,5 +14,9 @@ interface IProps {
 }
 
 export function Providers({ children }: IProps) {
-  return <TRPCProvider>{children}</TRPCProvider>;
+  return (
+    <TRPCProvider>
+      <RecoilRoot>{children}</RecoilRoot>
+    </TRPCProvider>
+  );
 }

@@ -1,3 +1,4 @@
+import Link from "next/link";
 import Image from "next/image";
 
 interface IProps {
@@ -7,12 +8,14 @@ interface IProps {
 
 export function Logo({ height = 100, width = 100 }: IProps) {
   return (
-    <Image
-      src="logo.svg"
-      alt="My Bazaar Logo"
-      height={height}
-      width={width}
-      className="mx-auto"
-    />
+    <Link href="/">
+      <Image
+        src="logo.svg"
+        alt="My Bazaar Logo"
+        height={height}
+        width={width}
+        className="mx-auto"
+      />
+    </Link>
   );
 }
