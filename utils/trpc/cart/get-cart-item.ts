@@ -11,14 +11,18 @@ export const getCartItem = privateProcedure
     const productId = input;
     const cart = await fetchCart(user.id);
 
-    const cartItem = await db.cartItem.findUnique({
+    const cartItem = await db.cartItem.findFirst({
       where: {
-        cartId_productId: {
-          cartId: cart.id,
-          productId,
+        cartId: cart.id,
+        productId,
+      },
+      include: {
+        product: {
+          include: { images: true },
         },
       },
     });
+
     if (!cartItem) {
       throw new TRPCError({
         code: "NOT_FOUND",

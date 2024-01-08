@@ -4,20 +4,20 @@ import { generateSku } from "~/utils";
 const db = new PrismaClient();
 
 async function main() {
-  // const categories = await db.category.createMany({
-  //   data: [
-  //     { name: "Electronics", slug: "electronics" },
-  //     { name: "Clothing", slug: "clothing" },
-  //     { name: "Home and Garden", slug: "home-and-garden" },
-  //     { name: "Books", slug: "books" },
-  //     { name: "Toys", slug: "toys" },
-  //     { name: "Sports and Outdoors", slug: "sports-and-outdoors" },
-  //     { name: "Beauty and Personal Care", slug: "beauty-and-personal-care" },
-  //     { name: "Automotive", slug: "automotive" },
-  //     { name: "Furniture", slug: "furniture" },
-  //     { name: "Jewelry", slug: "jewelry" },
-  //   ],
-  // });
+  const categories = await db.category.createMany({
+    data: [
+      { name: "Electronics", slug: "electronics" },
+      { name: "Clothing", slug: "clothing" },
+      { name: "Home and Garden", slug: "home-and-garden" },
+      { name: "Books", slug: "books" },
+      { name: "Toys", slug: "toys" },
+      { name: "Sports and Outdoors", slug: "sports-and-outdoors" },
+      { name: "Beauty and Personal Care", slug: "beauty-and-personal-care" },
+      { name: "Automotive", slug: "automotive" },
+      { name: "Furniture", slug: "furniture" },
+      { name: "Jewelry", slug: "jewelry" },
+    ],
+  });
 
   const description = `<article style="font-family: 'Arial', sans-serif; color: #333; max-width: 600px; margin: 0 auto;">
   <h1 style="color: #007BFF;">Product Title</h1>
@@ -201,7 +201,7 @@ async function main() {
     return products;
   };
 
-  const productsData = generateProducts(4);
+  const productsData = generateProducts(105);
 
   const products = await db.product.createMany({
     data: productsData,

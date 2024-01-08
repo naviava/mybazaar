@@ -14,9 +14,10 @@ export function CartHoverCardContent() {
           Your cart is empty
         </p>
       ) : (
-        cart.items.map((item) => (
-          <CartHoverCardItem key={item.id} productId={item.id} />
-        ))
+        cart.items.map((item, idx) => {
+          if (idx >= 4) return null;
+          return <CartHoverCardItem key={item.id} productId={item.productId} />;
+        })
       )}
     </div>
   );
