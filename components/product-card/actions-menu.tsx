@@ -1,12 +1,13 @@
 "use client";
 
-import { Eye, Heart, ShoppingCart } from "lucide-react";
-import { ActionButton } from "./action-button";
-
-import { cn } from "~/lib/utils";
-import { trpc } from "~/app/_trpc/client";
 import { useCallback } from "react";
+
 import { toast } from "sonner";
+import { Eye, Heart, ShoppingCart } from "lucide-react";
+
+import { ActionButton } from "./action-button";
+import { trpc } from "~/app/_trpc/client";
+import { cn } from "~/lib/utils";
 
 interface IProps {
   productId: string;
@@ -21,6 +22,7 @@ export function ActionsMenu({ productId, isHover, isStatic }: IProps) {
   const { mutate: modifyCart, isLoading } = trpc.cart.modifyCart.useMutation({
     onError: () => toast.error("Something went wrong."),
     onSuccess: () => {
+      utils.cart.getCart.invalidate();
       toast.success("Added to cart.");
     },
   });

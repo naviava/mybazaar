@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { db } from "~/lib/db";
 import { privateProcedure } from "~/server/trpc";
-import { getCart } from "~/utils/actions/get-cart";
+import { fetchCart } from "~/utils/actions/fetch-cart";
 
 export const modifyCart = privateProcedure
   .input(
@@ -14,7 +14,7 @@ export const modifyCart = privateProcedure
     const { productId } = input;
     const quantity = input.quantity ?? 1;
     const { user } = ctx;
-    const cart = await getCart(user.id);
+    const cart = await fetchCart(user.id);
 
     const existingCartItem = cart.items.find(
       (item) => item.productId === productId,

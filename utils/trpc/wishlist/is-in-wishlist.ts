@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { db } from "~/lib/db";
 import { privateProcedure } from "~/server/trpc";
-import { getWishlist } from "~/utils/actions/get-wishlist";
+import { fetchWishlist } from "~/utils/actions/fetch-wishlist";
 
 export const isInWishlist = privateProcedure
   .input(z.string())
@@ -11,7 +11,7 @@ export const isInWishlist = privateProcedure
       return false;
     }
 
-    const wishlist = await getWishlist(user.id);
+    const wishlist = await fetchWishlist(user.id);
     const existingItem = await db.wishlistItem.findUnique({
       where: {
         wishlistId_productId: {

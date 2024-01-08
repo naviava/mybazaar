@@ -2,7 +2,7 @@
 
 import { db } from "~/lib/db";
 
-export async function getWishlist(userId: string) {
+export async function fetchWishlist(userId: string) {
   const existingWishlist = await db.wishlist.findUnique({
     where: { userId },
     include: {

@@ -3,7 +3,7 @@ import { TRPCError } from "@trpc/server";
 
 import { db } from "~/lib/db";
 import { privateProcedure } from "~/server/trpc";
-import { getWishlist } from "~/utils/actions/get-wishlist";
+import { fetchWishlist } from "~/utils/actions/fetch-wishlist";
 
 export const toggleItem = privateProcedure
   .input(z.string())
@@ -18,7 +18,7 @@ export const toggleItem = privateProcedure
       });
     }
 
-    const wishlist = await getWishlist(user.id);
+    const wishlist = await fetchWishlist(user.id);
     if (!wishlist) {
       throw new TRPCError({
         code: "INTERNAL_SERVER_ERROR",

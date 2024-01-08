@@ -2,7 +2,7 @@
 
 import { db } from "~/lib/db";
 
-export async function getCart(userId: string) {
+export async function fetchCart(userId: string) {
   const existingCart = await db.cart.findUnique({
     where: { userId },
     include: {

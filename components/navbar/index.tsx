@@ -9,7 +9,6 @@ import { AccountActions } from "./account-actions";
 import { Search } from "./search";
 
 import { trpc } from "~/app/_trpc/client";
-import Link from "next/link";
 
 export function Navbar() {
   const isMounted = useIsMounted();
