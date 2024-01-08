@@ -19,7 +19,7 @@ export function Cart() {
   if (!user || (!isTabPro && !isDesktop)) return <CartButton />;
 
   return (
-    <HoverCard>
+    <HoverCard openDelay={200}>
       <HoverCardTrigger className="cursor-pointer">
         <CartButton />
       </HoverCardTrigger>

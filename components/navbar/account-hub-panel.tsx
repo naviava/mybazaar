@@ -5,7 +5,7 @@ const ROUTES = [
   { label: "Your Account", href: "#", id: uuid() },
   { label: "Your Orders", href: "#", id: uuid() },
   { label: "Your Wishlist", href: "#", id: uuid() },
-  { label: "Your Shopping Cart", href: "#", id: uuid() },
+  { label: "Your Shopping Cart", href: "/cart", id: uuid() },
 ];
 
 interface IProps {
