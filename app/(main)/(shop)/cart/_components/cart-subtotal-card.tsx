@@ -1,9 +1,14 @@
 import { Button } from "~/components/ui/button";
 import { CartSubtotal } from "./cart-subtotal";
+import { serverClient } from "~/app/_trpc/server-client";
 
-interface IProps {}
+export async function CartSubtotalCard() {
+  const cart = await serverClient.cart.getCart();
 
-export function CartSubtotalCard({}: IProps) {
+  if (!cart || !cart.items.length) {
+    return null;
+  }
+
   return (
     <section className="hidden h-fit w-[300px] space-y-4 bg-white p-4 lg:block">
       <CartSubtotal />
