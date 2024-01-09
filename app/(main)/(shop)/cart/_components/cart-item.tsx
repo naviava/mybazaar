@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useMemo } from "react";
 import { useCart } from "~/hooks/use-cart";
 import { generatePriceTag } from "~/utils";
+import { CartActions } from "./cart-actions";
 
 interface IProps {
   productId: string;
@@ -39,7 +40,7 @@ export function CartItem({ productId }: IProps) {
             <h3 className="line-clamp-1 text-lg font-medium">
               {item?.product.name}
             </h3>
-            <div>Actions</div>
+            <CartActions productId={productId} />
           </div>
         </div>
         <div>{generatePriceTag(item.quantity * item?.product.price)}</div>
