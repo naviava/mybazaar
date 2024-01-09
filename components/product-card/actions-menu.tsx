@@ -1,12 +1,12 @@
 "use client";
 
-import { useCallback } from "react";
-
-import { toast } from "sonner";
+import { memo } from "react";
 import { Eye, Heart, ShoppingCart } from "lucide-react";
 
+import { useCart } from "~/hooks/use-cart";
+import { useWishlist } from "~/hooks/use-wishlist";
+
 import { ActionButton } from "./action-button";
-import { trpc } from "~/app/_trpc/client";
 import { cn } from "~/lib/utils";
 
 interface IProps {
@@ -15,31 +15,10 @@ interface IProps {
   isStatic?: boolean;
 }
 
-export function ActionsMenu({ productId, isHover, isStatic }: IProps) {
-  const utils = trpc.useUtils();
-  const { data: isInWishlist } = trpc.wishlist.isInWishlist.useQuery(productId);
-
-  const { mutate: modifyCart, isLoading } = trpc.cart.modifyCart.useMutation({
-    onError: () => toast.error("Something went wrong."),
-    onSuccess: () => {
-      utils.cart.getCart.invalidate();
-      toast.success("Added to cart.");
-    },
-  });
-  const handleModifyCart = useCallback(() => {
-    modifyCart({ productId });
-  }, [modifyCart, productId]);
-
-  const { mutate: toggleItem } = trpc.wishlist.toggleItem.useMutation({
-    onError: ({ message }) => toast.error(message),
-    onSuccess: (data) => {
-      utils.wishlist.isInWishlist.invalidate(productId);
-      toast.success(data);
-    },
-  });
-  const handleToggleItem = useCallback(() => {
-    toggleItem(productId);
-  }, [toggleItem, productId]);
+export const ActionsMenu = memo(_ActionsMenu);
+function _ActionsMenu({ productId, isHover, isStatic }: IProps) {
+  const { modifyCart, isLoading } = useCart({ productId });
+  const { isInWishlist, toggleItem } = useWishlist({ productId });
 
   return (
     <div
@@ -55,7 +34,7 @@ export function ActionsMenu({ productId, isHover, isStatic }: IProps) {
         isHover={isHover}
         productId={productId}
         disabled={isLoading}
-        onClick={handleToggleItem}
+        onClick={() => toggleItem(productId)}
       >
         <Heart
           fill={isInWishlist ? "#e3bb09" : "none"}
@@ -78,7 +57,7 @@ export function ActionsMenu({ productId, isHover, isStatic }: IProps) {
         isHover={isHover}
         productId={productId}
         disabled={isLoading}
-        onClick={handleModifyCart}
+        onClick={() => modifyCart({ productId })}
       >
         <ShoppingCart className="h-5 w-5 text-neutral-500" />
       </ActionButton>

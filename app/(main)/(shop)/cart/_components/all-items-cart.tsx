@@ -1,24 +1,24 @@
 "use client";
 
+import { useCart } from "~/hooks/use-cart";
+
 import { Separator } from "~/components/ui/separator";
 import { PageHeading } from "~/components/page-heading";
 import { ClearCartButton } from "~/components/clear-cart-button";
 import { CartItem } from "./cart-item";
 
 import { cn } from "~/lib/utils";
-import { serverClient } from "~/app/_trpc/server-client";
-import { useCart } from "~/hooks/use-cart";
 
 const BREADCRUMBS = [{ bcLabel: "Home", bcHref: "/" }];
 
 export function AllItemsCart() {
-  const { cart, isFetching } = useCart({});
+  const { cart, isFetchingCart } = useCart({});
 
   return (
     <section className="flex-1 bg-white p-2 pb-10 md:px-4 lg:mx-0">
       <PageHeading
         label={
-          isFetching
+          isFetchingCart
             ? "Shopping Cart"
             : !!cart?.items.length
               ? "Shopping Cart"
@@ -34,16 +34,29 @@ export function AllItemsCart() {
       </div>
       <div className={cn(!!cart?.items.length && "-mt-10")}>
         {/* TODO: Add skeleton loader. */}
-        {isFetching && <p>Loading...</p>}
-        {!isFetching && !cart?.items.length ? (
-          <p className="text-center">
-            Add items to your cart to begin shopping.
-          </p>
+        {isFetchingCart ? (
+          <p>Loading...</p>
         ) : (
           <>
-            {cart?.items.map((item) => (
-              <CartItem key={item.id} productId={item.productId} />
-            ))}
+            {!cart?.items.length ? (
+              <p className="text-center">
+                Add items to your cart to begin shopping.
+              </p>
+            ) : (
+              <>
+                {cart?.items.map((item) => (
+                  <CartItem
+                    key={item.id}
+                    productId={item.productId}
+                    productName={item.product.name}
+                    productPrice={item.product.price}
+                    productCategory={item.product.category.name}
+                    images={item.product.images}
+                    quantity={item.quantity}
+                  />
+                ))}
+              </>
+            )}
           </>
         )}
       </div>

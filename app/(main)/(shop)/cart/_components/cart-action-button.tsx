@@ -3,11 +3,22 @@ import { Button } from "~/components/ui/button";
 interface IProps {
   children: React.ReactNode;
   action: () => void;
+  disabled?: boolean;
 }
 
-export function CartActionButton({ children, action }: IProps) {
+export function CartActionButton({
+  children,
+  action,
+  disabled = false,
+}: IProps) {
   return (
-    <Button variant="link" size="sm" className="h-5 px-3">
+    <Button
+      variant="link"
+      size="sm"
+      disabled={disabled}
+      onClick={action}
+      className="h-5 px-3"
+    >
       {children}
     </Button>
   );

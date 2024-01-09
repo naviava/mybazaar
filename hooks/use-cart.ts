@@ -11,14 +11,15 @@ interface IProps {
 export function useCart({ productId }: IProps) {
   const utils = trpc.useUtils();
 
-  const { data: cart, isFetching: fetching01 } = trpc.cart.getCart.useQuery();
+  const { data: cart, isFetching: isFetchingCart } =
+    trpc.cart.getCart.useQuery();
 
   let cartItem: CartItemWithProduct | undefined;
-  let fetching02 = false;
+  let isFetchingCartItem = false;
   if (!!productId) {
     const { data, isFetching } = trpc.cart.getCartItem.useQuery(productId);
     cartItem = data;
-    fetching02 = isFetching;
+    isFetchingCartItem = isFetching;
   }
 
   const { mutate: modifyCart, isLoading: loading01 } =
@@ -51,22 +52,16 @@ export function useCart({ productId }: IProps) {
 
   const { totalPrice, totalQuantity } = getCartTotals(cart?.items || []);
 
-  const isFetching = useMemo(
-    () => fetching01 || fetching02,
-    [fetching01, fetching02],
-  );
-  const isLoading = useMemo(
-    () => loading01 || loading02 || loading03,
-    [loading01, loading02, loading03],
-  );
+  const isLoading = loading01 || loading02 || loading03;
 
   return {
     cart,
     cartItem,
     totalPrice,
     totalQuantity,
-    isFetching,
     isLoading,
+    isFetchingCart,
+    isFetchingCartItem,
     modifyCart,
     removeItemFromCart,
     clearCart,

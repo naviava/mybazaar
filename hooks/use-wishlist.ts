@@ -21,10 +21,10 @@ export function useWishlist({ productId }: IProps) {
   const { mutate: toggleItem, isLoading: loading01 } =
     trpc.wishlist.toggleItem.useMutation({
       onError: ({ message }) => toast.error(message),
-      onSuccess: (data) => {
+      onSuccess: (message) => {
         utils.wishlist.getWishlist.invalidate();
         utils.wishlist.isInWishlist.invalidate(productId);
-        toast.success(data);
+        toast.success(message);
       },
     });
 
