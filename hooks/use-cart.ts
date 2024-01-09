@@ -11,15 +11,15 @@ interface IProps {
 export function useCart({ productId }: IProps) {
   const utils = trpc.useUtils();
 
-  const { data: cart, isFetching: isFetchingCart } =
+  const { data: cart, isLoading: isFetchingCart } =
     trpc.cart.getCart.useQuery();
 
   let cartItem: CartItemWithProduct | undefined;
   let isFetchingCartItem = false;
   if (!!productId) {
-    const { data, isFetching } = trpc.cart.getCartItem.useQuery(productId);
+    const { data, isLoading } = trpc.cart.getCartItem.useQuery(productId);
     cartItem = data;
-    isFetchingCartItem = isFetching;
+    isFetchingCartItem = isLoading;
   }
 
   const { mutate: modifyCart, isLoading: loading01 } =

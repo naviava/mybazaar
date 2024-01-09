@@ -18,11 +18,9 @@ export function AllItemsCart() {
     <section className="flex-1 bg-white p-2 pb-10 md:px-4 lg:mx-0">
       <PageHeading
         label={
-          isFetchingCart
+          !!cart && !!cart?.items.length
             ? "Shopping Cart"
-            : !!cart?.items.length
-              ? "Shopping Cart"
-              : "Your cart is empty"
+            : "Your cart is empty"
         }
         breadcrumbs={BREADCRUMBS}
         currentBcLabel="Cart"
@@ -34,31 +32,27 @@ export function AllItemsCart() {
       </div>
       <div className={cn(!!cart?.items.length && "-mt-10")}>
         {/* TODO: Add skeleton loader. */}
-        {isFetchingCart ? (
-          <p>Loading...</p>
-        ) : (
-          <>
-            {!cart?.items.length ? (
-              <p className="text-center">
-                Add items to your cart to begin shopping.
-              </p>
-            ) : (
-              <>
-                {cart?.items.map((item) => (
-                  <CartItem
-                    key={item.id}
-                    productId={item.productId}
-                    productName={item.product.name}
-                    productPrice={item.product.price}
-                    productCategory={item.product.category.name}
-                    images={item.product.images}
-                    quantity={item.quantity}
-                  />
-                ))}
-              </>
-            )}
-          </>
-        )}
+        {isFetchingCart && <p>Loading...</p>}
+        {!isFetchingCart &&
+          (!cart?.items.length ? (
+            <p className="text-center">
+              Add items to your cart to begin shopping.
+            </p>
+          ) : (
+            <>
+              {cart?.items.map((item) => (
+                <CartItem
+                  key={item.id}
+                  productId={item.productId}
+                  productName={item.product.name}
+                  productPrice={item.product.price}
+                  productCategory={item.product.category.name}
+                  images={item.product.images}
+                  quantity={item.quantity}
+                />
+              ))}
+            </>
+          ))}
       </div>
       {!cart?.items.length && <Separator className="mt-4" />}
       <div className="flex items-center justify-end">Subtotal (0 items): </div>
