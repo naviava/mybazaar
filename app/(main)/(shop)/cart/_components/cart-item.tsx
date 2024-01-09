@@ -1,10 +1,10 @@
 "use client";
 
-import { useMemo } from "react";
+import { memo, useMemo } from "react";
 import Image from "next/image";
+import Link from "next/link";
 
 import { ProductImageWithTimestampsAsString } from "~/types";
-import { useCart } from "~/hooks/use-cart";
 
 import { Separator } from "~/components/ui/separator";
 import { CartActions } from "./cart-actions";
@@ -20,7 +20,8 @@ interface IProps {
   quantity: number;
 }
 
-export function CartItem({
+export const CartItem = memo(_CartItem);
+function _CartItem({
   productId,
   productName,
   productPrice,
@@ -42,12 +43,14 @@ export function CartItem({
           </div>
           <div className="flex flex-col justify-between gap-y-4 py-2">
             <div>
-              <h3 className="line-clamp-1 text-lg font-medium">
-                {productName}
-                <span className="ml-2 text-sm font-light text-muted-foreground">
-                  {`x ${quantity}`}
-                </span>
-              </h3>
+              <Link href={`/products/${productId}`}>
+                <h3 className="line-clamp-1 text-lg font-medium">
+                  {productName}
+                  <span className="ml-2 text-sm font-light text-muted-foreground">
+                    {`x ${quantity}`}
+                  </span>
+                </h3>
+              </Link>
               <p className="text-sm text-muted-foreground">{productCategory}</p>
             </div>
             <CartActions productId={productId} />

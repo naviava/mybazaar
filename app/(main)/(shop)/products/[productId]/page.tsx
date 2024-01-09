@@ -1,7 +1,5 @@
-"use client";
-
-import { useRecoilState } from "recoil";
-import { textState } from "~/store/recoil";
+import { serverClient } from "~/app/_trpc/server-client";
+import { ProductImages } from "./_components/product-images";
 
 interface IProps {
   params: {
@@ -9,12 +7,18 @@ interface IProps {
   };
 }
 
-export default function ProductIdPage({ params }: IProps) {
-  const [text, setText] = useRecoilState(textState);
+export default async function ProductIdPage({ params }: IProps) {
+  const product = await serverClient.product.getProductById(params.productId);
 
   return (
-    <div className="pb-24">
-      <p>Product Name:</p>
-    </div>
+    <article className="mx-auto max-w-6xl px-4 pb-24 pt-6">
+      <section className="grid grid-cols-1 gap-4 md:grid-cols-2">
+        <ProductImages data={product?.images || []} />
+        <div>ProductDetails</div>
+      </section>
+      <section>Description and Reviews</section>
+      <section>Other Products</section>
+      <section>Assurance Bar</section>
+    </article>
   );
 }
