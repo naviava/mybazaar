@@ -5,6 +5,7 @@ import { useCart } from "~/hooks/use-cart";
 import { Separator } from "~/components/ui/separator";
 import { PageHeading } from "~/components/page-heading";
 import { ClearCartButton } from "~/components/clear-cart-button";
+import { CartSubtotal } from "./cart-subtotal";
 import { CartItem } from "./cart-item";
 
 import { cn } from "~/lib/utils";
@@ -55,7 +56,9 @@ export function AllItemsCart() {
           ))}
       </div>
       {!cart?.items.length && <Separator className="mt-4" />}
-      <div className="flex items-center justify-end">Subtotal (0 items): </div>
+      <div className="flex items-center justify-end">
+        <CartSubtotal />
+      </div>
     </section>
   );
 }

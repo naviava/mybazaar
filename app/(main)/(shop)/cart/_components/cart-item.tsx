@@ -28,6 +28,7 @@ export function CartItem({
   images,
   quantity,
 }: IProps) {
+  const { totalPrice, totalQuantity } = useCart({});
   const imageUrl = useMemo(
     () => (!!images.length ? images[0].imageUrl : "/placeholder.jpg"),
     [images],
