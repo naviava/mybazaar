@@ -17,7 +17,7 @@ export function CartActionButton({
       size="sm"
       disabled={disabled}
       onClick={action}
-      className="h-5 px-3"
+      className="h-5 px-3 text-sky-800"
     >
       {children}
     </Button>

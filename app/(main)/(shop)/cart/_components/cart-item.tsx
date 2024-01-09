@@ -28,7 +28,6 @@ export function CartItem({
   images,
   quantity,
 }: IProps) {
-  const { totalPrice, totalQuantity } = useCart({});
   const imageUrl = useMemo(
     () => (!!images.length ? images[0].imageUrl : "/placeholder.jpg"),
     [images],
@@ -46,7 +45,7 @@ export function CartItem({
               <h3 className="line-clamp-1 text-lg font-medium">
                 {productName}
                 <span className="ml-2 text-sm font-light text-muted-foreground">
-                  x 1
+                  {`x ${quantity}`}
                 </span>
               </h3>
               <p className="text-sm text-muted-foreground">{productCategory}</p>

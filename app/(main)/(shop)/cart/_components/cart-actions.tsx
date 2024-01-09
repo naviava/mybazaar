@@ -1,6 +1,6 @@
 "use client";
 
-import { memo, useMemo } from "react";
+import { memo } from "react";
 
 import { useCart } from "~/hooks/use-cart";
 import { useWishlist } from "~/hooks/use-wishlist";
@@ -24,7 +24,9 @@ function _CartActions({ productId }: IProps) {
     <div className="flex items-center gap-x-2">
       <div>Qty</div>
       <Separator orientation="vertical" />
-      <CartActionButton action={() => {}}>Delete</CartActionButton>
+      <CartActionButton action={() => removeItemFromCart(productId)}>
+        Delete
+      </CartActionButton>
       <Separator orientation="vertical" />
       <CartActionButton action={() => toggleItem(productId)}>
         {isInWishlist ? "Remove from Wishlist" : "Add to Wishlist"}
