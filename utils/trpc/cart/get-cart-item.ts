@@ -1,5 +1,6 @@
-import { TRPCError } from "@trpc/server";
 import { z } from "zod";
+import { TRPCError } from "@trpc/server";
+
 import { db } from "~/lib/db";
 import { privateProcedure } from "~/server/trpc";
 import { fetchCart } from "~/utils/actions/fetch-cart";

@@ -7,18 +7,33 @@ export async function fetchCart(userId: string) {
     where: { userId },
     include: {
       items: {
-        include: { product: true },
+        include: {
+          product: {
+            include: {
+              category: true,
+              images: true,
+            },
+          },
+        },
       },
     },
   });
   if (!!existingCart) {
     return existingCart;
   }
+
   return await db.cart.create({
     data: { userId },
     include: {
       items: {
-        include: { product: true },
+        include: {
+          product: {
+            include: {
+              category: true,
+              images: true,
+            },
+          },
+        },
       },
     },
   });
