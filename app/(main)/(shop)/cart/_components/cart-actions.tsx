@@ -1,12 +1,13 @@
 "use client";
 
-import { memo } from "react";
+import { memo, useCallback } from "react";
 
 import { useCart } from "~/hooks/use-cart";
 import { useWishlist } from "~/hooks/use-wishlist";
 
 import { Separator } from "~/components/ui/separator";
 import { CartActionButton } from "./cart-action-button";
+import { toast } from "sonner";
 
 interface IProps {
   productId: string;
@@ -20,6 +21,13 @@ function _CartActions({ productId }: IProps) {
     productId,
   });
 
+  const handleShareLink = useCallback(() => {
+    toast.success("Link copied to clipboard");
+    navigator.clipboard.writeText(
+      `${process.env.NEXT_PUBLIC_SITE_URL}/products/${productId}`,
+    );
+  }, [productId]);
+
   return (
     <div className="flex items-center gap-x-2">
       <div>Qty</div>
@@ -32,7 +40,7 @@ function _CartActions({ productId }: IProps) {
         {isInWishlist ? "Remove from Wishlist" : "Add to Wishlist"}
       </CartActionButton>
       <Separator orientation="vertical" />
-      <CartActionButton action={() => {}}>Share</CartActionButton>
+      <CartActionButton action={handleShareLink}>Share</CartActionButton>
     </div>
   );
 }
