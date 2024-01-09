@@ -1,5 +1,6 @@
 import crypto from "crypto";
 import { db } from "~/lib/db";
+import { CartItemWithProduct } from "~/types";
 
 export function generateRandomNumber(min: number, max: number) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -38,4 +39,13 @@ export function generatePriceTag(price: number) {
     style: "currency",
     currency: "INR",
   });
+}
+
+export function getCartTotal(cartItems: CartItemWithProduct[]) {
+  return generatePriceTag(
+    cartItems.reduce(
+      (acc, item) => acc + item.quantity * item.product.price,
+      0,
+    ),
+  );
 }
