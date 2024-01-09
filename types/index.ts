@@ -17,5 +17,8 @@ export type ProductWithCategoryAndImages = ProductWithTimestampsAsString & {
 };
 
 export type CartItemWithProduct = CartItemWithTimestampsAsString & {
-  product: ProductWithTimestampsAsString;
+  product: ProductWithTimestampsAsString & {
+    category: CategoryWithTimestampsAsString;
+    images: ProductImageWithTimestampsAsString[];
+  };
 };

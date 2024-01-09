@@ -8,5 +8,5 @@ export const clearCart = privateProcedure.mutation(async ({ ctx }) => {
       cart: { userId: user.id },
     },
   });
-  return "Cart cleared.";
+  return "Cart cleared. Your shopping cart is now empty.";
 });

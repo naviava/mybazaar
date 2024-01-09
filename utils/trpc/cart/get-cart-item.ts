@@ -19,7 +19,10 @@ export const getCartItem = privateProcedure
       },
       include: {
         product: {
-          include: { images: true },
+          include: {
+            category: true,
+            images: true,
+          },
         },
       },
     });

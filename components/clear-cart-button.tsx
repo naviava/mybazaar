@@ -1,9 +1,8 @@
 "use client";
 
 import { useCallback } from "react";
-import { toast } from "sonner";
-import { trpc } from "~/app/_trpc/client";
 import { Button } from "~/components/ui/button";
+import { useCart } from "~/hooks/use-cart";
 import { cn } from "~/lib/utils";
 
 interface IProps {
@@ -26,14 +25,7 @@ export function ClearCartButton({
   variant = "link",
   size = "sm",
 }: IProps) {
-  const utils = trpc.useUtils();
-  const { mutate: clearCart } = trpc.cart.clearCart.useMutation({
-    onError: () => toast.error("Error clearing cart. Try again later."),
-    onSuccess: () => {
-      utils.cart.getCart.invalidate();
-      toast.success("Cart cleared. Your shopping cart is now empty.");
-    },
-  });
+  const { clearCart } = useCart({});
 
   const handleClearCart = useCallback(() => {
     clearCart();
