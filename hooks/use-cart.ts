@@ -2,6 +2,7 @@ import { useMemo } from "react";
 import { toast } from "sonner";
 import { CartItemWithProduct } from "~/types";
 import { trpc } from "~/app/_trpc/client";
+import { getCartTotals } from "~/utils";
 
 interface IProps {
   productId?: string;
@@ -25,7 +26,6 @@ export function useCart({ productId }: IProps) {
       onError: ({ message }) => toast.error(message),
       onSuccess: () => {
         utils.cart.getCart.invalidate();
-        utils.cart.getCartItem.refetch();
         toast.success("Cart updated!");
       },
     });
@@ -35,7 +35,6 @@ export function useCart({ productId }: IProps) {
       onError: ({ message }) => toast.error(message),
       onSuccess: (message) => {
         utils.cart.getCart.invalidate();
-        utils.cart.getCartItem.refetch();
         toast.success(message);
       },
     });
@@ -50,6 +49,8 @@ export function useCart({ productId }: IProps) {
       },
     });
 
+  const { totalPrice, totalQuantity } = getCartTotals(cart?.items || []);
+
   const isFetching = useMemo(
     () => fetching01 || fetching02,
     [fetching01, fetching02],
@@ -62,6 +63,8 @@ export function useCart({ productId }: IProps) {
   return {
     cart,
     cartItem,
+    totalPrice,
+    totalQuantity,
     isFetching,
     isLoading,
     modifyCart,

@@ -12,12 +12,18 @@ import { useCart } from "~/hooks/use-cart";
 const BREADCRUMBS = [{ bcLabel: "Home", bcHref: "/" }];
 
 export function AllItemsCart() {
-  const { cart } = useCart({});
+  const { cart, isFetching } = useCart({});
 
   return (
     <section className="flex-1 bg-white p-2 pb-10 md:px-4 lg:mx-0">
       <PageHeading
-        label={!!cart?.items.length ? "Shopping Cart" : "Your cart is empty"}
+        label={
+          isFetching
+            ? "Shopping Cart"
+            : !!cart?.items.length
+              ? "Shopping Cart"
+              : "Your cart is empty"
+        }
         breadcrumbs={BREADCRUMBS}
         currentBcLabel="Cart"
       />
@@ -27,13 +33,15 @@ export function AllItemsCart() {
         </ClearCartButton>
       </div>
       <div className={cn(!!cart?.items.length && "-mt-10")}>
-        {!cart?.items.length ? (
+        {/* TODO: Add skeleton loader. */}
+        {isFetching && <p>Loading...</p>}
+        {!isFetching && !cart?.items.length ? (
           <p className="text-center">
             Add items to your cart to begin shopping.
           </p>
         ) : (
           <>
-            {cart.items.map((item) => (
+            {cart?.items.map((item) => (
               <CartItem key={item.id} productId={item.productId} />
             ))}
           </>

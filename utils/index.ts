@@ -41,11 +41,14 @@ export function generatePriceTag(price: number) {
   });
 }
 
-export function getCartTotal(cartItems: CartItemWithProduct[]) {
-  return generatePriceTag(
+export function getCartTotals(cartItems: CartItemWithProduct[]) {
+  const totalQuantity = cartItems.reduce((acc, item) => acc + item.quantity, 0);
+  const totalPrice = generatePriceTag(
     cartItems.reduce(
       (acc, item) => acc + item.quantity * item.product.price,
       0,
     ),
   );
+
+  return { totalQuantity, totalPrice };
 }

@@ -6,13 +6,19 @@ import { Button } from "~/components/ui/button";
 import { LoaderSpinner } from "~/components/loader-spinner";
 import { CartHoverCardItem } from "./cart-hover-card-item";
 
-import { getCartTotal } from "~/utils";
+import { getCartTotals } from "~/utils";
 import { trpc } from "~/app/_trpc/client";
+import { useMemo } from "react";
 
 const MAX_ITEMS = 4;
 
 export function CartHoverCardContent() {
   const { data: cart, isFetching } = trpc.cart.getCart.useQuery();
+  const totalPrice = useMemo(() => {
+    if (!cart?.items.length) return;
+    const { totalPrice } = getCartTotals(cart?.items);
+    return totalPrice;
+  }, [cart?.items]);
 
   return (
     <div className="mb-2 space-y-2">
@@ -45,21 +51,23 @@ export function CartHoverCardContent() {
                     cart.items.length - MAX_ITEMS === 1 ? "item" : "items"
                   } not shown above`}
               </p>
-              <div className="flex items-center justify-between px-2">
-                <h3 className="font-medium">Total</h3>
-                <p className="font-semibold">
-                  {!!cart && getCartTotal(cart?.items)}
-                </p>
+              {!!cart?.items.length && (
+                <div className="flex items-center justify-between px-2">
+                  <h3 className="font-medium">Total</h3>
+                  <p className="font-semibold">{totalPrice}</p>
+                </div>
+              )}
+            </div>
+            {!!cart?.items.length && (
+              <div className="flex flex-col gap-y-2 p-2">
+                <Button asChild variant="outline">
+                  <Link href="/cart">View Cart</Link>
+                </Button>
+                <Button asChild variant="amazon">
+                  <Link href="#">Checkout</Link>
+                </Button>
               </div>
-            </div>
-            <div className="flex flex-col gap-y-2 p-2">
-              <Button asChild variant="outline">
-                <Link href="/cart">View Cart</Link>
-              </Button>
-              <Button asChild variant="amazon">
-                <Link href="#">Checkout</Link>
-              </Button>
-            </div>
+            )}
           </>
         )}
       </>
