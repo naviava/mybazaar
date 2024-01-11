@@ -78,6 +78,7 @@ model User {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  Order     Order[]
 }
 
 model Category {
@@ -103,8 +104,9 @@ model Product {
   isFeatured   Boolean        @default(false)
   categorySlug String
   category     Category       @relation(fields: [categorySlug], references: [slug], onDelete: Restrict)
-  cartItems    CartItem[]
   images       ProductImage[]
+  cartItems    CartItem[]
+  orderItems   OrderItem[]
 
   createdAt    DateTime       @default(now())
   updatedAt    DateTime       @updatedAt
@@ -123,6 +125,32 @@ model ProductImage {
   updatedAt DateTime @updatedAt
 
   @@index([productId])
+}
+
+model Wishlist {
+  id     String         @id @default(cuid())
+  userId String         @unique
+  user   User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  items  WishlistItem[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+}
+
+model WishlistItem {
+  id         String   @id @default(cuid())
+  wishlistId String
+  wishlist   Wishlist @relation(fields: [wishlistId], references: [id], onDelete: Cascade)
+  productId  String
+  product    Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([wishlistId, productId])
+  @@index([wishlistId, productId])
 }
 
 model Cart {
@@ -152,11 +180,11 @@ model CartItem {
   @@index([cartId, productId])
 }
 
-model Wishlist {
-  id     String         @id @default(cuid())
-  userId String         @unique
-  user   User           @relation(fields: [userId], references: [id], onDelete: Cascade)
-  items  WishlistItem[]
+model Order {
+  id     String      @id @default(cuid())
+  userId String
+  user   User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  items  OrderItem[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -164,16 +192,28 @@ model Wishlist {
   @@index([userId])
 }
 
-model WishlistItem {
-  id         String   @id @default(cuid())
-  wishlistId String
-  wishlist   Wishlist @relation(fields: [wishlistId], references: [id], onDelete: Cascade)
-  productId  String
-  product    Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+model OrderItem {
+  id        String  @id @default(cuid())
+  quantity  Int
+  orderId   String
+  order     Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  productId String
+  product   Product @relation(fields: [productId], references: [id], onDelete: Restrict)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@unique([wishlistId, productId])
-  @@index([wishlistId, productId])
+  @@unique([orderId, productId])
+  @@index([orderId, productId])
+}
+
+model StripeCustomer {
+  id               String @id @default(cuid())
+  userId           String @unique
+  stripeCustomerId String @unique @map(name: "stripe_customer_id")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId, stripeCustomerId])
 }

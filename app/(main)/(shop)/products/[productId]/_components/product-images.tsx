@@ -27,7 +27,10 @@ export function ProductImages({ data }: IProps) {
       {/* {hasImages && ( */}
       <div className="order-2 grid grid-cols-4 gap-2 lg:order-1 lg:grid-cols-1">
         {Array.from({ length: 4 }, (_, idx) => (
-          <ImageThumbnail key={idx} />
+          <ImageThumbnail
+            key={idx}
+            onClick={() => setCurrentImage(data[idx].imageUrl)}
+          />
         ))}
       </div>
       {/* )} */}
@@ -35,9 +38,17 @@ export function ProductImages({ data }: IProps) {
   );
 }
 
-function ImageThumbnail() {
+interface IThumbnailProps {
+  onClick?: () => void;
+}
+
+function ImageThumbnail({ onClick }: IThumbnailProps) {
   return (
-    <div className="relative aspect-square w-full lg:w-[70px]">
+    <div
+      role="button"
+      onClick={onClick}
+      className="relative aspect-square w-full lg:w-[70px]"
+    >
       <Image
         fill
         src="/placeholder.jpg"
