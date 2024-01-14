@@ -56,12 +56,12 @@ export const paymentCheckout = privateProcedure
       payment_method_types: ["card"],
       line_items: [
         {
-          quantity: 1,
+          quantity: 2,
           price_data: {
             currency: "INR",
             product_data: {
-              name: "TRPC Subscription",
-              description: "TRPC Subscription for life!",
+              name: "TRPC Payment",
+              description: "TRPC for life!",
             },
             unit_amount: 200000,
           },
