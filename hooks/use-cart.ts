@@ -50,7 +50,10 @@ export function useCart({ productId }: IProps) {
       },
     });
 
-  const { totalPrice, totalQuantity } = getCartTotals(cart?.items || []);
+  const { totalPrice, totalQuantity } = useMemo(
+    () => getCartTotals(cart?.items || []),
+    [cart?.items],
+  );
 
   const isLoading = loading01 || loading02 || loading03;
 

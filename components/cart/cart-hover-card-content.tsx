@@ -1,6 +1,8 @@
 "use client";
 
+import { useMemo } from "react";
 import Link from "next/link";
+import { useCart } from "~/hooks/use-cart";
 
 import { Button } from "~/components/ui/button";
 import { LoaderSpinner } from "~/components/loader-spinner";
@@ -8,23 +10,17 @@ import { CartHoverCardItem } from "./cart-hover-card-item";
 
 import { getCartTotals } from "~/utils";
 import { trpc } from "~/app/_trpc/client";
-import { useMemo } from "react";
 
 const MAX_ITEMS = 4;
 
 export function CartHoverCardContent() {
-  const { data: cart, isFetching } = trpc.cart.getCart.useQuery();
-  const totalPrice = useMemo(() => {
-    if (!cart?.items.length) return;
-    const { totalPrice } = getCartTotals(cart?.items);
-    return totalPrice;
-  }, [cart?.items]);
+  const { cart, isFetchingCart, totalPrice } = useCart({});
 
   return (
     <div className="mb-2 space-y-2">
       <div className="h-1 w-full bg-amz-yellow-shaded" />
       <>
-        {isFetching ? (
+        {isFetchingCart ? (
           <div className="flex h-28 w-full flex-col items-center justify-center gap-y-4 text-muted-foreground">
             <LoaderSpinner className="h-6 w-6" />
             <p className="text-sm">Loading your cart items...</p>
