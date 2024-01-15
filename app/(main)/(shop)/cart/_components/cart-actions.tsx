@@ -8,6 +8,8 @@ import { useWishlist } from "~/hooks/use-wishlist";
 import { Separator } from "~/components/ui/separator";
 import { CartActionButton } from "./cart-action-button";
 import { toast } from "sonner";
+import { useMediaQuery } from "~/hooks/use-media-query";
+import { ExternalLink, Heart, Trash2 } from "lucide-react";
 
 interface IProps {
   productId: string;
@@ -15,6 +17,8 @@ interface IProps {
 
 export const CartActions = memo(_CartActions);
 function _CartActions({ productId }: IProps) {
+  const { isMobile, isTab, isTabPro, isDesktop } = useMediaQuery();
+
   const { removeItemFromCart } = useCart({ productId });
 
   const { isInWishlist, toggleItem } = useWishlist({
@@ -29,18 +33,24 @@ function _CartActions({ productId }: IProps) {
   }, [productId]);
 
   return (
-    <div className="flex items-center gap-x-2">
+    <div className="flex flex-nowrap items-center gap-x-2">
       <div>Qty</div>
       <Separator orientation="vertical" />
       <CartActionButton action={() => removeItemFromCart(productId)}>
-        Delete
+        {isMobile ? <Trash2 className="h-4 w-4" /> : "Delete"}
       </CartActionButton>
       <Separator orientation="vertical" />
       <CartActionButton action={() => toggleItem(productId)}>
-        {isInWishlist ? "Remove from Wishlist" : "Add to Wishlist"}
+        {isMobile && (
+          <Heart fill={isInWishlist ? "#075985" : "#fff"} className="h-4 w-4" />
+        )}
+        {!isMobile &&
+          (isInWishlist ? "Remove from Wishlist" : "Add to Wishlist")}
       </CartActionButton>
       <Separator orientation="vertical" />
-      <CartActionButton action={handleShareLink}>Share</CartActionButton>
+      <CartActionButton action={handleShareLink}>
+        {isMobile ? <ExternalLink className="h-4 w-4" /> : "Share"}
+      </CartActionButton>
     </div>
   );
 }

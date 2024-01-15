@@ -26,7 +26,7 @@ export function ProductCard({ data }: IProps) {
       </div>
       <div className="mb-1 text-center">
         <div>Rating</div>
-        <h4 className="font-medium">{data.name}</h4>
+        <h4 className="line-clamp-1 font-medium">{data.name}</h4>
         <p className="text-lg font-medium text-blue-700">
           {generatePriceTag(data.price)}
         </p>

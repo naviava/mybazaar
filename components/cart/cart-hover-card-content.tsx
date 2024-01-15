@@ -10,6 +10,7 @@ import { CartHoverCardItem } from "./cart-hover-card-item";
 
 import { getCartTotals } from "~/utils";
 import { trpc } from "~/app/_trpc/client";
+import { CheckoutButton } from "../checkout-button";
 
 const MAX_ITEMS = 4;
 
@@ -59,9 +60,7 @@ export function CartHoverCardContent() {
                 <Button asChild variant="outline">
                   <Link href="/cart">View Cart</Link>
                 </Button>
-                <Button asChild variant="amazon">
-                  <Link href="#">Checkout</Link>
-                </Button>
+                <CheckoutButton cartId={cart.id}>Checkout</CheckoutButton>
               </div>
             )}
           </>

@@ -1,15 +1,11 @@
 "use client";
 
-import { useCallback } from "react";
 import Image from "next/image";
-
-import { toast } from "sonner";
 import { Trash2 } from "lucide-react";
+import { useCart } from "~/hooks/use-cart";
 
 import { Button } from "~/components/ui/button";
 import { Separator } from "~/components/ui/separator";
-
-import { trpc } from "~/app/_trpc/client";
 import { generatePriceTag } from "~/utils";
 
 interface IProps {
@@ -17,21 +13,7 @@ interface IProps {
 }
 
 export function CartHoverCardItem({ productId }: IProps) {
-  const utils = trpc.useUtils();
-  const { data: cartItem } = trpc.cart.getCartItem.useQuery(productId);
-
-  const { mutate: removeItemFromCart } =
-    trpc.cart.removeItemFromCart.useMutation({
-      onError: ({ message }) => toast.error(message),
-      onSuccess: (data) => {
-        utils.cart.getCart.invalidate();
-        toast.success(data);
-      },
-    });
-
-  const handleRemoveCartItem = useCallback(() => {
-    removeItemFromCart(productId);
-  }, [removeItemFromCart, productId]);
+  const { cartItem, removeItemFromCart } = useCart({ productId });
 
   if (!cartItem) return null;
   return (
@@ -60,7 +42,7 @@ export function CartHoverCardItem({ productId }: IProps) {
         </div>
         <Button
           variant="link"
-          onClick={handleRemoveCartItem}
+          onClick={() => removeItemFromCart(productId)}
           className="group p-0 px-1"
         >
           <Trash2 className="h-4 w-4 text-muted-foreground group-hover:text-rose-600" />

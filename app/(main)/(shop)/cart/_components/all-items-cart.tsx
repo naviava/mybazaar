@@ -16,7 +16,7 @@ export function AllItemsCart() {
   const { cart, isFetchingCart } = useCart({});
 
   return (
-    <section className="max-w-7xl flex-1 bg-white p-2 pb-10 md:px-4 lg:mx-0">
+    <section className="flex-1 bg-white p-2 pb-10 md:px-4 lg:mx-0">
       <PageHeading
         label={
           !!cart && !!cart?.items.length
