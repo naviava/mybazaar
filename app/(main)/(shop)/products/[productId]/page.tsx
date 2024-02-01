@@ -1,8 +1,11 @@
 import { notFound } from "next/navigation";
+
+import { Breadcrumbs } from "~/components/breadcrumbs";
 import { ProductDetails } from "./_components/product-details";
 import { ProductImages } from "./_components/product-images";
+import { ProductSelection } from "./product-selection";
+
 import { serverClient } from "~/app/_trpc/server-client";
-import { Breadcrumbs } from "~/components/breadcrumbs";
 
 interface IProps {
   params: {
@@ -35,9 +38,12 @@ export default async function ProductIdPage({ params }: IProps) {
         <ProductImages data={product?.images || []} />
         <ProductDetails data={product} />
       </section>
-      <section>Description and Reviews</section>
+      <section className="mt-6">
+        <ProductSelection />
+      </section>
+      {/* <section>Description and Reviews</section>
       <section>Other Products</section>
-      <section>Assurance Bar</section>
+      <section>Assurance Bar</section> */}
     </article>
   );
 }

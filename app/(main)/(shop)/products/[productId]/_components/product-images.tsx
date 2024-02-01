@@ -25,7 +25,7 @@ export function ProductImages({ data }: IProps) {
         />
       </div>
       {/* {hasImages && ( */}
-      <div className="order-2 grid grid-cols-4 gap-2 lg:order-1 lg:grid-cols-1">
+      <div className="order-2 grid h-fit grid-cols-4 gap-2 lg:order-1 lg:grid-cols-1">
         {Array.from({ length: 4 }, (_, idx) => (
           <ImageThumbnail
             key={idx}
