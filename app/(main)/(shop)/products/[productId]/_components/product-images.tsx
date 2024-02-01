@@ -2,7 +2,7 @@
 
 import { ProductImage } from "@prisma/client";
 import Image from "next/image";
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 
 interface IProps {
   data: ProductImage[];

@@ -1,16 +1,18 @@
 import Link from "next/link";
+import { cn } from "~/lib/utils";
 
 interface IProps {
   children: React.ReactNode;
+  className?: string;
   breadcrumbs?: {
     bcLabel: string;
     bcHref: string;
   }[];
 }
 
-export function Breadcrumbs({ children, breadcrumbs }: IProps) {
+export function Breadcrumbs({ children, breadcrumbs, className }: IProps) {
   return (
-    <div className="flex items-center gap-x-2">
+    <div className={cn("flex items-center gap-x-2", className)}>
       {breadcrumbs &&
         breadcrumbs.map((item) => (
           <>
