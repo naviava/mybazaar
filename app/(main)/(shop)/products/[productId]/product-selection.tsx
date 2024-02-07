@@ -1,3 +1,5 @@
+import { ColorPicker } from "~/components/color-picker";
+
 interface IProps {}
 
 export function ProductSelection({}: IProps) {
@@ -6,9 +8,7 @@ export function ProductSelection({}: IProps) {
       <div className="grid grid-cols-1 lg:col-span-2 lg:grid-cols-2">
         <div className="grid grid-cols-2">
           <p className="font-medium">COLOR</p>
-          <div className="flex items-center gap-x-2">
-            <div className="h-7 w-7 rounded-full bg-rose-500" />
-          </div>
+          <ColorPicker />
         </div>
         <div>Quantity</div>
       </div>
